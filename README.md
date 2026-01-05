@@ -1,34 +1,85 @@
-# React + Vite
+# 🗡️ Tablero Virtual de Rol (D&D)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Aplicación web para gestionar partidas de Dungeons & Dragons y juegos de rol similares. Incluye tablero interactivo, gestión de fichas, lanzamiento de dados y herramientas para Dungeon Masters.
 
-Currently, two official plugins are available:
+## ✨ Características
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### 🎯 Gestión de Fichas
 
-## React Compiler
+- **Crear fichas** de Héroes, Bestias y NPCs
+- **Personalización completa**: nombre, imagen, puntos de vida, tamaño
+- **Estados visuales**: herido, inconsciente, muerto (color gris)
+- **Arrastrar y soltar** sobre el tablero
+- **Redimensionar** con click derecho + arrastrar vertical
+- **Información en tiempo real** al seleccionar fichas
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### 🎲 Lanzador de Dados
 
-## Expanding the ESLint configuration
+- **Dados clásicos**: d4, d6, d8, d10, d12, d20, d100
+- **Tiradas múltiples**: lanzar varios dados del mismo tipo
+- **Presets D&D**: ataque, ventaja, desventaja, salvación, daño
+- **Animaciones**: feedback visual durante lanzamientos
+- **Indicadores críticos**: resalta 20s y 1s en d20
+- **Historial mejorado** con colores para críticos/fallos
+- **Sección colapsable** para ahorrar espacio
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### 🗺️ Tablero Interactivo
 
-Funcionalidad de pan implementada:
-Estado de pan: Se guarda la posición X e Y del pan.
-Métodos para panear:
-Clic derecho: Clic derecho + arrastrar para mover la imagen
-Clic central (rueda): Clic en la rueda + arrastrar
-Espacio + Clic izquierdo: Mantén presionada la tecla Espacio y arrastra con el botón izquierdo
-Distinción entre acciones:
-El pan no interfiere con el movimiento de fichas
-Las fichas se mueven con clic izquierdo normal
-El pan se activa solo con los métodos indicados
-Integración con zoom:
-El pan funciona junto con el zoom
-Al hacer reset del zoom, también se resetea el pan
-La imagen se mueve usando translate junto con scale
-Feedback visual:
-El cursor cambia a "grab" cuando puedes panear
-Cambia a "grabbing" mientras paneas
+- **Cargar imagen de fondo** personalizada
+- **Zoom y pan** fluido con controles intuitivos
+- **Persistencia automática** de posición y zoom
+- **Controles de zoom** con slider y botones
+
+### 💾 Persistencia de Datos
+
+- **LocalStorage automático** - no pierdes tu partida al recargar
+- **Botón "Nueva Partida"** para resetear todo
+- **Guardado en tiempo real** de todas las modificaciones
+
+## 🎮 Controles
+
+### Tablero
+
+- **Clic izquierdo + arrastrar**: mover fichas
+- **Click derecho + arrastrar**: panear tablero
+- **Rueda del mouse**: zoom
+- **Espacio + clic izquierdo**: panear (alternativo)
+- **Doble clic en ficha**: editar ficha
+
+### Dados (modal)
+
+- **🎲 Dados**: botón en header para abrir modal
+- **Clic en dado**: tirar 1 dado del tipo seleccionado
+- **Selector de cantidad**: tirar múltiples dados
+- **Tirar grande**: botón para tirada rápida
+- **Presets D&D**: ataque, ventaja, desventaja, salvación, daño
+- **✕**: cerrar modal
+- **Animaciones**: feedback visual durante lanzamientos
+- **Críticos**: resalta 20s (oro) y 1s (rojo) en d20
+
+## 🚀 Instalación y Uso
+
+```bash
+# Instalar dependencias
+npm install
+
+# Ejecutar en desarrollo
+npm run dev
+
+# Compilar para producción
+npm run build
+```
+
+## 🛠️ Tecnologías
+
+- **React** - Framework UI
+- **Vite** - Build tool y dev server
+- **CSS** - Estilos con tema medieval/fantástico
+- **LocalStorage** - Persistencia de datos
+
+## 🎨 Tema Visual
+
+- **Colores medievales**: marrón, dorado, rojo sangre
+- **Fuentes elegantes** con sombras y efectos
+- **Animaciones suaves** y feedback visual
+- **Responsive design** para diferentes pantallas

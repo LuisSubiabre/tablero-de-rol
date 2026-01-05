@@ -7,6 +7,7 @@ import {
   Tablero,
   PanelInfoFicha,
   ModalEdicion,
+  DiceRoller,
   CATEGORIAS,
   getColorPorCategoria,
   calcularEstadoPorHP,
@@ -50,6 +51,7 @@ function App() {
   );
   const [fichaSeleccionada, setFichaSeleccionada] = useState(null);
   const [modalAbierto, setModalAbierto] = useState(false);
+  const [modalDadosAbierto, setModalDadosAbierto] = useState(false);
 
   // Estados para el formulario
   const [categoriaSeleccionada, setCategoriaSeleccionada] = useState(
@@ -486,6 +488,7 @@ function App() {
         onZoomReset={handleZoomReset}
         onCargarImagen={handleCargarImagen}
         onNuevaPartida={handleNuevaPartida}
+        onAbrirDados={() => setModalDadosAbierto(true)}
       />
 
       <div className="contenedor-principal">
@@ -552,6 +555,26 @@ function App() {
         onSave={handleGuardarEdicion}
         onImageChange={() => {}}
       />
+
+      {modalDadosAbierto && (
+        <div
+          className="modal-overlay"
+          onClick={() => setModalDadosAbierto(false)}
+        >
+          <div className="modal-dados" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-dados-header">
+              <h2>🎲 Lanzador de Dados</h2>
+              <button
+                className="modal-cerrar"
+                onClick={() => setModalDadosAbierto(false)}
+              >
+                ✕
+              </button>
+            </div>
+            <DiceRoller onClose={() => setModalDadosAbierto(false)} />
+          </div>
+        </div>
+      )}
     </div>
   );
 }

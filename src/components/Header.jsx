@@ -10,6 +10,7 @@ const Header = ({
   onZoomReset,
   onCargarImagen,
   onNuevaPartida,
+  onAbrirDados,
 }) => {
   const fileInputRef = React.useRef(null);
 
@@ -52,6 +53,13 @@ const Header = ({
           </div>
         )}
         <button
+          className="btn-dados"
+          onClick={onAbrirDados}
+          title="Abrir lanzador de dados"
+        >
+          🎲 Dados
+        </button>
+        <button
           className="btn-nueva-partida"
           onClick={onNuevaPartida}
           title="Crear nueva partida (elimina todo)"
@@ -85,6 +93,7 @@ Header.propTypes = {
   onZoomReset: PropTypes.func.isRequired,
   onCargarImagen: PropTypes.func.isRequired,
   onNuevaPartida: PropTypes.func.isRequired,
+  onAbrirDados: PropTypes.func.isRequired,
 };
 
 export default Header;
