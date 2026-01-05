@@ -667,6 +667,27 @@
     0 0 10px rgba(184, 134, 11, 0.3);
 }
 
+.btn-reset-tamaño {
+  margin-top: 0.5rem;
+  width: 100%;
+  padding: 0.55rem 0.75rem;
+  background: rgba(60, 40, 20, 0.6);
+  border: 1px solid rgba(184, 134, 11, 0.4);
+  border-radius: 10px;
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.15s ease, background 0.15s ease, border-color 0.15s ease,
+    color 0.15s ease;
+}
+
+.btn-reset-tamaño:hover {
+  background: rgba(80, 50, 25, 0.8);
+  border-color: rgba(184, 134, 11, 0.6);
+  color: #ffd700;
+  transform: translateY(-1px);
+}
+
 .btn-agregar {
   flex: 2;
 }

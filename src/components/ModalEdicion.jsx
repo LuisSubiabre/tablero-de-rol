@@ -80,7 +80,6 @@ const ModalEdicion = ({
           <form onSubmit={handleSubmit} className="form-ficha">
             <div className="form-seccion">
               <label className="form-label">
-                <span className="label-icon">⚔️</span>
                 Tipo <span className="label-required">*</span>
               </label>
               <div className="categorias">
@@ -107,7 +106,6 @@ const ModalEdicion = ({
 
             <div className="form-seccion">
               <label className="form-label" htmlFor="modal-input-nombre-ficha">
-                <span className="label-icon">📝</span>
                 Nombre <span className="label-required">*</span>
               </label>
               <input
@@ -126,7 +124,6 @@ const ModalEdicion = ({
 
             <div className="form-seccion">
               <label className="form-label">
-                <span className="label-icon">🖼️</span>
                 Imagen <span className="label-optional">(opcional)</span>
               </label>
               <div className="imagen-input-container">
@@ -165,44 +162,8 @@ const ModalEdicion = ({
 
             <div className="form-seccion">
               <label className="form-label">
-                <span className="label-icon">❤️</span>
                 Puntos de Vida
               </label>
-              <div className="hp-quick-buttons">
-                <button
-                  type="button"
-                  className="hp-quick-btn"
-                  onClick={() => {
-                    setHpMaxFicha(50);
-                    setHpActualFicha(50);
-                  }}
-                  title="HP Estándar (50)"
-                >
-                  50
-                </button>
-                <button
-                  type="button"
-                  className="hp-quick-btn"
-                  onClick={() => {
-                    setHpMaxFicha(100);
-                    setHpActualFicha(100);
-                  }}
-                  title="HP Alto (100)"
-                >
-                  100
-                </button>
-                <button
-                  type="button"
-                  className="hp-quick-btn"
-                  onClick={() => {
-                    setHpMaxFicha(200);
-                    setHpActualFicha(200);
-                  }}
-                  title="HP Muy Alto (200)"
-                >
-                  200
-                </button>
-              </div>
               <div className="hp-inputs">
                 <div className="hp-input-group">
                   <label className="hp-label">Actual</label>
@@ -248,24 +209,27 @@ const ModalEdicion = ({
                   }}
                 />
                 <span className="hp-status-text">
-                  {calcularEstadoPorHP(hpActualFicha, hpMaxFicha) === "muerto" && "💀 Muerto"}
-                  {calcularEstadoPorHP(hpActualFicha, hpMaxFicha) === "inconsciente" && "😴 Inconsciente"}
-                  {calcularEstadoPorHP(hpActualFicha, hpMaxFicha) === "herido" && "🩹 Herido"}
-                  {calcularEstadoPorHP(hpActualFicha, hpMaxFicha) === "saludable" && "✅ Saludable"}
+                  {calcularEstadoPorHP(hpActualFicha, hpMaxFicha) === "muerto" &&
+                    "Muerto"}
+                  {calcularEstadoPorHP(hpActualFicha, hpMaxFicha) ===
+                    "inconsciente" && "Inconsciente"}
+                  {calcularEstadoPorHP(hpActualFicha, hpMaxFicha) === "herido" &&
+                    "Herido"}
+                  {calcularEstadoPorHP(hpActualFicha, hpMaxFicha) ===
+                    "saludable" && "Saludable"}
                 </span>
               </div>
             </div>
 
             <div className="form-seccion">
               <label className="form-label">
-                <span className="label-icon">📏</span>
                 Tamaño
               </label>
               <div className="tamaño-controls">
                 <input
                   type="range"
                   min="30"
-                  max="120"
+                  max="140"
                   value={tamañoFicha}
                   onChange={(e) => setTamañoFicha(parseInt(e.target.value))}
                   className="tamaño-slider"
@@ -276,13 +240,20 @@ const ModalEdicion = ({
                     <div
                       className="tamaño-preview-dot"
                       style={{
-                        width: `${(tamañoFicha / 120) * 100}%`,
-                        height: `${(tamañoFicha / 120) * 100}%`,
+                        width: `${(tamañoFicha / 140) * 100}%`,
+                        height: `${(tamañoFicha / 140) * 100}%`,
                       }}
                     />
                   </div>
                 </div>
               </div>
+              <button
+                type="button"
+                className="btn-reset-tamaño"
+                onClick={() => setTamañoFicha(55)}
+              >
+                Reestablecer tamaño
+              </button>
             </div>
 
             <div className="form-actions">
