@@ -133,17 +133,6 @@ const FichaTablero = ({
         {/* Ícono de calavera si HP = 0 */}
         {hpActual <= 0 && <div className="ficha-calavera">💀</div>}
       </div>
-
-      {/* Barra de HP lineal debajo de la ficha */}
-      <div className="ficha-hp-abajo" aria-label={`HP ${hpActual}/${hpMax}`}>
-        <div
-          className="ficha-hp-abajo-fill"
-          style={{
-            width: `${Math.max(0, Math.min(100, porcentajeHP))}%`,
-            backgroundColor: colorHP,
-          }}
-        />
-      </div>
     </div>
   );
 };
