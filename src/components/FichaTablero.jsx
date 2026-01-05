@@ -39,7 +39,11 @@ const FichaTablero = ({
         top: "50%",
         width: `${tamañoFicha}px`,
         height: `${tamañoFicha}px`,
-        backgroundColor: hpActual <= 0 ? "#6b7280" : ficha.color,
+        backgroundColor: ficha.imagen
+          ? "transparent"
+          : hpActual <= 0
+          ? "#6b7280"
+          : ficha.color,
         cursor: isDragging ? "grabbing" : "grab",
         transition: isDragging ? "none" : "transform 0.1s, box-shadow 0.1s",
         transform: `translate(-50%, -50%) translate(${offsetX}px, ${offsetY}px) translate(${pan.x}px, ${pan.y}px) scale(${scaleFactor})`,
@@ -84,21 +88,21 @@ const FichaTablero = ({
           className="ficha-hp-ring-background"
           cx="50"
           cy="50"
-          r="47"
+          r="45"
           fill="none"
           stroke="rgba(0, 0, 0, 0.6)"
-          strokeWidth="6"
+          strokeWidth="4"
         />
         <circle
           className="ficha-hp-ring-fill"
           cx="50"
           cy="50"
-          r="47"
+          r="45"
           fill="none"
           stroke={colorHP}
-          strokeWidth="6"
-          strokeDasharray={`${2 * Math.PI * 47}`}
-          strokeDashoffset={`${2 * Math.PI * 47 * (1 - porcentajeHP / 100)}`}
+          strokeWidth="4"
+          strokeDasharray={`${2 * Math.PI * 45}`}
+          strokeDashoffset={`${2 * Math.PI * 45 * (1 - porcentajeHP / 100)}`}
         />
       </svg>
 
