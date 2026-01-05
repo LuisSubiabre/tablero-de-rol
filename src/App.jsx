@@ -700,7 +700,7 @@ function App() {
                       top: `${ficha.y}%`,
                       width: `${tamañoFicha}px`,
                       height: `${tamañoFicha}px`,
-                      backgroundColor: ficha.color,
+                      backgroundColor: hpActual <= 0 ? "#6b7280" : ficha.color,
                       cursor:
                         fichaArrastrada === ficha.id ? "grabbing" : "grab",
                       transition:
