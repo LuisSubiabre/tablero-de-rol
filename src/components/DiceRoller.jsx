@@ -153,29 +153,37 @@ const DiceRoller = ({ onClose }) => {
             className="btn-preset attack"
             onClick={tirarAtaque}
             disabled={isRolling}
+            title="Tirar d20 para ataque"
           >
-            🎯 Ataque
+            <span className="preset-icon">⚔️</span>
+            <span className="preset-text">Ataque</span>
           </button>
           <button
             className="btn-preset advantage"
             onClick={tirarVentaja}
             disabled={isRolling}
+            title="Tirar 2d20 y tomar el mayor"
           >
-            ➕ Ventaja
+            <span className="preset-icon">↗️</span>
+            <span className="preset-text">Ventaja</span>
           </button>
           <button
             className="btn-preset disadvantage"
             onClick={tirarDesventaja}
             disabled={isRolling}
+            title="Tirar 2d20 y tomar el menor"
           >
-            ➖ Desventaja
+            <span className="preset-icon">↘️</span>
+            <span className="preset-text">Desventaja</span>
           </button>
           <button
             className="btn-preset save"
             onClick={tirarSalvacion}
             disabled={isRolling}
+            title="Tirar d20 para salvación"
           >
-            🛡️ Salvación
+            <span className="preset-icon">🛡️</span>
+            <span className="preset-text">Salvación</span>
           </button>
         </div>
 
