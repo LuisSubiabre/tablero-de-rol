@@ -9,6 +9,7 @@ const CATEGORIAS = {
 
 function App() {
   const [tableroImagen, setTableroImagen] = useState(null);
+  const [zoom, setZoom] = useState(100);
   const [fichas, setFichas] = useState([]);
   const [categoriaSeleccionada, setCategoriaSeleccionada] = useState(
     CATEGORIAS.HEROES
@@ -26,8 +27,34 @@ function App() {
       const reader = new FileReader();
       reader.onload = (e) => {
         setTableroImagen(e.target.result);
+        setZoom(100); // Resetear zoom al cargar nueva imagen
       };
       reader.readAsDataURL(file);
+    }
+  };
+
+  const handleZoomChange = (nuevoZoom) => {
+    setZoom(Math.max(25, Math.min(300, nuevoZoom))); // Limitar entre 25% y 300%
+  };
+
+  const handleZoomIn = () => {
+    handleZoomChange(zoom + 10);
+  };
+
+  const handleZoomOut = () => {
+    handleZoomChange(zoom - 10);
+  };
+
+  const handleZoomReset = () => {
+    setZoom(100);
+  };
+
+  const handleWheel = (e) => {
+    if (!tableroImagen) return;
+    if (e.ctrlKey || e.metaKey) {
+      e.preventDefault();
+      const delta = e.deltaY > 0 ? -5 : 5;
+      handleZoomChange(zoom + delta);
     }
   };
 
@@ -125,12 +152,48 @@ function App() {
     <div className="app">
       <header className="header">
         <h1>Tablero de Rol</h1>
-        <button
-          className="btn-cargar"
-          onClick={() => fileInputRef.current?.click()}
-        >
-          Cargar Tablero
-        </button>
+        <div className="header-controls">
+          {tableroImagen && (
+            <div className="zoom-controls">
+              <button
+                className="btn-zoom"
+                onClick={handleZoomOut}
+                title="Alejar (Ctrl + Rueda del mouse)"
+              >
+                −
+              </button>
+              <input
+                type="range"
+                min="25"
+                max="300"
+                value={zoom}
+                onChange={(e) => handleZoomChange(Number(e.target.value))}
+                className="zoom-slider"
+              />
+              <span className="zoom-value">{zoom}%</span>
+              <button
+                className="btn-zoom"
+                onClick={handleZoomIn}
+                title="Acercar (Ctrl + Rueda del mouse)"
+              >
+                +
+              </button>
+              <button
+                className="btn-zoom-reset"
+                onClick={handleZoomReset}
+                title="Restablecer zoom"
+              >
+                Reset
+              </button>
+            </div>
+          )}
+          <button
+            className="btn-cargar"
+            onClick={() => fileInputRef.current?.click()}
+          >
+            Cargar Tablero
+          </button>
+        </div>
         <input
           ref={fileInputRef}
           type="file"
@@ -220,12 +283,17 @@ function App() {
               onMouseMove={handleMouseMove}
               onMouseUp={handleMouseUp}
               onMouseLeave={handleMouseUp}
+              onWheel={handleWheel}
             >
               <img
                 src={tableroImagen}
                 alt="Tablero"
                 className="tablero-imagen"
                 draggable={false}
+                style={{
+                  transform: `scale(${zoom / 100})`,
+                  transformOrigin: "center center",
+                }}
               />
               {fichas.map((ficha) => (
                 <div
