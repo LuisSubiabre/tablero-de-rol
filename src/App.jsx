@@ -35,10 +35,13 @@ function App() {
   const tableroRef = useRef(null);
   const [tableroSize, setTableroSize] = useState({ width: 0, height: 0 });
   const [fichaArrastrada, setFichaArrastrada] = useState(null);
+  const [fichaSeleccionada, setFichaSeleccionada] = useState(null);
   const offsetRef = useRef({ x: 0, y: 0 });
   const [isPanning, setIsPanning] = useState(false);
   const panStartRef = useRef({ x: 0, y: 0 });
   const spacePressedRef = useRef(false);
+  const clickStartRef = useRef({ x: 0, y: 0 });
+  const isDraggingRef = useRef(false);
 
   const handleCargarImagen = (event) => {
     const file = event.target.files[0];
@@ -243,6 +246,14 @@ function App() {
   const handleMouseDown = (e, ficha) => {
     e.preventDefault();
     e.stopPropagation();
+
+    // Guardar posición inicial del click
+    clickStartRef.current = {
+      x: e.clientX,
+      y: e.clientY,
+    };
+    isDraggingRef.current = false;
+
     setFichaArrastrada(ficha.id);
     setIsPanning(false); // No estamos paneando cuando movemos una ficha
 
@@ -326,10 +337,28 @@ function App() {
     }
   };
 
-  const handleMouseUp = () => {
+  const handleMouseUp = (e) => {
+    // Si fue un click simple (no drag), seleccionar la ficha
+    if (fichaArrastrada && !isDraggingRef.current) {
+      const moveDistance = Math.sqrt(
+        Math.pow((e?.clientX || 0) - clickStartRef.current.x, 2) +
+          Math.pow((e?.clientY || 0) - clickStartRef.current.y, 2)
+      );
+
+      // Si el movimiento fue menor a 5px, es un click
+      if (moveDistance < 5) {
+        const ficha = fichas.find((f) => f.id === fichaArrastrada);
+        if (ficha) {
+          setFichaSeleccionada(ficha);
+        }
+      }
+    }
+
     setFichaArrastrada(null);
     setIsPanning(false);
     offsetRef.current = { x: 0, y: 0 };
+    clickStartRef.current = { x: 0, y: 0 };
+    isDraggingRef.current = false;
   };
 
   const fichasPorCategoria = (categoria) => {
@@ -688,6 +717,113 @@ function App() {
         </aside>
 
         <main className="tablero-contenedor">
+          {/* Panel de información de ficha seleccionada */}
+          {fichaSeleccionada && (
+            <div className="ficha-info-panel">
+              <button
+                className="ficha-info-cerrar"
+                onClick={() => setFichaSeleccionada(null)}
+                title="Cerrar"
+              >
+                ×
+              </button>
+              <div className="ficha-info-header">
+                <div
+                  className="ficha-info-avatar"
+                  style={{
+                    backgroundColor: fichaSeleccionada.color,
+                  }}
+                >
+                  {fichaSeleccionada.imagen ? (
+                    <img
+                      src={fichaSeleccionada.imagen}
+                      alt={fichaSeleccionada.nombre}
+                    />
+                  ) : (
+                    <span>
+                      {fichaSeleccionada.nombre.charAt(0).toUpperCase()}
+                    </span>
+                  )}
+                </div>
+                <div className="ficha-info-titulo">
+                  <h3>{fichaSeleccionada.nombre}</h3>
+                  <span
+                    className="ficha-info-tipo"
+                    style={{
+                      color: getColorPorCategoria(fichaSeleccionada.categoria),
+                    }}
+                  >
+                    {fichaSeleccionada.categoria}
+                  </span>
+                </div>
+              </div>
+              <div className="ficha-info-body">
+                <div className="ficha-info-stat">
+                  <span className="ficha-info-stat-label">Estado</span>
+                  <span className="ficha-info-stat-value">
+                    {getLabelEstado(
+                      fichaSeleccionada.estado ||
+                        calcularEstadoPorHP(
+                          fichaSeleccionada.hpActual ??
+                            fichaSeleccionada.hpMax ??
+                            50,
+                          fichaSeleccionada.hpMax ?? 50
+                        )
+                    )}
+                  </span>
+                </div>
+                <div className="ficha-info-stat">
+                  <span className="ficha-info-stat-label">Puntos de Vida</span>
+                  <div className="ficha-info-hp">
+                    <div className="ficha-info-hp-bar-container">
+                      <div
+                        className="ficha-info-hp-bar"
+                        style={{
+                          width: `${
+                            ((fichaSeleccionada.hpActual ??
+                              fichaSeleccionada.hpMax ??
+                              50) /
+                              (fichaSeleccionada.hpMax ?? 50)) *
+                            100
+                          }%`,
+                          backgroundColor: getColorHP(
+                            fichaSeleccionada.hpActual ??
+                              fichaSeleccionada.hpMax ??
+                              50,
+                            fichaSeleccionada.hpMax ?? 50
+                          ),
+                        }}
+                      />
+                    </div>
+                    <span className="ficha-info-hp-text">
+                      {fichaSeleccionada.hpActual ??
+                        fichaSeleccionada.hpMax ??
+                        50}{" "}
+                      / {fichaSeleccionada.hpMax ?? 50}
+                    </span>
+                  </div>
+                </div>
+                <div className="ficha-info-stat">
+                  <span className="ficha-info-stat-label">Tamaño</span>
+                  <span className="ficha-info-stat-value">
+                    {fichaSeleccionada.tamaño || 55}px
+                  </span>
+                </div>
+              </div>
+              <div className="ficha-info-actions">
+                <button
+                  className="ficha-info-btn-editar"
+                  onClick={() => {
+                    handleEditarFicha(fichaSeleccionada, true);
+                    setFichaSeleccionada(null);
+                  }}
+                >
+                  Editar
+                </button>
+              </div>
+            </div>
+          )}
+
           {tableroImagen ? (
             <div
               ref={tableroRef}
