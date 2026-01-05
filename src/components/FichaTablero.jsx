@@ -33,15 +33,14 @@ const FichaTablero = ({
 
   return (
     <div
-      className={`ficha ficha-estado-${estado}`}
+      className="ficha-wrapper"
       style={{
         left: "50%",
         top: "50%",
         width: `${tamañoFicha}px`,
         height: `${tamañoFicha}px`,
-        backgroundColor: hpActual <= 0 ? "#6b7280" : ficha.color,
         cursor: isDragging ? "grabbing" : "grab",
-        transition: isDragging ? "none" : "transform 0.1s, box-shadow 0.1s",
+        transition: isDragging ? "none" : "transform 0.1s",
         transform: `translate(-50%, -50%) translate(${offsetX}px, ${offsetY}px) translate(${pan.x}px, ${pan.y}px) scale(${scaleFactor})`,
         transformOrigin: "center center",
       }}
@@ -63,9 +62,7 @@ const FichaTablero = ({
 
           // Programar selección si no hay movimiento
           clickTimeoutRef.current = setTimeout(() => {
-            if (onClick) {
-              onClick(ficha);
-            }
+            if (onClick) onClick(ficha);
           }, 200);
         }
       }}
@@ -78,7 +75,10 @@ const FichaTablero = ({
       }}
       title={`${ficha.nombre} - ${hpActual}/${hpMax} HP - ${estado}`}
     >
-      {/* Barra de vida circular alrededor de la ficha */}
+      {/* Nombre arriba (fuera del contenedor para evitar overflow/recortes) */}
+      <div className="ficha-nombre-arriba">{ficha.nombre}</div>
+
+      {/* Barra de vida circular rodeando la ficha (por fuera) */}
       <svg className="ficha-hp-ring" viewBox="0 0 100 100">
         <circle
           className="ficha-hp-ring-background"
@@ -86,8 +86,9 @@ const FichaTablero = ({
           cy="50"
           r="45"
           fill="none"
-          stroke="rgba(0, 0, 0, 0.6)"
-          strokeWidth="4"
+          stroke={ficha.color}
+          strokeWidth="6"
+          strokeOpacity="0.85"
         />
         <circle
           className="ficha-hp-ring-fill"
@@ -102,22 +103,36 @@ const FichaTablero = ({
         />
       </svg>
 
-      {/* Contenido de la ficha */}
-      <div className="ficha-contenido">
-        {ficha.imagen ? (
-          <img src={ficha.imagen} alt={ficha.nombre} className="ficha-imagen" />
-        ) : (
-          <div className="ficha-inicial">
-            {ficha.nombre.charAt(0).toUpperCase()}
-          </div>
-        )}
+      {/* Círculo de la ficha (mantiene overflow hidden para recortar imagen) */}
+      <div
+        className={`ficha ficha-estado-${estado}`}
+        style={{
+          position: "relative",
+          left: "auto",
+          top: "auto",
+          width: "100%",
+          height: "100%",
+          transform: "none",
+          backgroundColor: hpActual <= 0 ? "#6b7280" : ficha.color,
+        }}
+      >
+        <div className="ficha-contenido">
+          {ficha.imagen ? (
+            <img
+              src={ficha.imagen}
+              alt={ficha.nombre}
+              className="ficha-imagen"
+            />
+          ) : (
+            <div className="ficha-inicial">
+              {ficha.nombre.charAt(0).toUpperCase()}
+            </div>
+          )}
+        </div>
+
+        {/* Ícono de calavera si HP = 0 */}
+        {hpActual <= 0 && <div className="ficha-calavera">💀</div>}
       </div>
-
-      {/* Ícono de calavera si HP = 0 */}
-      {hpActual <= 0 && <div className="ficha-calavera">💀</div>}
-
-      {/* Nombre debajo de la ficha */}
-      <div className="ficha-nombre-abajo">{ficha.nombre}</div>
     </div>
   );
 };

@@ -1197,6 +1197,11 @@
   overflow: hidden;
 }
 
+.ficha-wrapper {
+  position: absolute;
+  overflow: visible;
+}
+
 .ficha:hover {
   z-index: 100;
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.7), 0 0 0 3px rgba(0, 0, 0, 0.5),
@@ -1249,9 +1254,9 @@
   filter: drop-shadow(0 0 6px rgba(0, 0, 0, 0.8));
 }
 
-.ficha-nombre-abajo {
+.ficha-nombre-arriba {
   position: absolute;
-  bottom: -35px;
+  top: -38px;
   left: 50%;
   transform: translateX(-50%);
   font-size: 11px;
