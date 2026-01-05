@@ -13,9 +13,15 @@ const Header = ({
   mostrarGrilla,
   tamañoGrilla,
   colorGrilla,
+  offsetGrilla,
   onToggleGrilla,
   onCambioTamañoGrilla,
   onCambioColorGrilla,
+  onMoverGrillaArriba,
+  onMoverGrillaAbajo,
+  onMoverGrillaIzquierda,
+  onMoverGrillaDerecha,
+  onResetearOffsetGrilla,
 }) => {
   const fileInputRef = React.useRef(null);
 
@@ -99,6 +105,56 @@ const Header = ({
                     title="Color de la grilla"
                   />
                 </div>
+
+                <div className="grilla-movimiento-control">
+                  <label>Posición:</label>
+                  <div className="grilla-direcciones">
+                    <button
+                      className="btn-direccion arriba"
+                      onClick={onMoverGrillaArriba}
+                      title="Mover grilla arriba"
+                    >
+                      ↑
+                    </button>
+                    <div className="direcciones-medio">
+                      <button
+                        className="btn-direccion izquierda"
+                        onClick={onMoverGrillaIzquierda}
+                        title="Mover grilla izquierda"
+                      >
+                        ←
+                      </button>
+                      <button
+                        className="btn-reset-posicion"
+                        onClick={onResetearOffsetGrilla}
+                        title="Resetear posición grilla"
+                      >
+                        ⊙
+                      </button>
+                      <button
+                        className="btn-direccion derecha"
+                        onClick={onMoverGrillaDerecha}
+                        title="Mover grilla derecha"
+                      >
+                        →
+                      </button>
+                    </div>
+                    <button
+                      className="btn-direccion abajo"
+                      onClick={onMoverGrillaAbajo}
+                      title="Mover grilla abajo"
+                    >
+                      ↓
+                    </button>
+                  </div>
+                  {(offsetGrilla.x !== 0 || offsetGrilla.y !== 0) && (
+                    <div className="grilla-offset-display">
+                      {offsetGrilla.x !== 0 && `X: ${offsetGrilla.x}`}
+                      {offsetGrilla.x !== 0 && offsetGrilla.y !== 0 && ", "}
+                      {offsetGrilla.y !== 0 && `Y: ${offsetGrilla.y}`}
+                    </div>
+                  )}
+                </div>
               </>
             )}
           </div>
@@ -141,9 +197,18 @@ Header.propTypes = {
   mostrarGrilla: PropTypes.bool.isRequired,
   tamañoGrilla: PropTypes.number.isRequired,
   colorGrilla: PropTypes.string.isRequired,
+  offsetGrilla: PropTypes.shape({
+    x: PropTypes.number.isRequired,
+    y: PropTypes.number.isRequired,
+  }).isRequired,
   onToggleGrilla: PropTypes.func.isRequired,
   onCambioTamañoGrilla: PropTypes.func.isRequired,
   onCambioColorGrilla: PropTypes.func.isRequired,
+  onMoverGrillaArriba: PropTypes.func.isRequired,
+  onMoverGrillaAbajo: PropTypes.func.isRequired,
+  onMoverGrillaIzquierda: PropTypes.func.isRequired,
+  onMoverGrillaDerecha: PropTypes.func.isRequired,
+  onResetearOffsetGrilla: PropTypes.func.isRequired,
 };
 
 export default Header;

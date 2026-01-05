@@ -61,6 +61,9 @@ function App() {
   const [colorGrilla, setColorGrilla] = useState(() =>
     cargarDesdeLocalStorage(`${STORAGE_KEY}-grilla-color`, '#ffffff')
   );
+  const [offsetGrilla, setOffsetGrilla] = useState(() =>
+    cargarDesdeLocalStorage(`${STORAGE_KEY}-grilla-offset`, { x: 0, y: 0 })
+  );
 
   // Estados para el formulario
   const [categoriaSeleccionada, setCategoriaSeleccionada] = useState(
@@ -103,6 +106,10 @@ function App() {
     guardarEnLocalStorage(`${STORAGE_KEY}-grilla-color`, colorGrilla);
   }, [colorGrilla]);
 
+  useEffect(() => {
+    guardarEnLocalStorage(`${STORAGE_KEY}-grilla-offset`, offsetGrilla);
+  }, [offsetGrilla]);
+
   // Función para limpiar todos los datos guardados (opcional para desarrollo)
   const limpiarDatosGuardados = () => {
     localStorage.removeItem(`${STORAGE_KEY}-fichas`);
@@ -112,6 +119,28 @@ function App() {
     localStorage.removeItem(`${STORAGE_KEY}-grilla-visible`);
     localStorage.removeItem(`${STORAGE_KEY}-grilla-tamaño`);
     localStorage.removeItem(`${STORAGE_KEY}-grilla-color`);
+    localStorage.removeItem(`${STORAGE_KEY}-grilla-offset`);
+  };
+
+  // Funciones para mover la grilla
+  const moverGrillaArriba = () => {
+    setOffsetGrilla(prev => ({ ...prev, y: prev.y - 5 }));
+  };
+
+  const moverGrillaAbajo = () => {
+    setOffsetGrilla(prev => ({ ...prev, y: prev.y + 5 }));
+  };
+
+  const moverGrillaIzquierda = () => {
+    setOffsetGrilla(prev => ({ ...prev, x: prev.x - 5 }));
+  };
+
+  const moverGrillaDerecha = () => {
+    setOffsetGrilla(prev => ({ ...prev, x: prev.x + 5 }));
+  };
+
+  const resetearOffsetGrilla = () => {
+    setOffsetGrilla({ x: 0, y: 0 });
   };
 
   // Función para crear nueva partida
@@ -136,6 +165,7 @@ function App() {
       setMostrarGrilla(false);
       setTamañoGrilla(50);
       setColorGrilla('#ffffff');
+      setOffsetGrilla({ x: 0, y: 0 });
 
       // Resetear formulario
       resetFormulario();
@@ -521,9 +551,15 @@ function App() {
         mostrarGrilla={mostrarGrilla}
         tamañoGrilla={tamañoGrilla}
         colorGrilla={colorGrilla}
+        offsetGrilla={offsetGrilla}
         onToggleGrilla={() => setMostrarGrilla(!mostrarGrilla)}
         onCambioTamañoGrilla={setTamañoGrilla}
         onCambioColorGrilla={setColorGrilla}
+        onMoverGrillaArriba={moverGrillaArriba}
+        onMoverGrillaAbajo={moverGrillaAbajo}
+        onMoverGrillaIzquierda={moverGrillaIzquierda}
+        onMoverGrillaDerecha={moverGrillaDerecha}
+        onResetearOffsetGrilla={resetearOffsetGrilla}
       />
 
       <div className="contenedor-principal">
@@ -562,6 +598,7 @@ function App() {
           mostrarGrilla={mostrarGrilla}
           tamañoGrilla={tamañoGrilla}
           colorGrilla={colorGrilla}
+          offsetGrilla={offsetGrilla}
           onMouseMove={handleMouseMove}
           onMouseDown={handleTableroMouseDown}
           onMouseUp={handleMouseUp}

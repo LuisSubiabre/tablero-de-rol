@@ -12,6 +12,7 @@ const Tablero = forwardRef(({
   mostrarGrilla,
   tamañoGrilla,
   colorGrilla,
+  offsetGrilla,
   onMouseMove,
   onMouseDown,
   onMouseUp,
@@ -95,6 +96,7 @@ const Tablero = forwardRef(({
                 width={tamañoGrilla}
                 height={tamañoGrilla}
                 patternUnits="userSpaceOnUse"
+                patternTransform={`translate(${offsetGrilla.x}, ${offsetGrilla.y})`}
               >
                 <path
                   d={`M ${tamañoGrilla} 0 L 0 0 0 ${tamañoGrilla}`}
@@ -168,6 +170,10 @@ Tablero.propTypes = {
   mostrarGrilla: PropTypes.bool.isRequired,
   tamañoGrilla: PropTypes.number.isRequired,
   colorGrilla: PropTypes.string.isRequired,
+  offsetGrilla: PropTypes.shape({
+    x: PropTypes.number.isRequired,
+    y: PropTypes.number.isRequired,
+  }).isRequired,
   onMouseMove: PropTypes.func.isRequired,
   onMouseDown: PropTypes.func.isRequired,
   onMouseUp: PropTypes.func.isRequired,

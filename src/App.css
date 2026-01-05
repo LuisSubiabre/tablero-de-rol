@@ -413,6 +413,125 @@
   border-radius: 2px;
 }
 
+/* Controles de movimiento de grilla */
+.grilla-movimiento-control {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.grilla-movimiento-control label {
+  min-width: 60px;
+  text-align: center;
+  font-size: 0.75rem;
+  color: #daa520;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.grilla-direcciones {
+  display: grid;
+  grid-template-columns: 1fr 3fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+  gap: 0.25rem;
+  align-items: center;
+  justify-items: center;
+}
+
+.btn-direccion {
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  background: rgba(139, 69, 19, 0.6);
+  color: #daa520;
+  border: 1px solid rgba(184, 134, 11, 0.5);
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-direccion:hover {
+  background: rgba(184, 134, 11, 0.8);
+  border-color: #daa520;
+  color: #2c1810;
+  transform: scale(1.1);
+}
+
+.btn-direccion:active {
+  transform: scale(0.95);
+}
+
+.btn-direccion.arriba {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.btn-direccion.izquierda {
+  grid-column: 1;
+  grid-row: 2;
+}
+
+.btn-direccion.derecha {
+  grid-column: 3;
+  grid-row: 2;
+}
+
+.btn-direccion.abajo {
+  grid-column: 2;
+  grid-row: 3;
+}
+
+.direcciones-medio {
+  grid-column: 2;
+  grid-row: 2;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.btn-reset-posicion {
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  background: rgba(60, 40, 20, 0.8);
+  color: #b8860b;
+  border: 1px solid rgba(184, 134, 11, 0.4);
+  border-radius: 50%;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-reset-posicion:hover {
+  background: rgba(184, 134, 11, 0.6);
+  border-color: #daa520;
+  color: #2c1810;
+  transform: scale(1.1);
+}
+
+.btn-reset-posicion:active {
+  transform: scale(0.95);
+}
+
+.grilla-offset-display {
+  font-size: 0.7rem;
+  color: #ffd700;
+  text-shadow: 0 0 3px rgba(212, 175, 55, 0.5);
+  font-weight: 600;
+  margin-top: 0.25rem;
+  opacity: 0.9;
+}
+
 .contenedor-principal {
   flex: 1;
   display: flex;
@@ -1802,6 +1921,22 @@
   .grilla-color-control {
     flex: 1;
     min-width: 120px;
+  }
+
+  .grilla-movimiento-control {
+    min-width: 140px;
+  }
+
+  .btn-direccion {
+    width: 24px;
+    height: 24px;
+    font-size: 12px;
+  }
+
+  .btn-reset-posicion {
+    width: 20px;
+    height: 20px;
+    font-size: 10px;
   }
 }
 
