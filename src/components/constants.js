@@ -10,3 +10,4 @@ export const ESTADOS = {
   INCONSCIENTE: "inconsciente",
   MUERTO: "muerto",
 };
+

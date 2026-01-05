@@ -114,3 +114,4 @@ PanelInfoFicha.propTypes = {
 };
 
 export default PanelInfoFicha;
+
