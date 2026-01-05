@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import "./App.css";
 
 const CATEGORIAS = {
@@ -10,6 +10,7 @@ const CATEGORIAS = {
 function App() {
   const [tableroImagen, setTableroImagen] = useState(null);
   const [zoom, setZoom] = useState(100);
+  const [pan, setPan] = useState({ x: 0, y: 0 });
   const [fichas, setFichas] = useState([]);
   const [categoriaSeleccionada, setCategoriaSeleccionada] = useState(
     CATEGORIAS.HEROES
@@ -20,6 +21,9 @@ function App() {
   const tableroRef = useRef(null);
   const [fichaArrastrada, setFichaArrastrada] = useState(null);
   const offsetRef = useRef({ x: 0, y: 0 });
+  const [isPanning, setIsPanning] = useState(false);
+  const panStartRef = useRef({ x: 0, y: 0 });
+  const spacePressedRef = useRef(false);
 
   const handleCargarImagen = (event) => {
     const file = event.target.files[0];
@@ -28,6 +32,7 @@ function App() {
       reader.onload = (e) => {
         setTableroImagen(e.target.result);
         setZoom(100); // Resetear zoom al cargar nueva imagen
+        setPan({ x: 0, y: 0 }); // Resetear pan
       };
       reader.readAsDataURL(file);
     }
@@ -47,6 +52,7 @@ function App() {
 
   const handleZoomReset = () => {
     setZoom(100);
+    setPan({ x: 0, y: 0 }); // Resetear pan al resetear zoom
   };
 
   const handleWheel = (e) => {
@@ -99,6 +105,7 @@ function App() {
     e.preventDefault();
     e.stopPropagation();
     setFichaArrastrada(ficha.id);
+    setIsPanning(false); // No estamos paneando cuando movemos una ficha
 
     const fichaRect = e.currentTarget.getBoundingClientRect();
 
@@ -109,44 +116,111 @@ function App() {
     };
   };
 
+  const handleTableroMouseDown = (e) => {
+    // Panear con clic derecho, clic central, o espacio + clic izquierdo
+    if (
+      e.button === 2 ||
+      e.button === 1 ||
+      (e.button === 0 && spacePressedRef.current)
+    ) {
+      e.preventDefault();
+      setIsPanning(true);
+      setFichaArrastrada(null);
+      panStartRef.current = {
+        x: e.clientX - pan.x,
+        y: e.clientY - pan.y,
+      };
+    }
+  };
+
+  const handleContextMenu = (e) => {
+    // Prevenir el menú contextual al hacer clic derecho
+    e.preventDefault();
+  };
+
   const handleMouseMove = (e) => {
-    if (!fichaArrastrada || !tableroImagen || !tableroRef.current) return;
+    if (!tableroImagen || !tableroRef.current) return;
 
-    const rect = tableroRef.current.getBoundingClientRect();
+    // Si estamos paneando
+    if (isPanning) {
+      const newPanX = e.clientX - panStartRef.current.x;
+      const newPanY = e.clientY - panStartRef.current.y;
+      setPan({ x: newPanX, y: newPanY });
+      return;
+    }
 
-    // Calcular posición del mouse relativa al tablero
-    const mouseX = e.clientX - rect.left - offsetRef.current.x;
-    const mouseY = e.clientY - rect.top - offsetRef.current.y;
+    // Si estamos moviendo una ficha
+    if (fichaArrastrada) {
+      const rect = tableroRef.current.getBoundingClientRect();
 
-    // Convertir a porcentajes
-    const nuevoX = (mouseX / rect.width) * 100;
-    const nuevoY = (mouseY / rect.height) * 100;
+      // Calcular posición del mouse relativa al tablero
+      const mouseX = e.clientX - rect.left - offsetRef.current.x;
+      const mouseY = e.clientY - rect.top - offsetRef.current.y;
 
-    // Limitar dentro de los límites del tablero
-    const xLimitado = Math.max(0, Math.min(nuevoX, 100));
-    const yLimitado = Math.max(0, Math.min(nuevoY, 100));
+      // Convertir a porcentajes
+      const nuevoX = (mouseX / rect.width) * 100;
+      const nuevoY = (mouseY / rect.height) * 100;
 
-    setFichas((prevFichas) =>
-      prevFichas.map((f) =>
-        f.id === fichaArrastrada
-          ? {
-              ...f,
-              x: xLimitado,
-              y: yLimitado,
-            }
-          : f
-      )
-    );
+      // Limitar dentro de los límites del tablero
+      const xLimitado = Math.max(0, Math.min(nuevoX, 100));
+      const yLimitado = Math.max(0, Math.min(nuevoY, 100));
+
+      setFichas((prevFichas) =>
+        prevFichas.map((f) =>
+          f.id === fichaArrastrada
+            ? {
+                ...f,
+                x: xLimitado,
+                y: yLimitado,
+              }
+            : f
+        )
+      );
+    }
   };
 
   const handleMouseUp = () => {
     setFichaArrastrada(null);
+    setIsPanning(false);
     offsetRef.current = { x: 0, y: 0 };
   };
 
   const fichasPorCategoria = (categoria) => {
     return fichas.filter((f) => f.categoria === categoria);
   };
+
+  // Agregar listeners para la tecla espacio
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.code === "Space" && !e.repeat) {
+        e.preventDefault();
+        spacePressedRef.current = true;
+        if (tableroRef.current) {
+          tableroRef.current.style.cursor = "grab";
+        }
+      }
+    };
+
+    const handleKeyUp = (e) => {
+      if (e.code === "Space") {
+        e.preventDefault();
+        spacePressedRef.current = false;
+        setIsPanning((prev) => {
+          if (!prev && tableroRef.current) {
+            tableroRef.current.style.cursor = "default";
+          }
+          return prev;
+        });
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener("keyup", handleKeyUp);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("keyup", handleKeyUp);
+    };
+  }, []);
 
   return (
     <div className="app">
@@ -183,7 +257,7 @@ function App() {
                 onClick={handleZoomReset}
                 title="Restablecer zoom"
               >
-                Reset
+                Resetear
               </button>
             </div>
           )}
@@ -281,9 +355,11 @@ function App() {
               ref={tableroRef}
               className="tablero"
               onMouseMove={handleMouseMove}
+              onMouseDown={handleTableroMouseDown}
               onMouseUp={handleMouseUp}
               onMouseLeave={handleMouseUp}
               onWheel={handleWheel}
+              onContextMenu={handleContextMenu}
             >
               <img
                 src={tableroImagen}
@@ -291,7 +367,9 @@ function App() {
                 className="tablero-imagen"
                 draggable={false}
                 style={{
-                  transform: `scale(${zoom / 100})`,
+                  transform: `translate(${pan.x}px, ${pan.y}px) scale(${
+                    zoom / 100
+                  })`,
                   transformOrigin: "center center",
                 }}
               />
