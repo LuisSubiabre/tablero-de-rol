@@ -1,63 +1,59 @@
-# 🗡️ Tablero Virtual de Rol (D&D)
+# 🗡️ Tablero Virtual de Rol
 
-Aplicación web para gestionar partidas de Dungeons & Dragons y juegos de rol similares. Incluye tablero interactivo, gestión de fichas y herramientas para Dungeon Masters.
+Aplicación web para apoyar partidas de rol mediante un tablero visual simple e intuitivo.  
+Ideal para **rol en solitario**, simulación de encuentros o preparación de escenarios,
+sin sistemas complejos ni reglas automatizadas.
+
+Carga tu mapa, añade tus fichas y deja que la narrativa fluya.
+
+---
 
 ## ✨ Características
 
 ### 🎯 Gestión de Fichas
 
-- **Crear fichas** de Héroes, Bestias y NPCs
-- **Personalización completa**: nombre, imagen, puntos de vida, tamaño
-- **Estados visuales**: herido, inconsciente, muerto (color gris)
-- **Arrastrar y soltar** sobre el tablero
-- **Redimensionar** con click derecho + arrastrar vertical
-- **Información en tiempo real** al seleccionar fichas
+- Crear fichas de Héroes, Bestias y NPCs
+- Fichas con o sin imagen
+- Edición rápida mediante doble clic
+- Arrastrar y soltar sobre el tablero
+- Redimensionar fichas con clic derecho + arrastre vertical
 
 ### 🗺️ Tablero Interactivo
 
-- **Cargar imagen de fondo** personalizada
-- **Zoom y pan** fluido con controles intuitivos
-- **Persistencia automática** de posición y zoom
-- **Controles de zoom** con slider y botones
-- **Grilla cuadrada opcional** para medición y posicionamiento
-- **Personalización de grilla**: tamaño y color ajustables
+- Cargar mapas como imagen de fondo (JPG, PNG, WebP)
+- **Grilla opcional sobre el mapa** para facilitar el posicionamiento
+- Zoom y paneo fluido
+- Navegación cómoda para mapas grandes
 
 ### 💾 Persistencia de Datos
 
-- **LocalStorage automático** - no pierdes tu partida al recargar
-- **Botón "Nueva Partida"** para resetear todo
-- **Guardado en tiempo real** de todas las modificaciones
+- Guardado automático en el navegador (LocalStorage)
+- La partida permanece aunque cierres la pestaña o el navegador
+- Opción de reiniciar la partida manualmente
+
+---
 
 ## 🎮 Controles
 
-### Header
-
-- **GitHub**: enlace al repositorio del proyecto
-- **Acerca de**: información sobre el proyecto
-
-### Tablero
-
 - **Clic izquierdo + arrastrar**: mover fichas
-- **Click derecho + arrastrar**: panear tablero
+- **Clic derecho + arrastrar**: panear tablero
 - **Rueda del mouse**: zoom
-- **Espacio + clic izquierdo**: panear (alternativo)
 - **Doble clic en ficha**: editar ficha
 
-### Grilla
+---
 
-- **□ Grilla**: botón para mostrar/ocultar la grilla cuadrada
-- **Tamaño**: slider para ajustar el tamaño de los cuadrados (20-200px, paso de 1px)
-- **Color**: selector de color para personalizar la grilla
-- **Posición**: controles direccionales (↑↓←→) para mover la grilla manualmente
-- **⊙ Reset**: botón para centrar la grilla en su posición original
+## 🛠️ Tecnologías
 
-## 📖 Acerca del Proyecto
+- **React 19**
+- **Vite**
+- **CSS puro** (sin frameworks visuales)
+- **LocalStorage** para persistencia
 
-Tablero Virtual de Rol es una aplicación web pensada como un apoyo visual para partidas de rol, especialmente orientada al juego en solitario y a la simulación de encuentros.
+---
 
-No busca reemplazar las reglas ni los sistemas tradicionales, sino ofrecer un espacio simple donde cargar mapas, mover fichas y dejar que la imaginación haga el resto.
-
-El proyecto fue desarrollado por Luis Subiabre, desarrollador web y docente, como una herramienta ligera, intuitiva y libre de complejidad innecesaria, enfocada en disfrutar el rol de forma rápida y sin distracciones.
+🎲 Menos reglas, más imaginación.  
+⚔️ Simula encuentros a tu ritmo.  
+🧙‍♂️ Rol visual, rápido y sin distracciones.
 
 ## 🚀 Instalación y Uso
 
