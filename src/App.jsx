@@ -33,6 +33,7 @@ function App() {
   const imagenFichaInputRef = useRef(null);
   const idCounterRef = useRef(0);
   const tableroRef = useRef(null);
+  const [tableroSize, setTableroSize] = useState({ width: 0, height: 0 });
   const [fichaArrastrada, setFichaArrastrada] = useState(null);
   const offsetRef = useRef({ x: 0, y: 0 });
   const [isPanning, setIsPanning] = useState(false);
@@ -53,6 +54,7 @@ function App() {
   };
 
   const handleZoomChange = (nuevoZoom) => {
+    // Mantener el punto focal del zoom (centro del tablero)
     setZoom(Math.max(25, Math.min(300, nuevoZoom))); // Limitar entre 25% y 300%
   };
 
@@ -333,6 +335,33 @@ function App() {
   const fichasPorCategoria = (categoria) => {
     return fichas.filter((f) => f.categoria === categoria);
   };
+
+  // Actualizar tamaño del tablero
+  useEffect(() => {
+    const updateTableroSize = () => {
+      if (tableroRef.current) {
+        const rect = tableroRef.current.getBoundingClientRect();
+        setTableroSize({ width: rect.width, height: rect.height });
+      }
+    };
+
+    updateTableroSize();
+    window.addEventListener("resize", updateTableroSize);
+
+    // Usar ResizeObserver si está disponible
+    let resizeObserver = null;
+    if (tableroRef.current && window.ResizeObserver) {
+      resizeObserver = new ResizeObserver(updateTableroSize);
+      resizeObserver.observe(tableroRef.current);
+    }
+
+    return () => {
+      window.removeEventListener("resize", updateTableroSize);
+      if (resizeObserver) {
+        resizeObserver.disconnect();
+      }
+    };
+  }, [tableroImagen]);
 
   // Agregar listeners para la tecla espacio y ESC
   useEffect(() => {
@@ -691,13 +720,26 @@ function App() {
                 const porcentajeHP = hpMax > 0 ? (hpActual / hpMax) * 100 : 0;
                 const colorHP = getColorHP(hpActual, hpMax);
 
+                // Calcular posición relativa al centro del contenedor
+                // La imagen está centrada y escala desde el centro, las fichas deben hacer lo mismo
+                const scaleFactor = zoom / 100;
+                // Calcular offset desde el centro del contenedor usando el tamaño del tablero
+                const offsetX =
+                  tableroSize.width > 0
+                    ? ((ficha.x - 50) / 100) * tableroSize.width * scaleFactor
+                    : 0;
+                const offsetY =
+                  tableroSize.height > 0
+                    ? ((ficha.y - 50) / 100) * tableroSize.height * scaleFactor
+                    : 0;
+
                 return (
                   <div
                     key={ficha.id}
                     className={`ficha ficha-estado-${estado}`}
                     style={{
-                      left: `${ficha.x}%`,
-                      top: `${ficha.y}%`,
+                      left: "50%",
+                      top: "50%",
                       width: `${tamañoFicha}px`,
                       height: `${tamañoFicha}px`,
                       backgroundColor: hpActual <= 0 ? "#6b7280" : ficha.color,
@@ -707,9 +749,8 @@ function App() {
                         fichaArrastrada === ficha.id
                           ? "none"
                           : "transform 0.1s, box-shadow 0.1s",
-                      transform: `translate(-50%, -50%) translate(${pan.x}px, ${
-                        pan.y
-                      }px) scale(${zoom / 100})`,
+                      transform: `translate(-50%, -50%) translate(${offsetX}px, ${offsetY}px) translate(${pan.x}px, ${pan.y}px) scale(${scaleFactor})`,
+                      transformOrigin: "center center",
                     }}
                     onMouseDown={(e) => {
                       if (e.detail === 2) {
