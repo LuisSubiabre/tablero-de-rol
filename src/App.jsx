@@ -257,20 +257,33 @@ function App() {
     setFichaArrastrada(ficha.id);
     setIsPanning(false); // No estamos paneando cuando movemos una ficha
 
-    // Calcular el offset considerando que la ficha está centrada
-    // Necesitamos el offset en el espacio del contenedor, no en el espacio transformado
+    // Calcular el offset en coordenadas del tablero escalado
     const rect = tableroRef.current.getBoundingClientRect();
     const mouseX = e.clientX - rect.left;
     const mouseY = e.clientY - rect.top;
 
-    // La posición porcentual de la ficha
-    const fichaX = (ficha.x / 100) * rect.width;
-    const fichaY = (ficha.y / 100) * rect.height;
+    // Convertir la posición del mouse a coordenadas del tablero escalado
+    // Necesitamos "deshacer" el pan y el zoom para obtener la posición relativa al tablero
+    const scaleFactor = zoom / 100;
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
 
-    // Offset desde el centro de la ficha (posición porcentual) hasta el mouse
+    // Posición del mouse relativa al centro del tablero (antes del pan)
+    const mouseRelativeX = mouseX - centerX - pan.x;
+    const mouseRelativeY = mouseY - centerY - pan.y;
+
+    // Posición del mouse en coordenadas del tablero escalado (dividiendo por scaleFactor)
+    const mouseScaledX = mouseRelativeX / scaleFactor;
+    const mouseScaledY = mouseRelativeY / scaleFactor;
+
+    // Posición de la ficha en coordenadas del tablero escalado
+    const fichaScaledX = ((ficha.x - 50) / 100) * tableroSize.width;
+    const fichaScaledY = ((ficha.y - 50) / 100) * tableroSize.height;
+
+    // Offset en coordenadas escaladas
     offsetRef.current = {
-      x: mouseX - fichaX,
-      y: mouseY - fichaY,
+      x: mouseScaledX - fichaScaledX,
+      y: mouseScaledY - fichaScaledY,
     };
   };
 
@@ -312,12 +325,29 @@ function App() {
       const rect = tableroRef.current.getBoundingClientRect();
 
       // Calcular posición del mouse relativa al tablero
-      const mouseX = e.clientX - rect.left - offsetRef.current.x;
-      const mouseY = e.clientY - rect.top - offsetRef.current.y;
+      const mouseX = e.clientX - rect.left;
+      const mouseY = e.clientY - rect.top;
 
-      // Convertir a porcentajes
-      const nuevoX = (mouseX / rect.width) * 100;
-      const nuevoY = (mouseY / rect.height) * 100;
+      // Convertir la posición del mouse a coordenadas del tablero escalado
+      const scaleFactor = zoom / 100;
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+
+      // Posición del mouse relativa al centro del tablero (antes del pan)
+      const mouseRelativeX = mouseX - centerX - pan.x;
+      const mouseRelativeY = mouseY - centerY - pan.y;
+
+      // Posición del mouse en coordenadas del tablero escalado
+      const mouseScaledX = mouseRelativeX / scaleFactor;
+      const mouseScaledY = mouseRelativeY / scaleFactor;
+
+      // Aplicar offset para mantener la posición relativa del click
+      const fichaScaledX = mouseScaledX - offsetRef.current.x;
+      const fichaScaledY = mouseScaledY - offsetRef.current.y;
+
+      // Convertir de vuelta a porcentajes
+      const nuevoX = (fichaScaledX / tableroSize.width) * 100 + 50;
+      const nuevoY = (fichaScaledY / tableroSize.height) * 100 + 50;
 
       // Limitar dentro de los límites del tablero
       const xLimitado = Math.max(0, Math.min(nuevoX, 100));
