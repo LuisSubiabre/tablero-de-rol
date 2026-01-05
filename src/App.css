@@ -302,9 +302,10 @@
   justify-content: center;
   cursor: grab;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4), 0 0 0 2px rgba(255, 255, 255, 0.2);
-  transition: transform 0.1s, box-shadow 0.1s;
   user-select: none;
   transform: translate(-50%, -50%);
+  will-change: transform;
+  pointer-events: auto;
 }
 
 .ficha:hover {

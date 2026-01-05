@@ -16,8 +16,9 @@ function App() {
   const [nombreFicha, setNombreFicha] = useState("");
   const fileInputRef = useRef(null);
   const idCounterRef = useRef(0);
+  const tableroRef = useRef(null);
   const [fichaArrastrada, setFichaArrastrada] = useState(null);
-  const [posicionArrastre, setPosicionArrastre] = useState({ x: 0, y: 0 });
+  const offsetRef = useRef({ x: 0, y: 0 });
 
   const handleCargarImagen = (event) => {
     const file = event.target.files[0];
@@ -71,28 +72,40 @@ function App() {
     e.preventDefault();
     e.stopPropagation();
     setFichaArrastrada(ficha.id);
-    const rect = e.currentTarget.parentElement.getBoundingClientRect();
-    setPosicionArrastre({
-      x: e.clientX - rect.left - ficha.x,
-      y: e.clientY - rect.top - ficha.y,
-    });
+
+    const fichaRect = e.currentTarget.getBoundingClientRect();
+
+    // Calcular el offset desde el centro de la ficha hasta el punto donde se hizo clic
+    offsetRef.current = {
+      x: e.clientX - (fichaRect.left + fichaRect.width / 2),
+      y: e.clientY - (fichaRect.top + fichaRect.height / 2),
+    };
   };
 
   const handleMouseMove = (e) => {
-    if (!fichaArrastrada || !tableroImagen) return;
+    if (!fichaArrastrada || !tableroImagen || !tableroRef.current) return;
 
-    const contenedor = e.currentTarget;
-    const rect = contenedor.getBoundingClientRect();
-    const x = e.clientX - rect.left - posicionArrastre.x;
-    const y = e.clientY - rect.top - posicionArrastre.y;
+    const rect = tableroRef.current.getBoundingClientRect();
 
-    setFichas(
-      fichas.map((f) =>
+    // Calcular posición del mouse relativa al tablero
+    const mouseX = e.clientX - rect.left - offsetRef.current.x;
+    const mouseY = e.clientY - rect.top - offsetRef.current.y;
+
+    // Convertir a porcentajes
+    const nuevoX = (mouseX / rect.width) * 100;
+    const nuevoY = (mouseY / rect.height) * 100;
+
+    // Limitar dentro de los límites del tablero
+    const xLimitado = Math.max(0, Math.min(nuevoX, 100));
+    const yLimitado = Math.max(0, Math.min(nuevoY, 100));
+
+    setFichas((prevFichas) =>
+      prevFichas.map((f) =>
         f.id === fichaArrastrada
           ? {
               ...f,
-              x: Math.max(0, Math.min(x, 100)),
-              y: Math.max(0, Math.min(y, 100)),
+              x: xLimitado,
+              y: yLimitado,
             }
           : f
       )
@@ -101,6 +114,7 @@ function App() {
 
   const handleMouseUp = () => {
     setFichaArrastrada(null);
+    offsetRef.current = { x: 0, y: 0 };
   };
 
   const fichasPorCategoria = (categoria) => {
@@ -201,6 +215,7 @@ function App() {
         <main className="tablero-contenedor">
           {tableroImagen ? (
             <div
+              ref={tableroRef}
               className="tablero"
               onMouseMove={handleMouseMove}
               onMouseUp={handleMouseUp}
@@ -221,6 +236,10 @@ function App() {
                     top: `${ficha.y}%`,
                     backgroundColor: ficha.color,
                     cursor: fichaArrastrada === ficha.id ? "grabbing" : "grab",
+                    transition:
+                      fichaArrastrada === ficha.id
+                        ? "none"
+                        : "transform 0.1s, box-shadow 0.1s",
                   }}
                   onMouseDown={(e) => handleMouseDown(e, ficha)}
                   title={ficha.nombre}
