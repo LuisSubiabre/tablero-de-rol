@@ -87,6 +87,31 @@ function App() {
     localStorage.removeItem(`${STORAGE_KEY}-pan`);
   };
 
+  // Función para crear nueva partida
+  const handleNuevaPartida = () => {
+    const confirmacion = window.confirm(
+      "¿Estás seguro de que quieres crear una nueva partida?\n\nEsto eliminará todas las fichas, el tablero cargado y restablecerá el zoom y la posición. Esta acción no se puede deshacer."
+    );
+
+    if (confirmacion) {
+      // Limpiar localStorage
+      limpiarDatosGuardados();
+
+      // Resetear todos los estados
+      setTableroImagen(null);
+      setZoom(100);
+      setPan({ x: 0, y: 0 });
+      setFichas([]);
+      setFichaSeleccionada(null);
+      setModalAbierto(false);
+
+      // Resetear formulario
+      resetFormulario();
+
+      console.log("Nueva partida creada - todos los datos eliminados");
+    }
+  };
+
   // Resetear formulario
   const resetFormulario = () => {
     setNombreFicha("");
@@ -460,6 +485,7 @@ function App() {
         onZoomOut={handleZoomOut}
         onZoomReset={handleZoomReset}
         onCargarImagen={handleCargarImagen}
+        onNuevaPartida={handleNuevaPartida}
       />
 
       <div className="contenedor-principal">
