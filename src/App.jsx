@@ -28,6 +28,7 @@ function App() {
   const [hpActualFicha, setHpActualFicha] = useState(50);
   const [tamañoFicha, setTamañoFicha] = useState(55);
   const [fichaEditando, setFichaEditando] = useState(null);
+  const [modalAbierto, setModalAbierto] = useState(false);
   const fileInputRef = useRef(null);
   const imagenFichaInputRef = useRef(null);
   const idCounterRef = useRef(0);
@@ -121,7 +122,11 @@ function App() {
             : f
         )
       );
-      setFichaEditando(null);
+      if (modalAbierto) {
+        handleCerrarModal();
+      } else {
+        setFichaEditando(null);
+      }
     } else {
       // Nueva ficha
       idCounterRef.current += 1;
@@ -152,7 +157,7 @@ function App() {
     setTamañoFicha(55);
   };
 
-  const handleEditarFicha = (ficha) => {
+  const handleEditarFicha = (ficha, abrirModal = false) => {
     setFichaEditando(ficha);
     setNombreFicha(ficha.nombre);
     setCategoriaSeleccionada(ficha.categoria);
@@ -160,19 +165,38 @@ function App() {
     setHpMaxFicha(ficha.hpMax || 50);
     setHpActualFicha(ficha.hpActual || ficha.hpMax || 50);
     setTamañoFicha(ficha.tamaño || 55);
-    // Scroll al formulario
-    document
-      .querySelector(".panel-agregar")
-      ?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+
+    if (abrirModal) {
+      setModalAbierto(true);
+    } else {
+      // Scroll al formulario (para el botón de editar en la lista)
+      document
+        .querySelector(".panel-agregar")
+        ?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }
   };
 
-  const handleCancelarEdicion = () => {
+  const handleCerrarModal = () => {
+    setModalAbierto(false);
     setFichaEditando(null);
     setNombreFicha("");
     setImagenFicha("");
     setHpMaxFicha(50);
     setHpActualFicha(50);
     setTamañoFicha(55);
+  };
+
+  const handleCancelarEdicion = () => {
+    if (modalAbierto) {
+      handleCerrarModal();
+    } else {
+      setFichaEditando(null);
+      setNombreFicha("");
+      setImagenFicha("");
+      setHpMaxFicha(50);
+      setHpActualFicha(50);
+      setTamañoFicha(55);
+    }
   };
 
   const getColorPorCategoria = (categoria) => {
@@ -310,7 +334,7 @@ function App() {
     return fichas.filter((f) => f.categoria === categoria);
   };
 
-  // Agregar listeners para la tecla espacio
+  // Agregar listeners para la tecla espacio y ESC
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.code === "Space" && !e.repeat) {
@@ -319,6 +343,9 @@ function App() {
         if (tableroRef.current) {
           tableroRef.current.style.cursor = "grab";
         }
+      }
+      if (e.code === "Escape" && modalAbierto) {
+        handleCerrarModal();
       }
     };
 
@@ -341,7 +368,7 @@ function App() {
       window.removeEventListener("keydown", handleKeyDown);
       window.removeEventListener("keyup", handleKeyUp);
     };
-  }, []);
+  }, [modalAbierto]);
 
   return (
     <div className="app">
@@ -686,10 +713,10 @@ function App() {
                     }}
                     onMouseDown={(e) => {
                       if (e.detail === 2) {
-                        // Doble click para editar
+                        // Doble click para editar en modal
                         e.preventDefault();
                         e.stopPropagation();
-                        handleEditarFicha(ficha);
+                        handleEditarFicha(ficha, true);
                       } else {
                         handleMouseDown(e, ficha);
                       }
@@ -760,6 +787,163 @@ function App() {
           )}
         </main>
       </div>
+
+      {/* Modal de Edición */}
+      {modalAbierto && fichaEditando && (
+        <div className="modal-overlay" onClick={handleCerrarModal}>
+          <div className="modal-contenido" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+              <h2>Editar Ficha: {fichaEditando.nombre}</h2>
+              <button className="modal-cerrar" onClick={handleCerrarModal}>
+                ×
+              </button>
+            </div>
+
+            <div className="modal-body">
+              <div className="form-seccion">
+                <label className="form-label">Tipo</label>
+                <div className="categorias">
+                  {Object.values(CATEGORIAS).map((cat) => (
+                    <button
+                      key={cat}
+                      className={`btn-categoria ${
+                        categoriaSeleccionada === cat ? "activa" : ""
+                      }`}
+                      onClick={() => setCategoriaSeleccionada(cat)}
+                      style={{
+                        backgroundColor:
+                          categoriaSeleccionada === cat
+                            ? getColorPorCategoria(cat)
+                            : "rgba(60, 40, 20, 0.6)",
+                      }}
+                    >
+                      {cat}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="form-seccion">
+                <label
+                  className="form-label"
+                  htmlFor="modal-input-nombre-ficha"
+                >
+                  Nombre
+                </label>
+                <input
+                  id="modal-input-nombre-ficha"
+                  type="text"
+                  placeholder="Nombre de la ficha"
+                  value={nombreFicha}
+                  onChange={(e) => setNombreFicha(e.target.value)}
+                  className="input-nombre"
+                />
+              </div>
+
+              <div className="form-seccion">
+                <label className="form-label">Imagen (opcional)</label>
+                <div className="imagen-input-container">
+                  {imagenFicha && (
+                    <img
+                      src={imagenFicha}
+                      alt="Vista previa"
+                      className="imagen-preview"
+                    />
+                  )}
+                  <button
+                    type="button"
+                    className="btn-cargar-imagen"
+                    onClick={() => imagenFichaInputRef.current?.click()}
+                  >
+                    {imagenFicha ? "Cambiar Imagen" : "Cargar Imagen"}
+                  </button>
+                  {imagenFicha && (
+                    <button
+                      type="button"
+                      className="btn-eliminar-imagen"
+                      onClick={() => setImagenFicha("")}
+                    >
+                      ✕
+                    </button>
+                  )}
+                  <input
+                    ref={imagenFichaInputRef}
+                    type="file"
+                    accept="image/*"
+                    onChange={handleCargarImagenFicha}
+                    style={{ display: "none" }}
+                  />
+                </div>
+              </div>
+
+              <div className="form-seccion">
+                <label className="form-label">Puntos de Vida</label>
+                <div className="hp-inputs">
+                  <div className="hp-input-group">
+                    <label className="hp-label">Actual</label>
+                    <input
+                      type="number"
+                      min="0"
+                      max="999"
+                      value={hpActualFicha}
+                      onChange={(e) =>
+                        setHpActualFicha(
+                          Math.max(0, parseInt(e.target.value) || 0)
+                        )
+                      }
+                      className="input-hp"
+                    />
+                  </div>
+                  <span className="hp-separator">/</span>
+                  <div className="hp-input-group">
+                    <label className="hp-label">Máximo</label>
+                    <input
+                      type="number"
+                      min="1"
+                      max="999"
+                      value={hpMaxFicha}
+                      onChange={(e) => {
+                        const nuevoMax = Math.max(
+                          1,
+                          parseInt(e.target.value) || 1
+                        );
+                        setHpMaxFicha(nuevoMax);
+                        if (hpActualFicha > nuevoMax)
+                          setHpActualFicha(nuevoMax);
+                      }}
+                      className="input-hp"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className="form-seccion">
+                <label className="form-label">Tamaño (px)</label>
+                <input
+                  type="range"
+                  min="30"
+                  max="120"
+                  value={tamañoFicha}
+                  onChange={(e) => setTamañoFicha(parseInt(e.target.value))}
+                  className="tamaño-slider"
+                />
+                <div className="tamaño-value-display">
+                  <span>{tamañoFicha}px</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="modal-footer">
+              <button onClick={handleCancelarEdicion} className="btn-cancelar">
+                Cancelar
+              </button>
+              <button onClick={handleAgregarFicha} className="btn-agregar">
+                Guardar Cambios
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

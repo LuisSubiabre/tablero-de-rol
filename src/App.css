@@ -1106,6 +1106,156 @@
     0 0 8px rgba(184, 134, 11, 0.3);
 }
 
+/* Modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+  animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.modal-contenido {
+  background: 
+    linear-gradient(135deg, rgba(30, 20, 15, 0.98) 0%, rgba(20, 15, 10, 0.98) 100%);
+  border: 2px solid rgba(184, 134, 11, 0.5);
+  border-radius: 16px;
+  box-shadow: 
+    0 20px 40px rgba(0, 0, 0, 0.6),
+    inset 0 1px 0 rgba(255, 215, 0, 0.1),
+    0 0 40px rgba(0, 0, 0, 0.5);
+  max-width: 500px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  border-bottom: 2px solid rgba(184, 134, 11, 0.4);
+  background: linear-gradient(90deg, rgba(212, 175, 55, 0.1), transparent);
+}
+
+.modal-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  font-family: 'Cinzel Decorative', 'Cinzel', serif;
+  color: #d4af37;
+  text-shadow: 
+    0 0 10px rgba(212, 175, 55, 0.5),
+    0 2px 4px rgba(0, 0, 0, 0.5);
+  letter-spacing: 1px;
+}
+
+.modal-cerrar {
+  background: rgba(139, 0, 0, 0.6);
+  color: #ffcccc;
+  border: 1px solid rgba(139, 0, 0, 0.6);
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  padding: 0;
+  box-shadow: 
+    0 2px 4px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  font-weight: 700;
+}
+
+.modal-cerrar:hover {
+  background: rgba(139, 0, 0, 0.8);
+  transform: scale(1.1);
+  box-shadow: 
+    0 3px 6px rgba(0, 0, 0, 0.5),
+    0 0 10px rgba(139, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.modal-body {
+  padding: 1.5rem;
+}
+
+.modal-footer {
+  display: flex;
+  gap: 0.75rem;
+  padding: 1.5rem;
+  border-top: 2px solid rgba(184, 134, 11, 0.4);
+  background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.05), transparent);
+}
+
+.modal-footer .btn-cancelar {
+  flex: 1;
+}
+
+.modal-footer .btn-agregar {
+  flex: 2;
+}
+
+/* Scrollbar del modal */
+.modal-contenido::-webkit-scrollbar {
+  width: 10px;
+}
+
+.modal-contenido::-webkit-scrollbar-track {
+  background: rgba(15, 10, 5, 0.6);
+  border-radius: 5px;
+  border: 1px solid rgba(184, 134, 11, 0.2);
+}
+
+.modal-contenido::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #8b4513 0%, #654321 100%);
+  border-radius: 5px;
+  border: 1px solid rgba(184, 134, 11, 0.4);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.modal-contenido::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, #a0522d 0%, #8b4513 100%);
+  box-shadow: 
+    inset 0 2px 4px rgba(0, 0, 0, 0.3),
+    0 0 8px rgba(184, 134, 11, 0.3);
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .contenedor-principal {
