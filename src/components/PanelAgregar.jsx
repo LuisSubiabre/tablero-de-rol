@@ -57,31 +57,12 @@ const PanelAgregar = ({
   return (
     <div className="panel-agregar">
       <div className="panel-header">
-        <h2>{fichaEditando ? "✎ Editar Ficha" : "➕ Añadir Ficha"}</h2>
-        {!fichaEditando && nombreFicha.trim() && (
-          <div className="ficha-preview-mini">
-            <div
-              className="ficha-preview-circle"
-              style={{
-                backgroundColor: getColorPorCategoria(categoriaSeleccionada),
-                width: `${Math.min(tamañoFicha / 2, 40)}px`,
-                height: `${Math.min(tamañoFicha / 2, 40)}px`,
-              }}
-            >
-              {imagenFicha ? (
-                <img src={imagenFicha} alt="Preview" />
-              ) : (
-                <span>{nombreFicha.charAt(0).toUpperCase()}</span>
-              )}
-            </div>
-          </div>
-        )}
+        <h2>{fichaEditando ? "Editar Ficha" : "Añadir Ficha"}</h2>
       </div>
 
       <form onSubmit={handleSubmit} className="form-ficha">
         <div className="form-seccion">
           <label className="form-label">
-            <span className="label-icon">⚔️</span>
             Tipo <span className="label-required">*</span>
           </label>
           <div className="categorias">
@@ -108,7 +89,6 @@ const PanelAgregar = ({
 
         <div className="form-seccion">
           <label className="form-label" htmlFor="input-nombre-ficha">
-            <span className="label-icon">📝</span>
             Nombre <span className="label-required">*</span>
           </label>
           <input
@@ -127,7 +107,6 @@ const PanelAgregar = ({
 
         <div className="form-seccion">
           <label className="form-label">
-            <span className="label-icon">🖼️</span>
             Imagen <span className="label-optional">(opcional)</span>
           </label>
           <div className="imagen-input-container">
@@ -166,44 +145,8 @@ const PanelAgregar = ({
 
         <div className="form-seccion">
           <label className="form-label">
-            <span className="label-icon">❤️</span>
             Puntos de Vida
           </label>
-          <div className="hp-quick-buttons">
-            <button
-              type="button"
-              className="hp-quick-btn"
-                    onClick={() => {
-                      onHpMaxChange(50);
-                      onHpActualChange(50);
-                    }}
-              title="HP Estándar (50)"
-            >
-              50
-            </button>
-            <button
-              type="button"
-              className="hp-quick-btn"
-                    onClick={() => {
-                      onHpMaxChange(100);
-                      onHpActualChange(100);
-                    }}
-              title="HP Alto (100)"
-            >
-              100
-            </button>
-            <button
-              type="button"
-              className="hp-quick-btn"
-                    onClick={() => {
-                      onHpMaxChange(200);
-                      onHpActualChange(200);
-                    }}
-              title="HP Muy Alto (200)"
-            >
-              200
-            </button>
-          </div>
           <div className="hp-inputs">
             <div className="hp-input-group">
               <label className="hp-label">Actual</label>
@@ -259,7 +202,6 @@ const PanelAgregar = ({
 
         <div className="form-seccion">
           <label className="form-label">
-            <span className="label-icon">📏</span>
             Tamaño
           </label>
           <div className="tamaño-controls">
@@ -288,7 +230,7 @@ const PanelAgregar = ({
 
         <div className="form-actions">
           <button type="submit" className="btn-agregar">
-            {fichaEditando ? "💾 Guardar Cambios" : "✨ Añadir Ficha"}
+            {fichaEditando ? "Guardar Cambios" : "Añadir Ficha"}
           </button>
         </div>
       </form>
