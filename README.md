@@ -71,4 +71,14 @@ npm run build
 - **Colores medievales**: marrón, dorado, rojo sangre
 - **Fuentes elegantes** con sombras y efectos
 - **Animaciones suaves** y feedback visual
-- **Responsive design** para diferentes pantallas
+- **Responsive design completo**: desktop, tablets, móviles
+
+### 📱 Responsive Design
+
+- **1024px+**: Layout completo de escritorio
+- **768px-1024px**: Optimizado para tablets
+- **480px-768px**: Layout móvil con sidebar colapsable
+- **320px-480px**: Optimizado para móviles grandes
+- **<320px**: Diseño ultra-compacto para móviles pequeños
+- **Touch-friendly**: Botones de 44px mínimo para mejor usabilidad móvil
+- **Gestos optimizados**: Touch actions y manipulación táctil
