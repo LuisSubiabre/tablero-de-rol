@@ -43,18 +43,6 @@ function App() {
     setFichaEditando(null);
   };
 
-  // Cargar datos de ficha para edición
-  useEffect(() => {
-    if (fichaEditando) {
-      setNombreFicha(fichaEditando.nombre || "");
-      setCategoriaSeleccionada(fichaEditando.categoria || CATEGORIAS.HEROES);
-      setImagenFicha(fichaEditando.imagen || "");
-      setHpMaxFicha(fichaEditando.hpMax || 50);
-      setHpActualFicha(fichaEditando.hpActual || fichaEditando.hpMax || 50);
-      setTamañoFicha(fichaEditando.tamaño || 55);
-    }
-  }, [fichaEditando]);
-
   // Estados para el tablero y arrastre
   const [tableroSize, setTableroSize] = useState({ width: 0, height: 0 });
   const [fichaArrastrada, setFichaArrastrada] = useState(null);
@@ -103,26 +91,15 @@ function App() {
 
   // Funciones de fichas
   const handleAgregarFicha = (fichaData) => {
-    if (fichaEditando) {
-      // Editar ficha existente
-      setFichas(
-        fichas.map((f) =>
-          f.id === fichaEditando.id ? { ...f, ...fichaData } : f
-        )
-      );
-      resetFormulario();
-    } else {
-      // Nueva ficha
-      idCounterRef.current += 1;
-      const nuevaFicha = {
-        id: idCounterRef.current,
-        ...fichaData,
-        x: 50,
-        y: 50,
-      };
-      setFichas([...fichas, nuevaFicha]);
-      resetFormulario();
-    }
+    idCounterRef.current += 1;
+    const nuevaFicha = {
+      id: idCounterRef.current,
+      ...fichaData,
+      x: 50,
+      y: 50,
+    };
+    setFichas([...fichas, nuevaFicha]);
+    resetFormulario();
   };
 
   const handleEditarFicha = (ficha, abrirModal = false) => {
@@ -384,7 +361,6 @@ function App() {
             hpMaxFicha={hpMaxFicha}
             hpActualFicha={hpActualFicha}
             tamañoFicha={tamañoFicha}
-            fichaEditando={fichaEditando}
             onNombreChange={setNombreFicha}
             onCategoriaChange={setCategoriaSeleccionada}
             onImagenChange={setImagenFicha}

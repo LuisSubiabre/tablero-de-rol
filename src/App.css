@@ -6,38 +6,59 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background: 
-    radial-gradient(circle at 20% 50%, rgba(120, 53, 15, 0.15) 0%, transparent 50%),
-    radial-gradient(circle at 80% 80%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
+  background: radial-gradient(
+      circle at 20% 50%,
+      rgba(120, 53, 15, 0.15) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      circle at 80% 80%,
+      rgba(59, 130, 246, 0.1) 0%,
+      transparent 50%
+    ),
     linear-gradient(135deg, #0a0a0a 0%, #1a0a1a 50%, #0a0a1a 100%);
   color: #f5e6d3;
   position: relative;
 }
 
 .app::before {
-  content: '';
+  content: "";
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background-image: 
-    repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(120, 53, 15, 0.03) 2px, rgba(120, 53, 15, 0.03) 4px);
+  background-image: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(120, 53, 15, 0.03) 2px,
+    rgba(120, 53, 15, 0.03) 4px
+  );
   pointer-events: none;
   z-index: 0;
 }
 
 .header {
   padding: 1.5rem 2rem;
-  background: linear-gradient(to bottom, rgba(20, 15, 10, 0.95), rgba(15, 10, 5, 0.9));
+  background: linear-gradient(
+    to bottom,
+    rgba(20, 15, 10, 0.95),
+    rgba(15, 10, 5, 0.9)
+  );
   backdrop-filter: blur(15px);
   border-bottom: 2px solid rgba(184, 134, 11, 0.4);
-  border-image: linear-gradient(90deg, transparent, rgba(184, 134, 11, 0.4), transparent) 1;
+  border-image: linear-gradient(
+      90deg,
+      transparent,
+      rgba(184, 134, 11, 0.4),
+      transparent
+    )
+    1;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  box-shadow: 
-    0 4px 20px rgba(0, 0, 0, 0.5),
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5),
     inset 0 1px 0 rgba(255, 215, 0, 0.1);
   gap: 1.5rem;
   position: relative;
@@ -45,13 +66,18 @@
 }
 
 .header::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   height: 2px;
-  background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.6), transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 215, 0, 0.6),
+    transparent
+  );
   box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
 }
 
@@ -65,7 +91,7 @@
   margin: 0;
   font-size: 2.5rem;
   font-weight: 700;
-  font-family: 'Cinzel Decorative', 'Cinzel', serif;
+  font-family: "Cinzel Decorative", "Cinzel", serif;
   background: linear-gradient(135deg, #d4af37 0%, #ffd700 50%, #ffed4e 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -76,13 +102,18 @@
 }
 
 .header h1::after {
-  content: '';
+  content: "";
   position: absolute;
   bottom: -5px;
   left: 0;
   right: 0;
   height: 2px;
-  background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.5), transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(212, 175, 55, 0.5),
+    transparent
+  );
 }
 
 .btn-cargar {
@@ -93,12 +124,10 @@
   border-radius: 8px;
   font-size: 1rem;
   font-weight: 600;
-  font-family: 'Cinzel', serif;
+  font-family: "Cinzel", serif;
   cursor: pointer;
   transition: all 0.3s;
-  box-shadow: 
-    0 4px 8px rgba(0, 0, 0, 0.4),
-    0 0 15px rgba(184, 134, 11, 0.3),
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4), 0 0 15px rgba(184, 134, 11, 0.3),
     inset 0 1px 0 rgba(255, 255, 255, 0.1);
   text-transform: uppercase;
   letter-spacing: 1px;
@@ -106,9 +135,7 @@
 
 .btn-cargar:hover {
   transform: translateY(-2px);
-  box-shadow: 
-    0 6px 12px rgba(0, 0, 0, 0.5),
-    0 0 20px rgba(184, 134, 11, 0.5),
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5), 0 0 20px rgba(184, 134, 11, 0.5),
     inset 0 1px 0 rgba(255, 255, 255, 0.2);
   border-color: rgba(184, 134, 11, 0.8);
   background: linear-gradient(135deg, #a0522d 0%, #8b4513 100%);
@@ -126,9 +153,7 @@
   background: rgba(20, 15, 10, 0.7);
   border-radius: 8px;
   border: 1px solid rgba(184, 134, 11, 0.3);
-  box-shadow: 
-    inset 0 2px 4px rgba(0, 0, 0, 0.3),
-    0 0 10px rgba(0, 0, 0, 0.2);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3), 0 0 10px rgba(0, 0, 0, 0.2);
 }
 
 .btn-zoom {
@@ -153,8 +178,7 @@
 .btn-zoom:hover {
   background: rgba(160, 82, 45, 0.6);
   border-color: rgba(184, 134, 11, 0.8);
-  box-shadow: 
-    inset 0 2px 4px rgba(0, 0, 0, 0.3),
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3),
     0 0 10px rgba(184, 134, 11, 0.4);
   transform: scale(1.05);
 }
@@ -184,9 +208,7 @@
   border-radius: 50%;
   background: linear-gradient(135deg, #d4af37 0%, #b8860b 100%);
   cursor: pointer;
-  box-shadow: 
-    0 2px 6px rgba(0, 0, 0, 0.4),
-    0 0 8px rgba(212, 175, 55, 0.5),
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4), 0 0 8px rgba(212, 175, 55, 0.5),
     inset 0 1px 0 rgba(255, 255, 255, 0.3);
   border: 1px solid rgba(184, 134, 11, 0.8);
   transition: all 0.2s;
@@ -194,9 +216,7 @@
 
 .zoom-slider::-webkit-slider-thumb:hover {
   transform: scale(1.2);
-  box-shadow: 
-    0 3px 8px rgba(0, 0, 0, 0.5),
-    0 0 12px rgba(212, 175, 55, 0.7);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.5), 0 0 12px rgba(212, 175, 55, 0.7);
 }
 
 .zoom-slider::-moz-range-thumb {
@@ -206,18 +226,14 @@
   background: linear-gradient(135deg, #d4af37 0%, #b8860b 100%);
   cursor: pointer;
   border: 1px solid rgba(184, 134, 11, 0.8);
-  box-shadow: 
-    0 2px 6px rgba(0, 0, 0, 0.4),
-    0 0 8px rgba(212, 175, 55, 0.5),
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4), 0 0 8px rgba(212, 175, 55, 0.5),
     inset 0 1px 0 rgba(255, 255, 255, 0.3);
   transition: all 0.2s;
 }
 
 .zoom-slider::-moz-range-thumb:hover {
   transform: scale(1.2);
-  box-shadow: 
-    0 3px 8px rgba(0, 0, 0, 0.5),
-    0 0 12px rgba(212, 175, 55, 0.7);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.5), 0 0 12px rgba(212, 175, 55, 0.7);
 }
 
 .zoom-value {
@@ -237,7 +253,7 @@
   border-radius: 6px;
   font-size: 0.75rem;
   font-weight: 600;
-  font-family: 'Cinzel', serif;
+  font-family: "Cinzel", serif;
   cursor: pointer;
   transition: all 0.2s;
   box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
@@ -247,8 +263,7 @@
   background: rgba(80, 50, 25, 0.8);
   border-color: rgba(184, 134, 11, 0.6);
   color: #ffd700;
-  box-shadow: 
-    inset 0 2px 4px rgba(0, 0, 0, 0.3),
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3),
     0 0 8px rgba(184, 134, 11, 0.3);
 }
 
@@ -277,28 +292,34 @@
 
 .panel-agregar,
 .panel-fichas {
-  background: 
-    linear-gradient(135deg, rgba(30, 20, 15, 0.95) 0%, rgba(20, 15, 10, 0.95) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(30, 20, 15, 0.95) 0%,
+    rgba(20, 15, 10, 0.95) 100%
+  );
   backdrop-filter: blur(10px);
   border: 2px solid rgba(184, 134, 11, 0.3);
   border-radius: 12px;
   padding: 1.5rem;
-  box-shadow: 
-    0 8px 16px rgba(0, 0, 0, 0.4),
-    inset 0 1px 0 rgba(255, 215, 0, 0.1),
-    0 0 20px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 215, 0, 0.1), 0 0 20px rgba(0, 0, 0, 0.3);
   position: relative;
 }
 
 .panel-agregar::before,
 .panel-fichas::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.4), transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(212, 175, 55, 0.4),
+    transparent
+  );
 }
 
 .panel-agregar h2,
@@ -306,11 +327,9 @@
   margin: 0 0 1rem 0;
   font-size: 1.5rem;
   font-weight: 700;
-  font-family: 'Cinzel Decorative', 'Cinzel', serif;
+  font-family: "Cinzel Decorative", "Cinzel", serif;
   color: #d4af37;
-  text-shadow: 
-    0 0 10px rgba(212, 175, 55, 0.5),
-    0 2px 4px rgba(0, 0, 0, 0.5);
+  text-shadow: 0 0 10px rgba(212, 175, 55, 0.5), 0 2px 4px rgba(0, 0, 0, 0.5);
   letter-spacing: 1px;
   border-bottom: 2px solid rgba(184, 134, 11, 0.4);
   padding-bottom: 0.5rem;
@@ -332,13 +351,12 @@
   border-radius: 8px;
   font-size: 0.8125rem;
   font-weight: 600;
-  font-family: 'Cinzel', serif;
+  font-family: "Cinzel", serif;
   cursor: pointer;
   transition: all 0.3s;
   color: white;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
-  box-shadow: 
-    0 2px 4px rgba(0, 0, 0, 0.3),
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3),
     inset 0 1px 0 rgba(255, 255, 255, 0.1);
   text-align: center;
   white-space: nowrap;
@@ -348,13 +366,17 @@
 }
 
 .btn-categoria::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, transparent 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    transparent 100%
+  );
   opacity: 0;
   transition: opacity 0.3s;
   pointer-events: none;
@@ -366,20 +388,15 @@
 
 .btn-categoria:hover {
   transform: translateY(-2px);
-  box-shadow: 
-    0 4px 8px rgba(0, 0, 0, 0.4),
-    0 0 10px rgba(255, 255, 255, 0.15),
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4), 0 0 10px rgba(255, 255, 255, 0.15),
     inset 0 1px 0 rgba(255, 255, 255, 0.2);
   border-color: rgba(184, 134, 11, 0.5);
 }
 
 .btn-categoria.activa {
   border-color: rgba(255, 215, 0, 0.9);
-  box-shadow: 
-    0 0 0 2px rgba(255, 215, 0, 0.4),
-    0 0 15px rgba(255, 215, 0, 0.5),
-    inset 0 1px 0 rgba(255, 255, 255, 0.3),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.4), 0 0 15px rgba(255, 215, 0, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3), inset 0 -1px 0 rgba(0, 0, 0, 0.2);
   text-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
   transform: translateY(-1px);
 }
@@ -396,7 +413,7 @@
   border-radius: 8px;
   color: #f5e6d3;
   font-size: 1rem;
-  font-family: 'Cinzel', serif;
+  font-family: "Cinzel", serif;
   margin-bottom: 1rem;
   transition: all 0.3s;
   box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.4);
@@ -405,8 +422,7 @@
 .input-nombre:focus {
   outline: none;
   border-color: rgba(212, 175, 55, 0.8);
-  box-shadow: 
-    inset 0 2px 4px rgba(0, 0, 0, 0.4),
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.4),
     0 0 15px rgba(212, 175, 55, 0.3);
   background: rgba(20, 15, 10, 0.9);
 }
@@ -425,12 +441,10 @@
   border-radius: 8px;
   font-size: 1rem;
   font-weight: 600;
-  font-family: 'Cinzel', serif;
+  font-family: "Cinzel", serif;
   cursor: pointer;
   transition: all 0.3s;
-  box-shadow: 
-    0 4px 8px rgba(0, 0, 0, 0.4),
-    0 0 15px rgba(184, 134, 11, 0.3),
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4), 0 0 15px rgba(184, 134, 11, 0.3),
     inset 0 1px 0 rgba(255, 255, 255, 0.1);
   text-transform: uppercase;
   letter-spacing: 1px;
@@ -438,9 +452,7 @@
 
 .btn-agregar:hover {
   transform: translateY(-2px);
-  box-shadow: 
-    0 6px 12px rgba(0, 0, 0, 0.5),
-    0 0 20px rgba(184, 134, 11, 0.5),
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5), 0 0 20px rgba(184, 134, 11, 0.5),
     inset 0 1px 0 rgba(255, 255, 255, 0.2);
   border-color: rgba(184, 134, 11, 0.8);
   background: linear-gradient(135deg, #a0522d 0%, #8b4513 100%);
@@ -458,7 +470,7 @@
   display: block;
   font-size: 0.875rem;
   font-weight: 600;
-  font-family: 'Cinzel', serif;
+  font-family: "Cinzel", serif;
   color: #d4af37;
   margin-bottom: 0.5rem;
   text-transform: uppercase;
@@ -490,7 +502,7 @@
   border-radius: 6px;
   font-size: 0.875rem;
   font-weight: 600;
-  font-family: 'Cinzel', serif;
+  font-family: "Cinzel", serif;
   cursor: pointer;
   transition: all 0.2s;
   box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
@@ -534,7 +546,7 @@
 .hp-label {
   font-size: 0.75rem;
   color: #8b7355;
-  font-family: 'Cinzel', serif;
+  font-family: "Cinzel", serif;
   font-weight: 500;
 }
 
@@ -546,7 +558,7 @@
   border-radius: 6px;
   color: #f5e6d3;
   font-size: 1rem;
-  font-family: 'Cinzel', serif;
+  font-family: "Cinzel", serif;
   text-align: center;
   transition: all 0.3s;
   box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.4);
@@ -555,8 +567,7 @@
 .input-hp:focus {
   outline: none;
   border-color: rgba(212, 175, 55, 0.8);
-  box-shadow: 
-    inset 0 2px 4px rgba(0, 0, 0, 0.4),
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.4),
     0 0 10px rgba(212, 175, 55, 0.3);
 }
 
@@ -590,9 +601,7 @@
   border-radius: 50%;
   background: linear-gradient(135deg, #d4af37 0%, #b8860b 100%);
   cursor: pointer;
-  box-shadow: 
-    0 2px 6px rgba(0, 0, 0, 0.4),
-    0 0 8px rgba(212, 175, 55, 0.5),
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4), 0 0 8px rgba(212, 175, 55, 0.5),
     inset 0 1px 0 rgba(255, 255, 255, 0.3);
   border: 1px solid rgba(184, 134, 11, 0.8);
   transition: all 0.2s;
@@ -600,9 +609,7 @@
 
 .tamaño-slider::-webkit-slider-thumb:hover {
   transform: scale(1.2);
-  box-shadow: 
-    0 3px 8px rgba(0, 0, 0, 0.5),
-    0 0 12px rgba(212, 175, 55, 0.7);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.5), 0 0 12px rgba(212, 175, 55, 0.7);
 }
 
 .tamaño-slider::-moz-range-thumb {
@@ -612,25 +619,21 @@
   background: linear-gradient(135deg, #d4af37 0%, #b8860b 100%);
   cursor: pointer;
   border: 1px solid rgba(184, 134, 11, 0.8);
-  box-shadow: 
-    0 2px 6px rgba(0, 0, 0, 0.4),
-    0 0 8px rgba(212, 175, 55, 0.5),
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4), 0 0 8px rgba(212, 175, 55, 0.5),
     inset 0 1px 0 rgba(255, 255, 255, 0.3);
   transition: all 0.2s;
 }
 
 .tamaño-slider::-moz-range-thumb:hover {
   transform: scale(1.2);
-  box-shadow: 
-    0 3px 8px rgba(0, 0, 0, 0.5),
-    0 0 12px rgba(212, 175, 55, 0.7);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.5), 0 0 12px rgba(212, 175, 55, 0.7);
 }
 
 .tamaño-value-display {
   text-align: center;
   color: #d4af37;
   font-weight: 600;
-  font-family: 'Cinzel', serif;
+  font-family: "Cinzel", serif;
   font-size: 0.875rem;
   text-shadow: 0 0 5px rgba(212, 175, 55, 0.3);
 }
@@ -650,7 +653,7 @@
   border-radius: 8px;
   font-size: 1rem;
   font-weight: 600;
-  font-family: 'Cinzel', serif;
+  font-family: "Cinzel", serif;
   cursor: pointer;
   transition: all 0.3s;
   box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
@@ -660,8 +663,7 @@
   background: rgba(80, 50, 25, 0.8);
   border-color: rgba(184, 134, 11, 0.6);
   color: #ffd700;
-  box-shadow: 
-    inset 0 2px 4px rgba(0, 0, 0, 0.3),
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3),
     0 0 10px rgba(184, 134, 11, 0.3);
 }
 
@@ -684,7 +686,7 @@
 .categoria-titulo {
   font-size: 1.125rem;
   font-weight: 700;
-  font-family: 'Cinzel', serif;
+  font-family: "Cinzel", serif;
   margin: 0;
   padding-bottom: 0.5rem;
   border-bottom: 2px solid rgba(184, 134, 11, 0.3);
@@ -708,8 +710,7 @@
 .ficha-item:hover {
   background: rgba(25, 15, 10, 0.8);
   border-color: rgba(184, 134, 11, 0.5);
-  box-shadow: 
-    inset 0 2px 4px rgba(0, 0, 0, 0.3),
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3),
     0 0 10px rgba(184, 134, 11, 0.2);
   transform: translateX(4px);
 }
@@ -732,14 +733,14 @@
 
 .ficha-nombre {
   color: #f5e6d3;
-  font-family: 'Cinzel', serif;
+  font-family: "Cinzel", serif;
   font-weight: 600;
   font-size: 0.9375rem;
 }
 
 .ficha-estado-label {
   font-size: 0.75rem;
-  font-family: 'Cinzel', serif;
+  font-family: "Cinzel", serif;
   font-weight: 500;
   color: #d4af37;
   white-space: nowrap;
@@ -768,7 +769,7 @@
   transform: translate(-50%, -50%);
   font-size: 0.7rem;
   font-weight: 700;
-  font-family: 'Cinzel', serif;
+  font-family: "Cinzel", serif;
   color: white;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
   white-space: nowrap;
@@ -796,17 +797,14 @@
   justify-content: center;
   transition: all 0.2s;
   padding: 0;
-  box-shadow: 
-    0 2px 4px rgba(0, 0, 0, 0.4),
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4),
     inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
 .btn-editar:hover {
   background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
   transform: scale(1.1);
-  box-shadow: 
-    0 3px 6px rgba(0, 0, 0, 0.5),
-    0 0 10px rgba(59, 130, 246, 0.4),
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.5), 0 0 10px rgba(59, 130, 246, 0.4),
     inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
@@ -825,8 +823,7 @@
   justify-content: center;
   transition: all 0.2s;
   padding: 0;
-  box-shadow: 
-    0 2px 4px rgba(0, 0, 0, 0.4),
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4),
     inset 0 1px 0 rgba(255, 255, 255, 0.1);
   font-weight: 700;
 }
@@ -835,9 +832,7 @@
   background: linear-gradient(135deg, #a52a2a 0%, #8b0000 100%);
   border-color: rgba(139, 0, 0, 0.8);
   transform: scale(1.15);
-  box-shadow: 
-    0 3px 6px rgba(0, 0, 0, 0.5),
-    0 0 10px rgba(139, 0, 0, 0.4),
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.5), 0 0 10px rgba(139, 0, 0, 0.4),
     inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
@@ -847,7 +842,7 @@
   padding: 2rem;
   margin: 0;
   font-style: italic;
-  font-family: 'Cinzel', serif;
+  font-family: "Cinzel", serif;
 }
 
 .tablero-contenedor {
@@ -855,16 +850,17 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: 
-    radial-gradient(circle at center, rgba(30, 20, 15, 0.6) 0%, rgba(15, 10, 5, 0.8) 100%),
+  background: radial-gradient(
+      circle at center,
+      rgba(30, 20, 15, 0.6) 0%,
+      rgba(15, 10, 5, 0.8) 100%
+    ),
     linear-gradient(135deg, rgba(20, 15, 10, 0.5) 0%, rgba(15, 10, 5, 0.5) 100%);
   border-radius: 12px;
   border: 2px solid rgba(184, 134, 11, 0.3);
   overflow: hidden;
   position: relative;
-  box-shadow: 
-    inset 0 0 50px rgba(0, 0, 0, 0.5),
-    0 8px 16px rgba(0, 0, 0, 0.4),
+  box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.5), 0 8px 16px rgba(0, 0, 0, 0.4),
     0 0 30px rgba(0, 0, 0, 0.3);
 }
 
@@ -874,14 +870,15 @@
   top: 1rem;
   right: 1rem;
   width: 280px;
-  background: 
-    linear-gradient(135deg, rgba(30, 20, 15, 0.98) 0%, rgba(20, 15, 10, 0.98) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(30, 20, 15, 0.98) 0%,
+    rgba(20, 15, 10, 0.98) 100%
+  );
   border: 2px solid rgba(184, 134, 11, 0.5);
   border-radius: 12px;
-  box-shadow: 
-    0 12px 24px rgba(0, 0, 0, 0.6),
-    inset 0 1px 0 rgba(255, 215, 0, 0.1),
-    0 0 30px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.6),
+    inset 0 1px 0 rgba(255, 215, 0, 0.1), 0 0 30px rgba(0, 0, 0, 0.5);
   z-index: 100;
   padding: 1rem;
   animation: slideInRight 0.3s ease-out;
@@ -917,8 +914,7 @@
   justify-content: center;
   transition: all 0.2s;
   padding: 0;
-  box-shadow: 
-    0 2px 4px rgba(0, 0, 0, 0.4),
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4),
     inset 0 1px 0 rgba(255, 255, 255, 0.1);
   font-weight: 700;
 }
@@ -926,9 +922,7 @@
 .ficha-info-cerrar:hover {
   background: rgba(139, 0, 0, 0.8);
   transform: scale(1.1);
-  box-shadow: 
-    0 3px 6px rgba(0, 0, 0, 0.5),
-    0 0 10px rgba(139, 0, 0, 0.4),
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.5), 0 0 10px rgba(139, 0, 0, 0.4),
     inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
@@ -949,9 +943,7 @@
   align-items: center;
   justify-content: center;
   border: 3px solid rgba(184, 134, 11, 0.6);
-  box-shadow: 
-    0 4px 12px rgba(0, 0, 0, 0.5),
-    0 0 0 2px rgba(0, 0, 0, 0.3),
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5), 0 0 0 2px rgba(0, 0, 0, 0.3),
     0 0 0 4px rgba(184, 134, 11, 0.2);
   overflow: hidden;
   flex-shrink: 0;
@@ -979,11 +971,9 @@
   margin: 0 0 0.25rem 0;
   font-size: 1.125rem;
   font-weight: 700;
-  font-family: 'Cinzel Decorative', 'Cinzel', serif;
+  font-family: "Cinzel Decorative", "Cinzel", serif;
   color: #d4af37;
-  text-shadow: 
-    0 0 8px rgba(212, 175, 55, 0.5),
-    0 2px 4px rgba(0, 0, 0, 0.5);
+  text-shadow: 0 0 8px rgba(212, 175, 55, 0.5), 0 2px 4px rgba(0, 0, 0, 0.5);
   letter-spacing: 0.5px;
   white-space: nowrap;
   overflow: hidden;
@@ -993,7 +983,7 @@
 .ficha-info-tipo {
   font-size: 0.75rem;
   font-weight: 600;
-  font-family: 'Cinzel', serif;
+  font-family: "Cinzel", serif;
   text-transform: uppercase;
   letter-spacing: 1px;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
@@ -1015,7 +1005,7 @@
 .ficha-info-stat-label {
   font-size: 0.75rem;
   color: #8b7355;
-  font-family: 'Cinzel', serif;
+  font-family: "Cinzel", serif;
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -1024,7 +1014,7 @@
 .ficha-info-stat-value {
   font-size: 0.9375rem;
   color: #f5e6d3;
-  font-family: 'Cinzel', serif;
+  font-family: "Cinzel", serif;
   font-weight: 600;
 }
 
@@ -1054,7 +1044,7 @@
 .ficha-info-hp-text {
   font-size: 0.875rem;
   color: #d4af37;
-  font-family: 'Cinzel', serif;
+  font-family: "Cinzel", serif;
   font-weight: 600;
   text-align: center;
 }
@@ -1069,33 +1059,38 @@
 .ficha-info-btn-editar {
   flex: 1;
   padding: 0.625rem;
-  background: linear-gradient(135deg, rgba(60, 40, 20, 0.8) 0%, rgba(40, 25, 15, 0.8) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(60, 40, 20, 0.8) 0%,
+    rgba(40, 25, 15, 0.8) 100%
+  );
   color: #d4af37;
   border: 1px solid rgba(184, 134, 11, 0.5);
   border-radius: 6px;
   font-size: 0.875rem;
   font-weight: 600;
-  font-family: 'Cinzel', serif;
+  font-family: "Cinzel", serif;
   cursor: pointer;
   transition: all 0.2s;
-  box-shadow: 
-    0 2px 4px rgba(0, 0, 0, 0.3),
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3),
     inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
 .ficha-info-btn-editar:hover {
-  background: linear-gradient(135deg, rgba(80, 50, 25, 0.9) 0%, rgba(60, 35, 20, 0.9) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(80, 50, 25, 0.9) 0%,
+    rgba(60, 35, 20, 0.9) 100%
+  );
   border-color: rgba(184, 134, 11, 0.7);
   color: #ffd700;
   transform: translateY(-1px);
-  box-shadow: 
-    0 3px 6px rgba(0, 0, 0, 0.4),
-    0 0 10px rgba(184, 134, 11, 0.3),
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.4), 0 0 10px rgba(184, 134, 11, 0.3),
     inset 0 1px 0 rgba(255, 255, 255, 0.15);
 }
 
 .tablero-contenedor::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
@@ -1103,7 +1098,11 @@
   bottom: 0;
   border-radius: 12px;
   padding: 2px;
-  background: linear-gradient(135deg, rgba(212, 175, 55, 0.2), rgba(184, 134, 11, 0.1));
+  background: linear-gradient(
+    135deg,
+    rgba(212, 175, 55, 0.2),
+    rgba(184, 134, 11, 0.1)
+  );
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
@@ -1144,7 +1143,7 @@
   gap: 2rem;
   color: #8b7355;
   padding: 4rem;
-  font-family: 'Cinzel', serif;
+  font-family: "Cinzel", serif;
 }
 
 .tablero-vacio p {
@@ -1162,12 +1161,10 @@
   border-radius: 8px;
   font-size: 1.125rem;
   font-weight: 600;
-  font-family: 'Cinzel', serif;
+  font-family: "Cinzel", serif;
   cursor: pointer;
   transition: all 0.3s;
-  box-shadow: 
-    0 6px 12px rgba(0, 0, 0, 0.4),
-    0 0 20px rgba(184, 134, 11, 0.4),
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4), 0 0 20px rgba(184, 134, 11, 0.4),
     inset 0 1px 0 rgba(255, 255, 255, 0.1);
   text-transform: uppercase;
   letter-spacing: 2px;
@@ -1175,9 +1172,7 @@
 
 .btn-cargar-grande:hover {
   transform: translateY(-3px);
-  box-shadow: 
-    0 8px 16px rgba(0, 0, 0, 0.5),
-    0 0 30px rgba(184, 134, 11, 0.6),
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5), 0 0 30px rgba(184, 134, 11, 0.6),
     inset 0 1px 0 rgba(255, 255, 255, 0.2);
   border-color: rgba(184, 134, 11, 0.8);
   background: linear-gradient(135deg, #a0522d 0%, #8b4513 100%);
@@ -1190,11 +1185,8 @@
   align-items: center;
   justify-content: center;
   cursor: grab;
-  box-shadow:
-    0 4px 12px rgba(0, 0, 0, 0.6),
-    0 0 0 3px rgba(0, 0, 0, 0.4),
-    0 0 0 5px rgba(184, 134, 11, 0.3),
-    inset 0 2px 4px rgba(255, 255, 255, 0.2),
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6), 0 0 0 3px rgba(0, 0, 0, 0.4),
+    0 0 0 5px rgba(184, 134, 11, 0.3), inset 0 2px 4px rgba(255, 255, 255, 0.2),
     inset 0 -2px 4px rgba(0, 0, 0, 0.3);
   user-select: none;
   transform-origin: center center;
@@ -1202,16 +1194,13 @@
   pointer-events: auto;
   border: 2px solid rgba(255, 255, 255, 0.3);
   transition: transform 0.2s, box-shadow 0.2s;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .ficha:hover {
   z-index: 100;
-  box-shadow: 
-    0 6px 16px rgba(0, 0, 0, 0.7),
-    0 0 0 3px rgba(0, 0, 0, 0.5),
-    0 0 0 6px rgba(212, 175, 55, 0.5),
-    0 0 20px rgba(212, 175, 55, 0.4),
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.7), 0 0 0 3px rgba(0, 0, 0, 0.5),
+    0 0 0 6px rgba(212, 175, 55, 0.5), 0 0 20px rgba(212, 175, 55, 0.4),
     inset 0 2px 4px rgba(255, 255, 255, 0.3),
     inset 0 -2px 4px rgba(0, 0, 0, 0.4);
   border-color: rgba(255, 215, 0, 0.6);
@@ -1223,12 +1212,12 @@
 
 .ficha-hp-ring {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  top: -6px;
+  left: -6px;
+  width: calc(100% + 12px);
+  height: calc(100% + 12px);
   pointer-events: none;
-  z-index: 1;
+  z-index: 3;
 }
 
 .ficha-hp-ring-background {
@@ -1240,14 +1229,17 @@
 }
 
 .ficha-imagen {
-  width: 100%;
-  height: 100%;
+  width: 85%;
+  height: 85%;
   object-fit: cover;
   object-position: center;
+  border-radius: 50%;
   user-select: none;
   pointer-events: none;
   position: relative;
   z-index: 2;
+  display: block;
+  margin: auto;
 }
 
 .ficha-nombre-abajo {
@@ -1258,9 +1250,7 @@
   font-size: 10px;
   font-weight: bold;
   color: #ffffff;
-  text-shadow:
-    0 1px 2px rgba(0, 0, 0, 0.8),
-    0 0 4px rgba(0, 0, 0, 0.5);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8), 0 0 4px rgba(0, 0, 0, 0.5);
   background: rgba(0, 0, 0, 0.8);
   padding: 2px 6px;
   border-radius: 6px;
@@ -1283,10 +1273,8 @@
   color: white;
   font-weight: 700;
   font-size: 1.5rem;
-  text-shadow: 
-    0 2px 4px rgba(0, 0, 0, 0.8),
-    0 0 8px rgba(0, 0, 0, 0.5);
-  font-family: 'Cinzel', serif;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8), 0 0 8px rgba(0, 0, 0, 0.5);
+  font-family: "Cinzel", serif;
   letter-spacing: 0;
   position: relative;
   z-index: 2;
@@ -1303,7 +1291,7 @@
   border-radius: 4px;
   font-size: 0.65rem;
   font-weight: 700;
-  font-family: 'Cinzel', serif;
+  font-family: "Cinzel", serif;
   white-space: nowrap;
   border: 1px solid rgba(184, 134, 11, 0.5);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
@@ -1312,31 +1300,22 @@
 
 .ficha-estado-herido {
   border: 3px solid #f59e0b;
-  box-shadow: 
-    0 4px 12px rgba(0, 0, 0, 0.6),
-    0 0 0 3px rgba(0, 0, 0, 0.4),
-    0 0 0 6px rgba(245, 158, 11, 0.3),
-    inset 0 2px 4px rgba(255, 255, 255, 0.2),
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6), 0 0 0 3px rgba(0, 0, 0, 0.4),
+    0 0 0 6px rgba(245, 158, 11, 0.3), inset 0 2px 4px rgba(255, 255, 255, 0.2),
     inset 0 -2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .ficha-estado-inconsciente {
   border: 3px solid #3b82f6;
-  box-shadow: 
-    0 4px 12px rgba(0, 0, 0, 0.6),
-    0 0 0 3px rgba(0, 0, 0, 0.4),
-    0 0 0 6px rgba(59, 130, 246, 0.3),
-    inset 0 2px 4px rgba(255, 255, 255, 0.2),
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6), 0 0 0 3px rgba(0, 0, 0, 0.4),
+    0 0 0 6px rgba(59, 130, 246, 0.3), inset 0 2px 4px rgba(255, 255, 255, 0.2),
     inset 0 -2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .ficha-estado-muerto {
   border: 3px solid #6b7280;
-  box-shadow: 
-    0 4px 12px rgba(0, 0, 0, 0.6),
-    0 0 0 3px rgba(0, 0, 0, 0.4),
-    0 0 0 6px rgba(107, 114, 128, 0.3),
-    inset 0 2px 4px rgba(255, 255, 255, 0.1),
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6), 0 0 0 3px rgba(0, 0, 0, 0.4),
+    0 0 0 6px rgba(107, 114, 128, 0.3), inset 0 2px 4px rgba(255, 255, 255, 0.1),
     inset 0 -2px 4px rgba(0, 0, 0, 0.4);
 }
 
@@ -1345,12 +1324,16 @@
   bottom: -35px;
   left: 50%;
   transform: translateX(-50%);
-  background: linear-gradient(135deg, rgba(20, 15, 10, 0.95) 0%, rgba(15, 10, 5, 0.95) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(20, 15, 10, 0.95) 0%,
+    rgba(15, 10, 5, 0.95) 100%
+  );
   color: #ffd700;
   padding: 0.4rem 0.75rem;
   border-radius: 6px;
   font-size: 0.75rem;
-  font-family: 'Cinzel', serif;
+  font-family: "Cinzel", serif;
   font-weight: 600;
   white-space: nowrap;
   opacity: 0;
@@ -1358,9 +1341,7 @@
   transition: opacity 0.3s;
   z-index: 1000;
   border: 1px solid rgba(184, 134, 11, 0.5);
-  box-shadow: 
-    0 4px 8px rgba(0, 0, 0, 0.5),
-    0 0 10px rgba(212, 175, 55, 0.3);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5), 0 0 10px rgba(212, 175, 55, 0.3);
   text-shadow: 0 0 5px rgba(212, 175, 55, 0.5);
 }
 
@@ -1388,8 +1369,7 @@
 
 .sidebar::-webkit-scrollbar-thumb:hover {
   background: linear-gradient(135deg, #a0522d 0%, #8b4513 100%);
-  box-shadow: 
-    inset 0 2px 4px rgba(0, 0, 0, 0.3),
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3),
     0 0 8px rgba(184, 134, 11, 0.3);
 }
 
@@ -1420,14 +1400,15 @@
 }
 
 .modal-contenido {
-  background: 
-    linear-gradient(135deg, rgba(30, 20, 15, 0.98) 0%, rgba(20, 15, 10, 0.98) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(30, 20, 15, 0.98) 0%,
+    rgba(20, 15, 10, 0.98) 100%
+  );
   border: 2px solid rgba(184, 134, 11, 0.5);
   border-radius: 16px;
-  box-shadow: 
-    0 20px 40px rgba(0, 0, 0, 0.6),
-    inset 0 1px 0 rgba(255, 215, 0, 0.1),
-    0 0 40px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6),
+    inset 0 1px 0 rgba(255, 215, 0, 0.1), 0 0 40px rgba(0, 0, 0, 0.5);
   max-width: 500px;
   width: 100%;
   max-height: 90vh;
@@ -1460,11 +1441,9 @@
   margin: 0;
   font-size: 1.5rem;
   font-weight: 700;
-  font-family: 'Cinzel Decorative', 'Cinzel', serif;
+  font-family: "Cinzel Decorative", "Cinzel", serif;
   color: #d4af37;
-  text-shadow: 
-    0 0 10px rgba(212, 175, 55, 0.5),
-    0 2px 4px rgba(0, 0, 0, 0.5);
+  text-shadow: 0 0 10px rgba(212, 175, 55, 0.5), 0 2px 4px rgba(0, 0, 0, 0.5);
   letter-spacing: 1px;
 }
 
@@ -1483,8 +1462,7 @@
   justify-content: center;
   transition: all 0.2s;
   padding: 0;
-  box-shadow: 
-    0 2px 4px rgba(0, 0, 0, 0.4),
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4),
     inset 0 1px 0 rgba(255, 255, 255, 0.1);
   font-weight: 700;
 }
@@ -1492,9 +1470,7 @@
 .modal-cerrar:hover {
   background: rgba(139, 0, 0, 0.8);
   transform: scale(1.1);
-  box-shadow: 
-    0 3px 6px rgba(0, 0, 0, 0.5),
-    0 0 10px rgba(139, 0, 0, 0.4),
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.5), 0 0 10px rgba(139, 0, 0, 0.4),
     inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
@@ -1507,7 +1483,12 @@
   gap: 0.75rem;
   padding: 1.5rem;
   border-top: 2px solid rgba(184, 134, 11, 0.4);
-  background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.05), transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(212, 175, 55, 0.05),
+    transparent
+  );
 }
 
 .modal-footer .btn-cancelar {
@@ -1538,8 +1519,7 @@
 
 .modal-contenido::-webkit-scrollbar-thumb:hover {
   background: linear-gradient(135deg, #a0522d 0%, #8b4513 100%);
-  box-shadow: 
-    inset 0 2px 4px rgba(0, 0, 0, 0.3),
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3),
     0 0 8px rgba(184, 134, 11, 0.3);
 }
 

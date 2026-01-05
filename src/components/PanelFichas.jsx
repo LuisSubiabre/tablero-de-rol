@@ -38,7 +38,7 @@ const PanelFichas = ({
                   <div key={ficha.id} className="ficha-item">
                     <div
                       className="ficha-item-content"
-                      onClick={() => onEditarFicha(ficha)}
+                      onClick={() => onEditarFicha(ficha, true)}
                     >
                       <div className="ficha-item-header">
                         <span className="ficha-nombre">
@@ -66,7 +66,7 @@ const PanelFichas = ({
                         className="btn-editar"
                         onClick={(e) => {
                           e.stopPropagation();
-                          onEditarFicha(ficha);
+                          onEditarFicha(ficha, true);
                         }}
                         title="Editar"
                       >

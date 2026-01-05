@@ -10,7 +10,6 @@ const PanelAgregar = ({
   hpMaxFicha,
   hpActualFicha,
   tamañoFicha,
-  fichaEditando,
   onNombreChange,
   onCategoriaChange,
   onImagenChange,
@@ -57,7 +56,7 @@ const PanelAgregar = ({
   return (
     <div className="panel-agregar">
       <div className="panel-header">
-        <h2>{fichaEditando ? "Editar Ficha" : "Añadir Ficha"}</h2>
+        <h2>Añadir Ficha</h2>
       </div>
 
       <form onSubmit={handleSubmit} className="form-ficha">
@@ -98,7 +97,7 @@ const PanelAgregar = ({
                   value={nombreFicha}
                   onChange={(e) => onNombreChange(e.target.value)}
             className="input-nombre"
-            autoFocus={!fichaEditando}
+            autoFocus
           />
           {!nombreFicha.trim() && (
             <span className="field-hint">Requerido para crear la ficha</span>
@@ -230,7 +229,7 @@ const PanelAgregar = ({
 
         <div className="form-actions">
           <button type="submit" className="btn-agregar">
-            {fichaEditando ? "Guardar Cambios" : "Añadir Ficha"}
+            Añadir Ficha
           </button>
         </div>
       </form>
@@ -245,7 +244,6 @@ PanelAgregar.propTypes = {
   hpMaxFicha: PropTypes.number.isRequired,
   hpActualFicha: PropTypes.number.isRequired,
   tamañoFicha: PropTypes.number.isRequired,
-  fichaEditando: PropTypes.object,
   onNombreChange: PropTypes.func.isRequired,
   onCategoriaChange: PropTypes.func.isRequired,
   onImagenChange: PropTypes.func.isRequired,

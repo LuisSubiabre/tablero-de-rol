@@ -84,21 +84,21 @@ const FichaTablero = ({
           className="ficha-hp-ring-background"
           cx="50"
           cy="50"
-          r="48"
+          r="47"
           fill="none"
-          stroke="rgba(0, 0, 0, 0.4)"
-          strokeWidth="4"
+          stroke="rgba(0, 0, 0, 0.6)"
+          strokeWidth="6"
         />
         <circle
           className="ficha-hp-ring-fill"
           cx="50"
           cy="50"
-          r="48"
+          r="47"
           fill="none"
           stroke={colorHP}
-          strokeWidth="4"
-          strokeDasharray={`${2 * Math.PI * 48}`}
-          strokeDashoffset={`${2 * Math.PI * 48 * (1 - porcentajeHP / 100)}`}
+          strokeWidth="6"
+          strokeDasharray={`${2 * Math.PI * 47}`}
+          strokeDashoffset={`${2 * Math.PI * 47 * (1 - porcentajeHP / 100)}`}
         />
       </svg>
 
