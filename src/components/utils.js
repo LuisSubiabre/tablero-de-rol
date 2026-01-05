@@ -3,9 +3,9 @@ export const getColorPorCategoria = (categoria) => {
     case "Heroes":
       return "#3b82f6"; // azul
     case "Bestias":
-      return "#ef4444"; // rojo
+      return "#202045"; // rojo
     case "Otros":
-      return "#10b981"; // verde
+      return "#6b72cc"; // Purpura
     default:
       return "#6b7280"; // gris
   }
