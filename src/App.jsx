@@ -50,6 +50,7 @@ function App() {
   );
   const [fichaSeleccionada, setFichaSeleccionada] = useState(null);
   const [modalAbierto, setModalAbierto] = useState(false);
+  const [modalAcercaDeAbierto, setModalAcercaDeAbierto] = useState(false);
 
   // Estados de la grilla
   const [mostrarGrilla, setMostrarGrilla] = useState(() =>
@@ -560,6 +561,7 @@ function App() {
         onMoverGrillaIzquierda={moverGrillaIzquierda}
         onMoverGrillaDerecha={moverGrillaDerecha}
         onResetearOffsetGrilla={resetearOffsetGrilla}
+        onAbrirAcercaDe={() => setModalAcercaDeAbierto(true)}
       />
 
       <div className="contenedor-principal">
@@ -630,6 +632,40 @@ function App() {
         onSave={handleGuardarEdicion}
         onImageChange={() => {}}
       />
+
+      {modalAcercaDeAbierto && (
+        <div
+          className="modal-overlay"
+          onClick={() => setModalAcercaDeAbierto(false)}
+        >
+          <div className="modal-acerca-de" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+              <h2>Acerca de Tablero Virtual de Rol</h2>
+              <button
+                className="modal-cerrar"
+                onClick={() => setModalAcercaDeAbierto(false)}
+              >
+                ✕
+              </button>
+            </div>
+            <div className="modal-contenido">
+              <p>
+                Tablero Virtual de Rol es una aplicación web pensada como un apoyo visual para partidas de rol,
+                especialmente orientada al juego en solitario y a la simulación de encuentros.
+              </p>
+              <p>
+                No busca reemplazar las reglas ni los sistemas tradicionales, sino ofrecer un espacio simple donde
+                cargar mapas, mover fichas y dejar que la imaginación haga el resto.
+              </p>
+              <p>
+                El proyecto fue desarrollado por Luis Subiabre, desarrollador web y docente, como una herramienta
+                ligera, intuitiva y libre de complejidad innecesaria, enfocada en disfrutar el rol de forma rápida
+                y sin distracciones.
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
 
     </div>
   );

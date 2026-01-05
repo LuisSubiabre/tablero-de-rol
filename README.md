@@ -30,6 +30,11 @@ Aplicación web para gestionar partidas de Dungeons & Dragons y juegos de rol si
 
 ## 🎮 Controles
 
+### Header
+
+- **GitHub**: enlace al repositorio del proyecto
+- **Acerca de**: información sobre el proyecto
+
 ### Tablero
 
 - **Clic izquierdo + arrastrar**: mover fichas
@@ -45,6 +50,14 @@ Aplicación web para gestionar partidas de Dungeons & Dragons y juegos de rol si
 - **Color**: selector de color para personalizar la grilla
 - **Posición**: controles direccionales (↑↓←→) para mover la grilla manualmente
 - **⊙ Reset**: botón para centrar la grilla en su posición original
+
+## 📖 Acerca del Proyecto
+
+Tablero Virtual de Rol es una aplicación web pensada como un apoyo visual para partidas de rol, especialmente orientada al juego en solitario y a la simulación de encuentros.
+
+No busca reemplazar las reglas ni los sistemas tradicionales, sino ofrecer un espacio simple donde cargar mapas, mover fichas y dejar que la imaginación haga el resto.
+
+El proyecto fue desarrollado por Luis Subiabre, desarrollador web y docente, como una herramienta ligera, intuitiva y libre de complejidad innecesaria, enfocada en disfrutar el rol de forma rápida y sin distracciones.
 
 ## 🚀 Instalación y Uso
 

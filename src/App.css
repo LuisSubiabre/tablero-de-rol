@@ -1843,6 +1843,139 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5), inset 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
+/* Botón Acerca de */
+.btn-acerca-de {
+  background: linear-gradient(135deg, #2c1810 0%, #1a0f08 100%);
+  color: #daa520;
+  border: 2px solid #8b4513;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-left: 0.5rem;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.btn-acerca-de:hover {
+  background: linear-gradient(135deg, #3a2518 0%, #2c1810 100%);
+  border-color: #daa520;
+  color: #ffd700;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.6), 0 0 20px rgba(218, 165, 32, 0.3);
+}
+
+.btn-acerca-de:active {
+  transform: translateY(0);
+}
+
+/* Botón GitHub */
+.btn-github {
+  background: linear-gradient(135deg, #2c1810 0%, #1a0f08 100%);
+  color: #daa520;
+  border: 2px solid #8b4513;
+  padding: 0.5rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-left: 0.5rem;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  box-sizing: border-box;
+}
+
+.btn-github:hover {
+  background: linear-gradient(135deg, #3a2518 0%, #2c1810 100%);
+  border-color: #daa520;
+  color: #ffd700;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.6), 0 0 20px rgba(218, 165, 32, 0.3);
+}
+
+.btn-github:active {
+  transform: translateY(0);
+}
+
+.btn-github svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* Modal Acerca de */
+.modal-acerca-de {
+  background: linear-gradient(135deg, #2c1810 0%, #1a0f08 100%);
+  border: 2px solid #8b4513;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 500px;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.modal-acerca-de .modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid rgba(139, 69, 19, 0.5);
+  background: linear-gradient(135deg, #3a2518 0%, #2c1810 100%);
+}
+
+.modal-acerca-de .modal-header h2 {
+  color: #ffd700;
+  margin: 0;
+  font-size: 1.4rem;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+.modal-acerca-de .modal-cerrar {
+  background: rgba(139, 0, 0, 0.8);
+  color: #ffcccc;
+  border: 1px solid #8b0000;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+.modal-acerca-de .modal-cerrar:hover {
+  background: rgba(139, 0, 0, 1);
+  border-color: #ff0000;
+  color: white;
+  transform: scale(1.1);
+}
+
+.modal-acerca-de .modal-contenido {
+  padding: 1.5rem;
+  color: #daa520;
+  line-height: 1.6;
+}
+
+.modal-acerca-de .modal-contenido p {
+  margin: 0 0 1rem 0;
+  text-align: justify;
+}
+
+.modal-acerca-de .modal-contenido p:last-child {
+  margin-bottom: 0;
+}
+
 
 
 /* Scrollbar del modal */
@@ -2148,6 +2281,19 @@
     touch-action: manipulation;
   }
 
+  .btn-acerca-de {
+    padding: 0.6rem 1.2rem;
+    min-height: 48px;
+    font-size: 1rem;
+  }
+
+  .btn-github {
+    width: 48px;
+    height: 48px;
+    min-width: 48px;
+    min-height: 48px;
+  }
+
   .grilla-direcciones {
     gap: 0.1rem;
   }
@@ -2214,6 +2360,32 @@
     padding: 0.5rem 1rem;
     min-height: 44px;
     font-size: 0.9rem;
+  }
+
+  .btn-acerca-de {
+    padding: 0.7rem 1.4rem;
+    min-height: 52px;
+    font-size: 1.1rem;
+  }
+
+  .btn-github {
+    width: 52px;
+    height: 52px;
+    min-width: 52px;
+    min-height: 52px;
+  }
+
+  .btn-acerca-de {
+    padding: 0.5rem 1rem;
+    min-height: 44px;
+    font-size: 0.9rem;
+  }
+
+  .btn-github {
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    min-height: 44px;
   }
 }
 
