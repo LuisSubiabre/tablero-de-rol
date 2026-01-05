@@ -1,24 +1,27 @@
-import { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import "./App.css";
-
-const CATEGORIAS = {
-  HEROES: "Heroes",
-  BESTIAS: "Bestias",
-  OTROS: "Otros",
-};
-
-const ESTADOS = {
-  SALUDABLE: "saludable",
-  HERIDO: "herido",
-  INCONSCIENTE: "inconsciente",
-  MUERTO: "muerto",
-};
+import {
+  Header,
+  PanelAgregar,
+  PanelFichas,
+  Tablero,
+  PanelInfoFicha,
+  ModalEdicion,
+  CATEGORIAS,
+  getColorPorCategoria,
+  calcularEstadoPorHP,
+} from "./components";
 
 function App() {
+  // Estados principales
   const [tableroImagen, setTableroImagen] = useState(null);
   const [zoom, setZoom] = useState(100);
   const [pan, setPan] = useState({ x: 0, y: 0 });
   const [fichas, setFichas] = useState([]);
+  const [fichaSeleccionada, setFichaSeleccionada] = useState(null);
+  const [modalAbierto, setModalAbierto] = useState(false);
+
+  // Estados para el formulario
   const [categoriaSeleccionada, setCategoriaSeleccionada] = useState(
     CATEGORIAS.HEROES
   );
@@ -28,37 +31,61 @@ function App() {
   const [hpActualFicha, setHpActualFicha] = useState(50);
   const [tamañoFicha, setTamañoFicha] = useState(55);
   const [fichaEditando, setFichaEditando] = useState(null);
-  const [modalAbierto, setModalAbierto] = useState(false);
-  const fileInputRef = useRef(null);
-  const imagenFichaInputRef = useRef(null);
-  const idCounterRef = useRef(0);
-  const tableroRef = useRef(null);
+
+  // Resetear formulario
+  const resetFormulario = () => {
+    setNombreFicha("");
+    setCategoriaSeleccionada(CATEGORIAS.HEROES);
+    setImagenFicha("");
+    setHpMaxFicha(50);
+    setHpActualFicha(50);
+    setTamañoFicha(55);
+    setFichaEditando(null);
+  };
+
+  // Cargar datos de ficha para edición
+  useEffect(() => {
+    if (fichaEditando) {
+      setNombreFicha(fichaEditando.nombre || "");
+      setCategoriaSeleccionada(fichaEditando.categoria || CATEGORIAS.HEROES);
+      setImagenFicha(fichaEditando.imagen || "");
+      setHpMaxFicha(fichaEditando.hpMax || 50);
+      setHpActualFicha(fichaEditando.hpActual || fichaEditando.hpMax || 50);
+      setTamañoFicha(fichaEditando.tamaño || 55);
+    }
+  }, [fichaEditando]);
+
+  // Estados para el tablero y arrastre
   const [tableroSize, setTableroSize] = useState({ width: 0, height: 0 });
   const [fichaArrastrada, setFichaArrastrada] = useState(null);
-  const [fichaSeleccionada, setFichaSeleccionada] = useState(null);
-  const offsetRef = useRef({ x: 0, y: 0 });
   const [isPanning, setIsPanning] = useState(false);
+
+  // Refs
+  const fileInputRef = useRef(null);
+  const idCounterRef = useRef(0);
+  const tableroRef = useRef(null);
+  const offsetRef = useRef({ x: 0, y: 0 });
   const panStartRef = useRef({ x: 0, y: 0 });
   const spacePressedRef = useRef(false);
   const clickStartRef = useRef({ x: 0, y: 0 });
   const isDraggingRef = useRef(false);
 
+  // Funciones de zoom y pan
   const handleCargarImagen = (event) => {
     const file = event.target.files[0];
     if (file && file.type.startsWith("image/")) {
       const reader = new FileReader();
       reader.onload = (e) => {
         setTableroImagen(e.target.result);
-        setZoom(100); // Resetear zoom al cargar nueva imagen
-        setPan({ x: 0, y: 0 }); // Resetear pan
+        setZoom(100);
+        setPan({ x: 0, y: 0 });
       };
       reader.readAsDataURL(file);
     }
   };
 
   const handleZoomChange = (nuevoZoom) => {
-    // Mantener el punto focal del zoom (centro del tablero)
-    setZoom(Math.max(25, Math.min(300, nuevoZoom))); // Limitar entre 25% y 300%
+    setZoom(Math.max(25, Math.min(300, nuevoZoom)));
   };
 
   const handleZoomIn = () => {
@@ -71,216 +98,84 @@ function App() {
 
   const handleZoomReset = () => {
     setZoom(100);
-    setPan({ x: 0, y: 0 }); // Resetear pan al resetear zoom
+    setPan({ x: 0, y: 0 });
   };
 
-  const handleWheel = (e) => {
-    if (!tableroImagen) return;
-    if (e.ctrlKey || e.metaKey) {
-      e.preventDefault();
-      const delta = e.deltaY > 0 ? -5 : 5;
-      handleZoomChange(zoom + delta);
-    }
-  };
-
-  const handleCargarImagenFicha = (event) => {
-    const file = event.target.files[0];
-    if (file && file.type.startsWith("image/")) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        setImagenFicha(e.target.result);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  const calcularEstadoPorHP = (hpActual, hpMax) => {
-    if (hpActual <= 0) return ESTADOS.MUERTO;
-    if (hpActual < hpMax * 0.5) return ESTADOS.INCONSCIENTE;
-    if (hpActual < hpMax) return ESTADOS.HERIDO;
-    return ESTADOS.SALUDABLE;
-  };
-
-  const handleAgregarFicha = () => {
-    if (!nombreFicha.trim()) {
-      alert("Por favor ingresa un nombre para la ficha");
-      return;
-    }
-
+  // Funciones de fichas
+  const handleAgregarFicha = (fichaData) => {
     if (fichaEditando) {
       // Editar ficha existente
-      const estadoCalculado = calcularEstadoPorHP(hpActualFicha, hpMaxFicha);
       setFichas(
         fichas.map((f) =>
-          f.id === fichaEditando.id
-            ? {
-                ...f,
-                nombre: nombreFicha.trim(),
-                categoria: categoriaSeleccionada,
-                imagen: imagenFicha || f.imagen,
-                hpMax: hpMaxFicha,
-                hpActual: hpActualFicha,
-                estado: estadoCalculado,
-                tamaño: tamañoFicha,
-                color: getColorPorCategoria(categoriaSeleccionada),
-              }
-            : f
+          f.id === fichaEditando.id ? { ...f, ...fichaData } : f
         )
       );
-      if (modalAbierto) {
-        handleCerrarModal();
-      } else {
-        setFichaEditando(null);
-      }
+      resetFormulario();
     } else {
       // Nueva ficha
       idCounterRef.current += 1;
-      const estadoCalculado = calcularEstadoPorHP(hpActualFicha, hpMaxFicha);
       const nuevaFicha = {
         id: idCounterRef.current,
-        nombre: nombreFicha.trim(),
-        categoria: categoriaSeleccionada,
-        tipo: categoriaSeleccionada,
-        imagen: imagenFicha,
-        hpMax: hpMaxFicha,
-        hpActual: hpActualFicha,
-        estado: estadoCalculado,
-        tamaño: tamañoFicha,
+        ...fichaData,
         x: 50,
         y: 50,
-        color: getColorPorCategoria(categoriaSeleccionada),
       };
-
       setFichas([...fichas, nuevaFicha]);
+      resetFormulario();
     }
-
-    // Resetear formulario
-    setNombreFicha("");
-    setImagenFicha("");
-    setHpMaxFicha(50);
-    setHpActualFicha(50);
-    setTamañoFicha(55);
   };
 
   const handleEditarFicha = (ficha, abrirModal = false) => {
     setFichaEditando(ficha);
-    setNombreFicha(ficha.nombre);
-    setCategoriaSeleccionada(ficha.categoria);
-    setImagenFicha(ficha.imagen || "");
-    setHpMaxFicha(ficha.hpMax || 50);
-    setHpActualFicha(ficha.hpActual || ficha.hpMax || 50);
-    setTamañoFicha(ficha.tamaño || 55);
-
     if (abrirModal) {
       setModalAbierto(true);
-    } else {
-      // Scroll al formulario (para el botón de editar en la lista)
-      document
-        .querySelector(".panel-agregar")
-        ?.scrollIntoView({ behavior: "smooth", block: "nearest" });
     }
   };
 
-  const handleCerrarModal = () => {
-    setModalAbierto(false);
-    setFichaEditando(null);
-    setNombreFicha("");
-    setImagenFicha("");
-    setHpMaxFicha(50);
-    setHpActualFicha(50);
-    setTamañoFicha(55);
-  };
-
-  const handleCancelarEdicion = () => {
-    if (modalAbierto) {
-      handleCerrarModal();
-    } else {
-      setFichaEditando(null);
-      setNombreFicha("");
-      setImagenFicha("");
-      setHpMaxFicha(50);
-      setHpActualFicha(50);
-      setTamañoFicha(55);
-    }
-  };
-
-  const getColorPorCategoria = (categoria) => {
-    switch (categoria) {
-      case CATEGORIAS.HEROES:
-        return "#3b82f6"; // azul
-      case CATEGORIAS.BESTIAS:
-        return "#ef4444"; // rojo
-      case CATEGORIAS.OTROS:
-        return "#10b981"; // verde
-      default:
-        return "#6b7280"; // gris
-    }
-  };
-
-  const getColorHP = (hpActual, hpMax) => {
-    if (hpActual <= 0) return "#6b7280"; // gris - muerto
-    const porcentaje = hpActual / hpMax;
-    if (porcentaje < 0.25) return "#ef4444"; // rojo - crítico
-    if (porcentaje < 0.5) return "#f59e0b"; // naranja - grave
-    if (porcentaje < 0.75) return "#eab308"; // amarillo - herido
-    return "#10b981"; // verde - saludable
-  };
-
-  const getLabelEstado = (estado) => {
-    switch (estado) {
-      case ESTADOS.MUERTO:
-        return "💀 Muerto";
-      case ESTADOS.INCONSCIENTE:
-        return "😴 Inconsciente";
-      case ESTADOS.HERIDO:
-        return "🩹 Herido";
-      default:
-        return "✅ Saludable";
-    }
+  const handleFichaClick = (ficha) => {
+    setFichaSeleccionada(ficha);
   };
 
   const handleEliminarFicha = (id) => {
     setFichas(fichas.filter((f) => f.id !== id));
   };
 
+  const handleGuardarEdicion = (fichaActualizada) => {
+    setFichas(
+      fichas.map((f) => (f.id === fichaActualizada.id ? fichaActualizada : f))
+    );
+    setModalAbierto(false);
+    setFichaEditando(null);
+  };
+
+  // Funciones del tablero
   const handleMouseDown = (e, ficha) => {
     e.preventDefault();
     e.stopPropagation();
 
-    // Guardar posición inicial del click
-    clickStartRef.current = {
-      x: e.clientX,
-      y: e.clientY,
-    };
+    clickStartRef.current = { x: e.clientX, y: e.clientY };
     isDraggingRef.current = false;
 
     setFichaArrastrada(ficha.id);
-    setIsPanning(false); // No estamos paneando cuando movemos una ficha
+    setIsPanning(false);
 
-    // Calcular el offset en coordenadas del tablero escalado
     const rect = tableroRef.current.getBoundingClientRect();
     const mouseX = e.clientX - rect.left;
     const mouseY = e.clientY - rect.top;
 
-    // Convertir la posición del mouse a coordenadas del tablero escalado
-    // Necesitamos "deshacer" el pan y el zoom para obtener la posición relativa al tablero
     const scaleFactor = zoom / 100;
     const centerX = rect.width / 2;
     const centerY = rect.height / 2;
 
-    // Posición del mouse relativa al centro del tablero (antes del pan)
     const mouseRelativeX = mouseX - centerX - pan.x;
     const mouseRelativeY = mouseY - centerY - pan.y;
 
-    // Posición del mouse en coordenadas del tablero escalado (dividiendo por scaleFactor)
     const mouseScaledX = mouseRelativeX / scaleFactor;
     const mouseScaledY = mouseRelativeY / scaleFactor;
 
-    // Posición de la ficha en coordenadas del tablero escalado
     const fichaScaledX = ((ficha.x - 50) / 100) * tableroSize.width;
     const fichaScaledY = ((ficha.y - 50) / 100) * tableroSize.height;
 
-    // Offset en coordenadas escaladas
     offsetRef.current = {
       x: mouseScaledX - fichaScaledX,
       y: mouseScaledY - fichaScaledY,
@@ -288,7 +183,6 @@ function App() {
   };
 
   const handleTableroMouseDown = (e) => {
-    // Panear con clic derecho, clic central, o espacio + clic izquierdo
     if (
       e.button === 2 ||
       e.button === 1 ||
@@ -297,105 +191,37 @@ function App() {
       e.preventDefault();
       setIsPanning(true);
       setFichaArrastrada(null);
-      panStartRef.current = {
-        x: e.clientX - pan.x,
-        y: e.clientY - pan.y,
-      };
+      setFichaSeleccionada(null);
+      panStartRef.current = { x: e.clientX - pan.x, y: e.clientY - pan.y };
+    } else if (e.button === 0 && !spacePressedRef.current) {
+      setFichaSeleccionada(null);
+    }
+  };
+
+  const handleMouseMove = (e) => {
+    // El paneo y arrastre se manejan globalmente, aquí no se necesita lógica
+    return;
+  };
+
+  const handleMouseUp = () => {
+    // El paneo y arrastre se manejan globalmente
+    return;
+  };
+
+  const handleWheel = (e) => {
+    if (!tableroImagen) return;
+    if (e.ctrlKey || e.metaKey) {
+      e.preventDefault();
+      const delta = e.deltaY > 0 ? -10 : 10;
+      handleZoomChange(zoom + delta);
     }
   };
 
   const handleContextMenu = (e) => {
-    // Prevenir el menú contextual al hacer clic derecho
     e.preventDefault();
   };
 
-  const handleMouseMove = (e) => {
-    if (!tableroImagen || !tableroRef.current) return;
-
-    // Si estamos paneando
-    if (isPanning) {
-      const newPanX = e.clientX - panStartRef.current.x;
-      const newPanY = e.clientY - panStartRef.current.y;
-      setPan({ x: newPanX, y: newPanY });
-      return;
-    }
-
-    // Si estamos moviendo una ficha
-    if (fichaArrastrada) {
-      const rect = tableroRef.current.getBoundingClientRect();
-
-      // Calcular posición del mouse relativa al tablero
-      const mouseX = e.clientX - rect.left;
-      const mouseY = e.clientY - rect.top;
-
-      // Convertir la posición del mouse a coordenadas del tablero escalado
-      const scaleFactor = zoom / 100;
-      const centerX = rect.width / 2;
-      const centerY = rect.height / 2;
-
-      // Posición del mouse relativa al centro del tablero (antes del pan)
-      const mouseRelativeX = mouseX - centerX - pan.x;
-      const mouseRelativeY = mouseY - centerY - pan.y;
-
-      // Posición del mouse en coordenadas del tablero escalado
-      const mouseScaledX = mouseRelativeX / scaleFactor;
-      const mouseScaledY = mouseRelativeY / scaleFactor;
-
-      // Aplicar offset para mantener la posición relativa del click
-      const fichaScaledX = mouseScaledX - offsetRef.current.x;
-      const fichaScaledY = mouseScaledY - offsetRef.current.y;
-
-      // Convertir de vuelta a porcentajes
-      const nuevoX = (fichaScaledX / tableroSize.width) * 100 + 50;
-      const nuevoY = (fichaScaledY / tableroSize.height) * 100 + 50;
-
-      // Limitar dentro de los límites del tablero
-      const xLimitado = Math.max(0, Math.min(nuevoX, 100));
-      const yLimitado = Math.max(0, Math.min(nuevoY, 100));
-
-      setFichas((prevFichas) =>
-        prevFichas.map((f) =>
-          f.id === fichaArrastrada
-            ? {
-                ...f,
-                x: xLimitado,
-                y: yLimitado,
-              }
-            : f
-        )
-      );
-    }
-  };
-
-  const handleMouseUp = (e) => {
-    // Si fue un click simple (no drag), seleccionar la ficha
-    if (fichaArrastrada && !isDraggingRef.current) {
-      const moveDistance = Math.sqrt(
-        Math.pow((e?.clientX || 0) - clickStartRef.current.x, 2) +
-          Math.pow((e?.clientY || 0) - clickStartRef.current.y, 2)
-      );
-
-      // Si el movimiento fue menor a 5px, es un click
-      if (moveDistance < 5) {
-        const ficha = fichas.find((f) => f.id === fichaArrastrada);
-        if (ficha) {
-          setFichaSeleccionada(ficha);
-        }
-      }
-    }
-
-    setFichaArrastrada(null);
-    setIsPanning(false);
-    offsetRef.current = { x: 0, y: 0 };
-    clickStartRef.current = { x: 0, y: 0 };
-    isDraggingRef.current = false;
-  };
-
-  const fichasPorCategoria = (categoria) => {
-    return fichas.filter((f) => f.categoria === categoria);
-  };
-
-  // Actualizar tamaño del tablero
+  // Efectos
   useEffect(() => {
     const updateTableroSize = () => {
       if (tableroRef.current) {
@@ -407,7 +233,6 @@ function App() {
     updateTableroSize();
     window.addEventListener("resize", updateTableroSize);
 
-    // Usar ResizeObserver si está disponible
     let resizeObserver = null;
     if (tableroRef.current && window.ResizeObserver) {
       resizeObserver = new ResizeObserver(updateTableroSize);
@@ -422,7 +247,86 @@ function App() {
     };
   }, [tableroImagen]);
 
-  // Agregar listeners para la tecla espacio y ESC
+  // Efecto para manejar el arrastre global y paneo
+  useEffect(() => {
+    const handleGlobalMouseMove = (e) => {
+      // Manejar paneo
+      if (isPanning) {
+        const newPanX = e.clientX - panStartRef.current.x;
+        const newPanY = e.clientY - panStartRef.current.y;
+        setPan({ x: newPanX, y: newPanY });
+        return;
+      }
+
+      // Manejar arrastre de ficha
+      if (fichaArrastrada && tableroRef.current) {
+        const rect = tableroRef.current.getBoundingClientRect();
+        const mouseX = e.clientX - rect.left;
+        const mouseY = e.clientY - rect.top;
+
+        const scaleFactor = zoom / 100;
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+
+        const mouseRelativeX = mouseX - centerX - pan.x;
+        const mouseRelativeY = mouseY - centerY - pan.y;
+
+        const mouseScaledX = mouseRelativeX / scaleFactor;
+        const mouseScaledY = mouseRelativeY / scaleFactor;
+
+        const fichaScaledX = mouseScaledX - offsetRef.current.x;
+        const fichaScaledY = mouseScaledY - offsetRef.current.y;
+
+        const nuevoX = (fichaScaledX / tableroSize.width) * 100 + 50;
+        const nuevoY = (fichaScaledY / tableroSize.height) * 100 + 50;
+
+        const xLimitado = Math.max(0, Math.min(nuevoX, 100));
+        const yLimitado = Math.max(0, Math.min(nuevoY, 100));
+
+        setFichas((prevFichas) =>
+          prevFichas.map((f) =>
+            f.id === fichaArrastrada ? { ...f, x: xLimitado, y: yLimitado } : f
+          )
+        );
+
+        if (clickStartRef.current.x !== 0 || clickStartRef.current.y !== 0) {
+          const moveDistance = Math.sqrt(
+            Math.pow(e.clientX - clickStartRef.current.x, 2) +
+              Math.pow(e.clientY - clickStartRef.current.y, 2)
+          );
+          if (moveDistance > 5) {
+            isDraggingRef.current = true;
+          }
+        }
+      }
+    };
+
+    const handleGlobalMouseUp = () => {
+      if (fichaArrastrada && !isDraggingRef.current) {
+        const ficha = fichas.find((f) => f.id === fichaArrastrada);
+        if (ficha) {
+          setFichaSeleccionada(ficha);
+        }
+      }
+
+      setFichaArrastrada(null);
+      setIsPanning(false);
+      offsetRef.current = { x: 0, y: 0 };
+      clickStartRef.current = { x: 0, y: 0 };
+      isDraggingRef.current = false;
+    };
+
+    if (fichaArrastrada || isPanning) {
+      document.addEventListener("mousemove", handleGlobalMouseMove);
+      document.addEventListener("mouseup", handleGlobalMouseUp);
+    }
+
+    return () => {
+      document.removeEventListener("mousemove", handleGlobalMouseMove);
+      document.removeEventListener("mouseup", handleGlobalMouseUp);
+    };
+  }, [fichaArrastrada, isPanning, zoom, pan, tableroSize, fichas]);
+
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.code === "Space" && !e.repeat) {
@@ -433,7 +337,8 @@ function App() {
         }
       }
       if (e.code === "Escape" && modalAbierto) {
-        handleCerrarModal();
+        setModalAbierto(false);
+        setFichaEditando(null);
       }
     };
 
@@ -460,697 +365,80 @@ function App() {
 
   return (
     <div className="app">
-      <header className="header">
-        <h1>Tablero de Rol</h1>
-        <div className="header-controls">
-          {tableroImagen && (
-            <div className="zoom-controls">
-              <button
-                className="btn-zoom"
-                onClick={handleZoomOut}
-                title="Alejar (Ctrl + Rueda del mouse)"
-              >
-                −
-              </button>
-              <input
-                type="range"
-                min="25"
-                max="300"
-                value={zoom}
-                onChange={(e) => handleZoomChange(Number(e.target.value))}
-                className="zoom-slider"
-              />
-              <span className="zoom-value">{zoom}%</span>
-              <button
-                className="btn-zoom"
-                onClick={handleZoomIn}
-                title="Acercar (Ctrl + Rueda del mouse)"
-              >
-                +
-              </button>
-              <button
-                className="btn-zoom-reset"
-                onClick={handleZoomReset}
-                title="Restablecer zoom"
-              >
-                Resetear
-              </button>
-            </div>
-          )}
-          <button
-            className="btn-cargar"
-            onClick={() => fileInputRef.current?.click()}
-          >
-            Cargar Tablero
-          </button>
-        </div>
-        <input
-          ref={fileInputRef}
-          type="file"
-          accept="image/*"
-          onChange={handleCargarImagen}
-          style={{ display: "none" }}
-        />
-      </header>
+      <Header
+        tableroImagen={tableroImagen}
+        zoom={zoom}
+        onZoomChange={handleZoomChange}
+        onZoomIn={handleZoomIn}
+        onZoomOut={handleZoomOut}
+        onZoomReset={handleZoomReset}
+        onCargarImagen={handleCargarImagen}
+      />
 
       <div className="contenedor-principal">
         <aside className="sidebar">
-          <div className="panel-agregar">
-            <h2>{fichaEditando ? "Editar Ficha" : "Añadir Ficha"}</h2>
+          <PanelAgregar
+            nombreFicha={nombreFicha}
+            categoriaSeleccionada={categoriaSeleccionada}
+            imagenFicha={imagenFicha}
+            hpMaxFicha={hpMaxFicha}
+            hpActualFicha={hpActualFicha}
+            tamañoFicha={tamañoFicha}
+            fichaEditando={fichaEditando}
+            onNombreChange={setNombreFicha}
+            onCategoriaChange={setCategoriaSeleccionada}
+            onImagenChange={setImagenFicha}
+            onHpMaxChange={setHpMaxFicha}
+            onHpActualChange={setHpActualFicha}
+            onTamañoChange={setTamañoFicha}
+            onAgregarFicha={handleAgregarFicha}
+          />
 
-            <div className="form-seccion">
-              <label className="form-label">Tipo</label>
-              <div className="categorias">
-                {Object.values(CATEGORIAS).map((cat) => (
-                  <button
-                    key={cat}
-                    className={`btn-categoria ${
-                      categoriaSeleccionada === cat ? "activa" : ""
-                    }`}
-                    onClick={() => setCategoriaSeleccionada(cat)}
-                    style={{
-                      backgroundColor:
-                        categoriaSeleccionada === cat
-                          ? getColorPorCategoria(cat)
-                          : "rgba(60, 40, 20, 0.6)",
-                    }}
-                  >
-                    {cat}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <div className="form-seccion">
-              <label className="form-label" htmlFor="input-nombre-ficha">
-                Nombre
-              </label>
-              <input
-                id="input-nombre-ficha"
-                type="text"
-                placeholder="Nombre de la ficha"
-                value={nombreFicha}
-                onChange={(e) => setNombreFicha(e.target.value)}
-                className="input-nombre"
-              />
-            </div>
-
-            <div className="form-seccion">
-              <label className="form-label">Imagen (opcional)</label>
-              <div className="imagen-input-container">
-                {imagenFicha && (
-                  <img
-                    src={imagenFicha}
-                    alt="Vista previa"
-                    className="imagen-preview"
-                  />
-                )}
-                <button
-                  type="button"
-                  className="btn-cargar-imagen"
-                  onClick={() => imagenFichaInputRef.current?.click()}
-                >
-                  {imagenFicha ? "Cambiar Imagen" : "Cargar Imagen"}
-                </button>
-                {imagenFicha && (
-                  <button
-                    type="button"
-                    className="btn-eliminar-imagen"
-                    onClick={() => setImagenFicha("")}
-                  >
-                    ✕
-                  </button>
-                )}
-                <input
-                  ref={imagenFichaInputRef}
-                  type="file"
-                  accept="image/*"
-                  onChange={handleCargarImagenFicha}
-                  style={{ display: "none" }}
-                />
-              </div>
-            </div>
-
-            <div className="form-seccion">
-              <label className="form-label">Puntos de Vida</label>
-              <div className="hp-inputs">
-                <div className="hp-input-group">
-                  <label className="hp-label">Actual</label>
-                  <input
-                    type="number"
-                    min="0"
-                    max="999"
-                    value={hpActualFicha}
-                    onChange={(e) =>
-                      setHpActualFicha(
-                        Math.max(0, parseInt(e.target.value) || 0)
-                      )
-                    }
-                    className="input-hp"
-                  />
-                </div>
-                <span className="hp-separator">/</span>
-                <div className="hp-input-group">
-                  <label className="hp-label">Máximo</label>
-                  <input
-                    type="number"
-                    min="1"
-                    max="999"
-                    value={hpMaxFicha}
-                    onChange={(e) => {
-                      const nuevoMax = Math.max(
-                        1,
-                        parseInt(e.target.value) || 1
-                      );
-                      setHpMaxFicha(nuevoMax);
-                      if (hpActualFicha > nuevoMax) setHpActualFicha(nuevoMax);
-                    }}
-                    className="input-hp"
-                  />
-                </div>
-              </div>
-            </div>
-
-            <div className="form-seccion">
-              <label className="form-label">Tamaño (px)</label>
-              <input
-                type="range"
-                min="30"
-                max="120"
-                value={tamañoFicha}
-                onChange={(e) => setTamañoFicha(parseInt(e.target.value))}
-                className="tamaño-slider"
-              />
-              <div className="tamaño-value-display">
-                <span>{tamañoFicha}px</span>
-              </div>
-            </div>
-
-            <div className="form-actions">
-              {fichaEditando && (
-                <button
-                  onClick={handleCancelarEdicion}
-                  className="btn-cancelar"
-                >
-                  Cancelar
-                </button>
-              )}
-              <button onClick={handleAgregarFicha} className="btn-agregar">
-                {fichaEditando ? "Guardar Cambios" : "Añadir Ficha"}
-              </button>
-            </div>
-          </div>
-
-          <div className="panel-fichas">
-            <h2>Fichas ({fichas.length})</h2>
-            <div className="lista-fichas">
-              {Object.values(CATEGORIAS).map((categoria) => {
-                const fichasCat = fichasPorCategoria(categoria);
-                if (fichasCat.length === 0) return null;
-
-                return (
-                  <div key={categoria} className="categoria-grupo">
-                    <h3
-                      className="categoria-titulo"
-                      style={{ color: getColorPorCategoria(categoria) }}
-                    >
-                      {categoria} ({fichasCat.length})
-                    </h3>
-                    {fichasCat.map((ficha) => {
-                      const hpActual = ficha.hpActual ?? ficha.hpMax ?? 50;
-                      const hpMax = ficha.hpMax ?? 50;
-                      const porcentajeHP =
-                        hpMax > 0 ? (hpActual / hpMax) * 100 : 0;
-                      const estado =
-                        ficha.estado || calcularEstadoPorHP(hpActual, hpMax);
-
-                      return (
-                        <div key={ficha.id} className="ficha-item">
-                          <div
-                            className="ficha-item-content"
-                            onClick={() => handleEditarFicha(ficha)}
-                          >
-                            <div className="ficha-item-header">
-                              <span className="ficha-nombre">
-                                {ficha.nombre}
-                              </span>
-                              <span className="ficha-estado-label">
-                                {getLabelEstado(estado)}
-                              </span>
-                            </div>
-                            <div className="ficha-hp-bar-container">
-                              <div
-                                className="ficha-hp-bar"
-                                style={{
-                                  width: `${porcentajeHP}%`,
-                                  backgroundColor: getColorHP(hpActual, hpMax),
-                                }}
-                              />
-                              <span className="ficha-hp-text">
-                                {hpActual}/{hpMax} HP
-                              </span>
-                            </div>
-                          </div>
-                          <div className="ficha-item-actions">
-                            <button
-                              className="btn-editar"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                handleEditarFicha(ficha);
-                              }}
-                              title="Editar"
-                            >
-                              ✎
-                            </button>
-                            <button
-                              className="btn-eliminar"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                handleEliminarFicha(ficha.id);
-                              }}
-                              title="Eliminar"
-                            >
-                              ×
-                            </button>
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                );
-              })}
-              {fichas.length === 0 && (
-                <p className="sin-fichas">No hay fichas añadidas</p>
-              )}
-            </div>
-          </div>
+          <PanelFichas
+            fichas={fichas}
+            onEditarFicha={handleEditarFicha}
+            onEliminarFicha={handleEliminarFicha}
+          />
         </aside>
 
-        <main className="tablero-contenedor">
-          {/* Panel de información de ficha seleccionada */}
-          {fichaSeleccionada && (
-            <div className="ficha-info-panel">
-              <button
-                className="ficha-info-cerrar"
-                onClick={() => setFichaSeleccionada(null)}
-                title="Cerrar"
-              >
-                ×
-              </button>
-              <div className="ficha-info-header">
-                <div
-                  className="ficha-info-avatar"
-                  style={{
-                    backgroundColor: fichaSeleccionada.color,
-                  }}
-                >
-                  {fichaSeleccionada.imagen ? (
-                    <img
-                      src={fichaSeleccionada.imagen}
-                      alt={fichaSeleccionada.nombre}
-                    />
-                  ) : (
-                    <span>
-                      {fichaSeleccionada.nombre.charAt(0).toUpperCase()}
-                    </span>
-                  )}
-                </div>
-                <div className="ficha-info-titulo">
-                  <h3>{fichaSeleccionada.nombre}</h3>
-                  <span
-                    className="ficha-info-tipo"
-                    style={{
-                      color: getColorPorCategoria(fichaSeleccionada.categoria),
-                    }}
-                  >
-                    {fichaSeleccionada.categoria}
-                  </span>
-                </div>
-              </div>
-              <div className="ficha-info-body">
-                <div className="ficha-info-stat">
-                  <span className="ficha-info-stat-label">Estado</span>
-                  <span className="ficha-info-stat-value">
-                    {getLabelEstado(
-                      fichaSeleccionada.estado ||
-                        calcularEstadoPorHP(
-                          fichaSeleccionada.hpActual ??
-                            fichaSeleccionada.hpMax ??
-                            50,
-                          fichaSeleccionada.hpMax ?? 50
-                        )
-                    )}
-                  </span>
-                </div>
-                <div className="ficha-info-stat">
-                  <span className="ficha-info-stat-label">Puntos de Vida</span>
-                  <div className="ficha-info-hp">
-                    <div className="ficha-info-hp-bar-container">
-                      <div
-                        className="ficha-info-hp-bar"
-                        style={{
-                          width: `${
-                            ((fichaSeleccionada.hpActual ??
-                              fichaSeleccionada.hpMax ??
-                              50) /
-                              (fichaSeleccionada.hpMax ?? 50)) *
-                            100
-                          }%`,
-                          backgroundColor: getColorHP(
-                            fichaSeleccionada.hpActual ??
-                              fichaSeleccionada.hpMax ??
-                              50,
-                            fichaSeleccionada.hpMax ?? 50
-                          ),
-                        }}
-                      />
-                    </div>
-                    <span className="ficha-info-hp-text">
-                      {fichaSeleccionada.hpActual ??
-                        fichaSeleccionada.hpMax ??
-                        50}{" "}
-                      / {fichaSeleccionada.hpMax ?? 50}
-                    </span>
-                  </div>
-                </div>
-                <div className="ficha-info-stat">
-                  <span className="ficha-info-stat-label">Tamaño</span>
-                  <span className="ficha-info-stat-value">
-                    {fichaSeleccionada.tamaño || 55}px
-                  </span>
-                </div>
-              </div>
-              <div className="ficha-info-actions">
-                <button
-                  className="ficha-info-btn-editar"
-                  onClick={() => {
-                    handleEditarFicha(fichaSeleccionada, true);
-                    setFichaSeleccionada(null);
-                  }}
-                >
-                  Editar
-                </button>
-              </div>
-            </div>
-          )}
+        <Tablero
+          ref={tableroRef}
+          tableroImagen={tableroImagen}
+          fichas={fichas}
+          tableroSize={tableroSize}
+          zoom={zoom}
+          pan={pan}
+          fichaArrastrada={fichaArrastrada}
+          onMouseMove={handleMouseMove}
+          onMouseDown={handleTableroMouseDown}
+          onMouseUp={handleMouseUp}
+          onWheel={handleWheel}
+          onContextMenu={handleContextMenu}
+          onFichaMouseDown={handleMouseDown}
+          onFichaDoubleClick={(ficha, abrirModal) =>
+            handleEditarFicha(ficha, abrirModal)
+          }
+          onFichaClick={handleFichaClick}
+          onCargarImagen={handleCargarImagen}
+        />
 
-          {tableroImagen ? (
-            <div
-              ref={tableroRef}
-              className="tablero"
-              onMouseMove={handleMouseMove}
-              onMouseDown={handleTableroMouseDown}
-              onMouseUp={handleMouseUp}
-              onMouseLeave={handleMouseUp}
-              onWheel={handleWheel}
-              onContextMenu={handleContextMenu}
-            >
-              <img
-                src={tableroImagen}
-                alt="Tablero"
-                className="tablero-imagen"
-                draggable={false}
-                style={{
-                  transform: `translate(${pan.x}px, ${pan.y}px) scale(${
-                    zoom / 100
-                  })`,
-                  transformOrigin: "center center",
-                }}
-              />
-              {fichas.map((ficha) => {
-                const hpActual = ficha.hpActual ?? ficha.hpMax ?? 50;
-                const hpMax = ficha.hpMax ?? 50;
-                const estado =
-                  ficha.estado || calcularEstadoPorHP(hpActual, hpMax);
-                const tamañoFicha = ficha.tamaño || 55;
-                const porcentajeHP = hpMax > 0 ? (hpActual / hpMax) * 100 : 0;
-                const colorHP = getColorHP(hpActual, hpMax);
-
-                // Calcular posición relativa al centro del contenedor
-                // La imagen está centrada y escala desde el centro, las fichas deben hacer lo mismo
-                const scaleFactor = zoom / 100;
-                // Calcular offset desde el centro del contenedor usando el tamaño del tablero
-                const offsetX =
-                  tableroSize.width > 0
-                    ? ((ficha.x - 50) / 100) * tableroSize.width * scaleFactor
-                    : 0;
-                const offsetY =
-                  tableroSize.height > 0
-                    ? ((ficha.y - 50) / 100) * tableroSize.height * scaleFactor
-                    : 0;
-
-                return (
-                  <div
-                    key={ficha.id}
-                    className={`ficha ficha-estado-${estado}`}
-                    style={{
-                      left: "50%",
-                      top: "50%",
-                      width: `${tamañoFicha}px`,
-                      height: `${tamañoFicha}px`,
-                      backgroundColor: hpActual <= 0 ? "#6b7280" : ficha.color,
-                      cursor:
-                        fichaArrastrada === ficha.id ? "grabbing" : "grab",
-                      transition:
-                        fichaArrastrada === ficha.id
-                          ? "none"
-                          : "transform 0.1s, box-shadow 0.1s",
-                      transform: `translate(-50%, -50%) translate(${offsetX}px, ${offsetY}px) translate(${pan.x}px, ${pan.y}px) scale(${scaleFactor})`,
-                      transformOrigin: "center center",
-                    }}
-                    onMouseDown={(e) => {
-                      if (e.detail === 2) {
-                        // Doble click para editar en modal
-                        e.preventDefault();
-                        e.stopPropagation();
-                        handleEditarFicha(ficha, true);
-                      } else {
-                        handleMouseDown(e, ficha);
-                      }
-                    }}
-                    title={`${
-                      ficha.nombre
-                    } - ${hpActual}/${hpMax} HP - ${getLabelEstado(estado)}`}
-                  >
-                    {/* Barra de vida circular alrededor de la ficha */}
-                    <svg className="ficha-hp-ring" viewBox="0 0 100 100">
-                      <circle
-                        className="ficha-hp-ring-background"
-                        cx="50"
-                        cy="50"
-                        r="48"
-                        fill="none"
-                        stroke="rgba(0, 0, 0, 0.4)"
-                        strokeWidth="4"
-                      />
-                      <circle
-                        className="ficha-hp-ring-fill"
-                        cx="50"
-                        cy="50"
-                        r="48"
-                        fill="none"
-                        stroke={colorHP}
-                        strokeWidth="4"
-                        strokeDasharray={`${2 * Math.PI * 48}`}
-                        strokeDashoffset={`${
-                          2 * Math.PI * 48 * (1 - porcentajeHP / 100)
-                        }`}
-                        strokeLinecap="round"
-                        transform="rotate(-90 50 50)"
-                        style={{
-                          filter: `drop-shadow(0 0 3px ${colorHP})`,
-                        }}
-                      />
-                    </svg>
-                    {ficha.imagen ? (
-                      <img
-                        src={ficha.imagen}
-                        alt={ficha.nombre}
-                        className="ficha-imagen"
-                      />
-                    ) : (
-                      <span className="ficha-inicial">
-                        {ficha.nombre.charAt(0).toUpperCase()}
-                      </span>
-                    )}
-                    <div className="ficha-hp-indicator">
-                      {hpActual}/{hpMax}
-                    </div>
-                    <span className="ficha-nombre-tooltip">{ficha.nombre}</span>
-                  </div>
-                );
-              })}
-            </div>
-          ) : (
-            <div className="tablero-vacio">
-              <p>Carga una imagen de tablero para comenzar</p>
-              <button
-                className="btn-cargar-grande"
-                onClick={() => fileInputRef.current?.click()}
-              >
-                Cargar Tablero
-              </button>
-            </div>
-          )}
-        </main>
+        <PanelInfoFicha
+          fichaSeleccionada={fichaSeleccionada}
+          onClose={() => setFichaSeleccionada(null)}
+          onEdit={(ficha, abrirModal) => handleEditarFicha(ficha, abrirModal)}
+        />
       </div>
 
-      {/* Modal de Edición */}
-      {modalAbierto && fichaEditando && (
-        <div className="modal-overlay" onClick={handleCerrarModal}>
-          <div className="modal-contenido" onClick={(e) => e.stopPropagation()}>
-            <div className="modal-header">
-              <h2>Editar Ficha: {fichaEditando.nombre}</h2>
-              <button className="modal-cerrar" onClick={handleCerrarModal}>
-                ×
-              </button>
-            </div>
-
-            <div className="modal-body">
-              <div className="form-seccion">
-                <label className="form-label">Tipo</label>
-                <div className="categorias">
-                  {Object.values(CATEGORIAS).map((cat) => (
-                    <button
-                      key={cat}
-                      className={`btn-categoria ${
-                        categoriaSeleccionada === cat ? "activa" : ""
-                      }`}
-                      onClick={() => setCategoriaSeleccionada(cat)}
-                      style={{
-                        backgroundColor:
-                          categoriaSeleccionada === cat
-                            ? getColorPorCategoria(cat)
-                            : "rgba(60, 40, 20, 0.6)",
-                      }}
-                    >
-                      {cat}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              <div className="form-seccion">
-                <label
-                  className="form-label"
-                  htmlFor="modal-input-nombre-ficha"
-                >
-                  Nombre
-                </label>
-                <input
-                  id="modal-input-nombre-ficha"
-                  type="text"
-                  placeholder="Nombre de la ficha"
-                  value={nombreFicha}
-                  onChange={(e) => setNombreFicha(e.target.value)}
-                  className="input-nombre"
-                />
-              </div>
-
-              <div className="form-seccion">
-                <label className="form-label">Imagen (opcional)</label>
-                <div className="imagen-input-container">
-                  {imagenFicha && (
-                    <img
-                      src={imagenFicha}
-                      alt="Vista previa"
-                      className="imagen-preview"
-                    />
-                  )}
-                  <button
-                    type="button"
-                    className="btn-cargar-imagen"
-                    onClick={() => imagenFichaInputRef.current?.click()}
-                  >
-                    {imagenFicha ? "Cambiar Imagen" : "Cargar Imagen"}
-                  </button>
-                  {imagenFicha && (
-                    <button
-                      type="button"
-                      className="btn-eliminar-imagen"
-                      onClick={() => setImagenFicha("")}
-                    >
-                      ✕
-                    </button>
-                  )}
-                  <input
-                    ref={imagenFichaInputRef}
-                    type="file"
-                    accept="image/*"
-                    onChange={handleCargarImagenFicha}
-                    style={{ display: "none" }}
-                  />
-                </div>
-              </div>
-
-              <div className="form-seccion">
-                <label className="form-label">Puntos de Vida</label>
-                <div className="hp-inputs">
-                  <div className="hp-input-group">
-                    <label className="hp-label">Actual</label>
-                    <input
-                      type="number"
-                      min="0"
-                      max="999"
-                      value={hpActualFicha}
-                      onChange={(e) =>
-                        setHpActualFicha(
-                          Math.max(0, parseInt(e.target.value) || 0)
-                        )
-                      }
-                      className="input-hp"
-                    />
-                  </div>
-                  <span className="hp-separator">/</span>
-                  <div className="hp-input-group">
-                    <label className="hp-label">Máximo</label>
-                    <input
-                      type="number"
-                      min="1"
-                      max="999"
-                      value={hpMaxFicha}
-                      onChange={(e) => {
-                        const nuevoMax = Math.max(
-                          1,
-                          parseInt(e.target.value) || 1
-                        );
-                        setHpMaxFicha(nuevoMax);
-                        if (hpActualFicha > nuevoMax)
-                          setHpActualFicha(nuevoMax);
-                      }}
-                      className="input-hp"
-                    />
-                  </div>
-                </div>
-              </div>
-
-              <div className="form-seccion">
-                <label className="form-label">Tamaño (px)</label>
-                <input
-                  type="range"
-                  min="30"
-                  max="120"
-                  value={tamañoFicha}
-                  onChange={(e) => setTamañoFicha(parseInt(e.target.value))}
-                  className="tamaño-slider"
-                />
-                <div className="tamaño-value-display">
-                  <span>{tamañoFicha}px</span>
-                </div>
-              </div>
-            </div>
-
-            <div className="modal-footer">
-              <button onClick={handleCancelarEdicion} className="btn-cancelar">
-                Cancelar
-              </button>
-              <button onClick={handleAgregarFicha} className="btn-agregar">
-                Guardar Cambios
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      <ModalEdicion
+        ficha={fichaEditando}
+        isOpen={modalAbierto}
+        onClose={() => {
+          setModalAbierto(false);
+          setFichaEditando(null);
+        }}
+        onSave={handleGuardarEdicion}
+        onImageChange={() => {}}
+      />
     </div>
   );
 }
