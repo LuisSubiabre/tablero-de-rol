@@ -7,6 +7,13 @@ const CATEGORIAS = {
   OTROS: "Otros",
 };
 
+const ESTADOS = {
+  SALUDABLE: "saludable",
+  HERIDO: "herido",
+  INCONSCIENTE: "inconsciente",
+  MUERTO: "muerto",
+};
+
 function App() {
   const [tableroImagen, setTableroImagen] = useState(null);
   const [zoom, setZoom] = useState(100);
@@ -16,7 +23,13 @@ function App() {
     CATEGORIAS.HEROES
   );
   const [nombreFicha, setNombreFicha] = useState("");
+  const [imagenFicha, setImagenFicha] = useState("");
+  const [hpMaxFicha, setHpMaxFicha] = useState(50);
+  const [hpActualFicha, setHpActualFicha] = useState(50);
+  const [tamañoFicha, setTamañoFicha] = useState(55);
+  const [fichaEditando, setFichaEditando] = useState(null);
   const fileInputRef = useRef(null);
+  const imagenFichaInputRef = useRef(null);
   const idCounterRef = useRef(0);
   const tableroRef = useRef(null);
   const [fichaArrastrada, setFichaArrastrada] = useState(null);
@@ -64,24 +77,102 @@ function App() {
     }
   };
 
+  const handleCargarImagenFicha = (event) => {
+    const file = event.target.files[0];
+    if (file && file.type.startsWith("image/")) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setImagenFicha(e.target.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const calcularEstadoPorHP = (hpActual, hpMax) => {
+    if (hpActual <= 0) return ESTADOS.MUERTO;
+    if (hpActual < hpMax * 0.5) return ESTADOS.INCONSCIENTE;
+    if (hpActual < hpMax) return ESTADOS.HERIDO;
+    return ESTADOS.SALUDABLE;
+  };
+
   const handleAgregarFicha = () => {
     if (!nombreFicha.trim()) {
       alert("Por favor ingresa un nombre para la ficha");
       return;
     }
 
-    idCounterRef.current += 1;
-    const nuevaFicha = {
-      id: idCounterRef.current,
-      nombre: nombreFicha.trim(),
-      categoria: categoriaSeleccionada,
-      x: 50, // posición inicial
-      y: 50,
-      color: getColorPorCategoria(categoriaSeleccionada),
-    };
+    if (fichaEditando) {
+      // Editar ficha existente
+      const estadoCalculado = calcularEstadoPorHP(hpActualFicha, hpMaxFicha);
+      setFichas(
+        fichas.map((f) =>
+          f.id === fichaEditando.id
+            ? {
+                ...f,
+                nombre: nombreFicha.trim(),
+                categoria: categoriaSeleccionada,
+                imagen: imagenFicha || f.imagen,
+                hpMax: hpMaxFicha,
+                hpActual: hpActualFicha,
+                estado: estadoCalculado,
+                tamaño: tamañoFicha,
+                color: getColorPorCategoria(categoriaSeleccionada),
+              }
+            : f
+        )
+      );
+      setFichaEditando(null);
+    } else {
+      // Nueva ficha
+      idCounterRef.current += 1;
+      const estadoCalculado = calcularEstadoPorHP(hpActualFicha, hpMaxFicha);
+      const nuevaFicha = {
+        id: idCounterRef.current,
+        nombre: nombreFicha.trim(),
+        categoria: categoriaSeleccionada,
+        tipo: categoriaSeleccionada,
+        imagen: imagenFicha,
+        hpMax: hpMaxFicha,
+        hpActual: hpActualFicha,
+        estado: estadoCalculado,
+        tamaño: tamañoFicha,
+        x: 50,
+        y: 50,
+        color: getColorPorCategoria(categoriaSeleccionada),
+      };
 
-    setFichas([...fichas, nuevaFicha]);
+      setFichas([...fichas, nuevaFicha]);
+    }
+
+    // Resetear formulario
     setNombreFicha("");
+    setImagenFicha("");
+    setHpMaxFicha(50);
+    setHpActualFicha(50);
+    setTamañoFicha(55);
+  };
+
+  const handleEditarFicha = (ficha) => {
+    setFichaEditando(ficha);
+    setNombreFicha(ficha.nombre);
+    setCategoriaSeleccionada(ficha.categoria);
+    setImagenFicha(ficha.imagen || "");
+    setHpMaxFicha(ficha.hpMax || 50);
+    setHpActualFicha(ficha.hpActual || ficha.hpMax || 50);
+    setTamañoFicha(ficha.tamaño || 55);
+    // Scroll al formulario
+    document
+      .querySelector(".panel-agregar")
+      ?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  };
+
+  const handleCancelarEdicion = () => {
+    setFichaEditando(null);
+    setNombreFicha("");
+    setImagenFicha("");
+    setHpMaxFicha(50);
+    setHpActualFicha(50);
+    setTamañoFicha(55);
   };
 
   const getColorPorCategoria = (categoria) => {
@@ -97,6 +188,28 @@ function App() {
     }
   };
 
+  const getColorHP = (hpActual, hpMax) => {
+    if (hpActual <= 0) return "#6b7280"; // gris - muerto
+    const porcentaje = hpActual / hpMax;
+    if (porcentaje < 0.25) return "#ef4444"; // rojo - crítico
+    if (porcentaje < 0.5) return "#f59e0b"; // naranja - grave
+    if (porcentaje < 0.75) return "#eab308"; // amarillo - herido
+    return "#10b981"; // verde - saludable
+  };
+
+  const getLabelEstado = (estado) => {
+    switch (estado) {
+      case ESTADOS.MUERTO:
+        return "💀 Muerto";
+      case ESTADOS.INCONSCIENTE:
+        return "😴 Inconsciente";
+      case ESTADOS.HERIDO:
+        return "🩹 Herido";
+      default:
+        return "✅ Saludable";
+    }
+  };
+
   const handleEliminarFicha = (id) => {
     setFichas(fichas.filter((f) => f.id !== id));
   };
@@ -107,12 +220,20 @@ function App() {
     setFichaArrastrada(ficha.id);
     setIsPanning(false); // No estamos paneando cuando movemos una ficha
 
-    const fichaRect = e.currentTarget.getBoundingClientRect();
+    // Calcular el offset considerando que la ficha está centrada
+    // Necesitamos el offset en el espacio del contenedor, no en el espacio transformado
+    const rect = tableroRef.current.getBoundingClientRect();
+    const mouseX = e.clientX - rect.left;
+    const mouseY = e.clientY - rect.top;
 
-    // Calcular el offset desde el centro de la ficha hasta el punto donde se hizo clic
+    // La posición porcentual de la ficha
+    const fichaX = (ficha.x / 100) * rect.width;
+    const fichaY = (ficha.y / 100) * rect.height;
+
+    // Offset desde el centro de la ficha (posición porcentual) hasta el mouse
     offsetRef.current = {
-      x: e.clientX - (fichaRect.left + fichaRect.width / 2),
-      y: e.clientY - (fichaRect.top + fichaRect.height / 2),
+      x: mouseX - fichaX,
+      y: mouseY - fichaY,
     };
   };
 
@@ -280,37 +401,149 @@ function App() {
       <div className="contenedor-principal">
         <aside className="sidebar">
           <div className="panel-agregar">
-            <h2>Añadir Ficha</h2>
-            <div className="categorias">
-              {Object.values(CATEGORIAS).map((cat) => (
-                <button
-                  key={cat}
-                  className={`btn-categoria ${
-                    categoriaSeleccionada === cat ? "activa" : ""
-                  }`}
-                  onClick={() => setCategoriaSeleccionada(cat)}
-                  style={{
-                    backgroundColor:
-                      categoriaSeleccionada === cat
-                        ? getColorPorCategoria(cat)
-                        : "#374151",
-                  }}
-                >
-                  {cat}
-                </button>
-              ))}
+            <h2>{fichaEditando ? "Editar Ficha" : "Añadir Ficha"}</h2>
+
+            <div className="form-seccion">
+              <label className="form-label">Tipo</label>
+              <div className="categorias">
+                {Object.values(CATEGORIAS).map((cat) => (
+                  <button
+                    key={cat}
+                    className={`btn-categoria ${
+                      categoriaSeleccionada === cat ? "activa" : ""
+                    }`}
+                    onClick={() => setCategoriaSeleccionada(cat)}
+                    style={{
+                      backgroundColor:
+                        categoriaSeleccionada === cat
+                          ? getColorPorCategoria(cat)
+                          : "rgba(60, 40, 20, 0.6)",
+                    }}
+                  >
+                    {cat}
+                  </button>
+                ))}
+              </div>
             </div>
-            <input
-              type="text"
-              placeholder="Nombre de la ficha"
-              value={nombreFicha}
-              onChange={(e) => setNombreFicha(e.target.value)}
-              onKeyPress={(e) => e.key === "Enter" && handleAgregarFicha()}
-              className="input-nombre"
-            />
-            <button onClick={handleAgregarFicha} className="btn-agregar">
-              Añadir Ficha
-            </button>
+
+            <div className="form-seccion">
+              <label className="form-label" htmlFor="input-nombre-ficha">
+                Nombre
+              </label>
+              <input
+                id="input-nombre-ficha"
+                type="text"
+                placeholder="Nombre de la ficha"
+                value={nombreFicha}
+                onChange={(e) => setNombreFicha(e.target.value)}
+                className="input-nombre"
+              />
+            </div>
+
+            <div className="form-seccion">
+              <label className="form-label">Imagen (opcional)</label>
+              <div className="imagen-input-container">
+                {imagenFicha && (
+                  <img
+                    src={imagenFicha}
+                    alt="Vista previa"
+                    className="imagen-preview"
+                  />
+                )}
+                <button
+                  type="button"
+                  className="btn-cargar-imagen"
+                  onClick={() => imagenFichaInputRef.current?.click()}
+                >
+                  {imagenFicha ? "Cambiar Imagen" : "Cargar Imagen"}
+                </button>
+                {imagenFicha && (
+                  <button
+                    type="button"
+                    className="btn-eliminar-imagen"
+                    onClick={() => setImagenFicha("")}
+                  >
+                    ✕
+                  </button>
+                )}
+                <input
+                  ref={imagenFichaInputRef}
+                  type="file"
+                  accept="image/*"
+                  onChange={handleCargarImagenFicha}
+                  style={{ display: "none" }}
+                />
+              </div>
+            </div>
+
+            <div className="form-seccion">
+              <label className="form-label">Puntos de Vida</label>
+              <div className="hp-inputs">
+                <div className="hp-input-group">
+                  <label className="hp-label">Actual</label>
+                  <input
+                    type="number"
+                    min="0"
+                    max="999"
+                    value={hpActualFicha}
+                    onChange={(e) =>
+                      setHpActualFicha(
+                        Math.max(0, parseInt(e.target.value) || 0)
+                      )
+                    }
+                    className="input-hp"
+                  />
+                </div>
+                <span className="hp-separator">/</span>
+                <div className="hp-input-group">
+                  <label className="hp-label">Máximo</label>
+                  <input
+                    type="number"
+                    min="1"
+                    max="999"
+                    value={hpMaxFicha}
+                    onChange={(e) => {
+                      const nuevoMax = Math.max(
+                        1,
+                        parseInt(e.target.value) || 1
+                      );
+                      setHpMaxFicha(nuevoMax);
+                      if (hpActualFicha > nuevoMax) setHpActualFicha(nuevoMax);
+                    }}
+                    className="input-hp"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="form-seccion">
+              <label className="form-label">Tamaño (px)</label>
+              <input
+                type="range"
+                min="30"
+                max="120"
+                value={tamañoFicha}
+                onChange={(e) => setTamañoFicha(parseInt(e.target.value))}
+                className="tamaño-slider"
+              />
+              <div className="tamaño-value-display">
+                <span>{tamañoFicha}px</span>
+              </div>
+            </div>
+
+            <div className="form-actions">
+              {fichaEditando && (
+                <button
+                  onClick={handleCancelarEdicion}
+                  className="btn-cancelar"
+                >
+                  Cancelar
+                </button>
+              )}
+              <button onClick={handleAgregarFicha} className="btn-agregar">
+                {fichaEditando ? "Guardar Cambios" : "Añadir Ficha"}
+              </button>
+            </div>
           </div>
 
           <div className="panel-fichas">
@@ -328,17 +561,66 @@ function App() {
                     >
                       {categoria} ({fichasCat.length})
                     </h3>
-                    {fichasCat.map((ficha) => (
-                      <div key={ficha.id} className="ficha-item">
-                        <span className="ficha-nombre">{ficha.nombre}</span>
-                        <button
-                          className="btn-eliminar"
-                          onClick={() => handleEliminarFicha(ficha.id)}
-                        >
-                          ×
-                        </button>
-                      </div>
-                    ))}
+                    {fichasCat.map((ficha) => {
+                      const hpActual = ficha.hpActual ?? ficha.hpMax ?? 50;
+                      const hpMax = ficha.hpMax ?? 50;
+                      const porcentajeHP =
+                        hpMax > 0 ? (hpActual / hpMax) * 100 : 0;
+                      const estado =
+                        ficha.estado || calcularEstadoPorHP(hpActual, hpMax);
+
+                      return (
+                        <div key={ficha.id} className="ficha-item">
+                          <div
+                            className="ficha-item-content"
+                            onClick={() => handleEditarFicha(ficha)}
+                          >
+                            <div className="ficha-item-header">
+                              <span className="ficha-nombre">
+                                {ficha.nombre}
+                              </span>
+                              <span className="ficha-estado-label">
+                                {getLabelEstado(estado)}
+                              </span>
+                            </div>
+                            <div className="ficha-hp-bar-container">
+                              <div
+                                className="ficha-hp-bar"
+                                style={{
+                                  width: `${porcentajeHP}%`,
+                                  backgroundColor: getColorHP(hpActual, hpMax),
+                                }}
+                              />
+                              <span className="ficha-hp-text">
+                                {hpActual}/{hpMax} HP
+                              </span>
+                            </div>
+                          </div>
+                          <div className="ficha-item-actions">
+                            <button
+                              className="btn-editar"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleEditarFicha(ficha);
+                              }}
+                              title="Editar"
+                            >
+                              ✎
+                            </button>
+                            <button
+                              className="btn-eliminar"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleEliminarFicha(ficha.id);
+                              }}
+                              title="Eliminar"
+                            >
+                              ×
+                            </button>
+                          </div>
+                        </div>
+                      );
+                    })}
                   </div>
                 );
               })}
@@ -373,29 +655,97 @@ function App() {
                   transformOrigin: "center center",
                 }}
               />
-              {fichas.map((ficha) => (
-                <div
-                  key={ficha.id}
-                  className="ficha"
-                  style={{
-                    left: `${ficha.x}%`,
-                    top: `${ficha.y}%`,
-                    backgroundColor: ficha.color,
-                    cursor: fichaArrastrada === ficha.id ? "grabbing" : "grab",
-                    transition:
-                      fichaArrastrada === ficha.id
-                        ? "none"
-                        : "transform 0.1s, box-shadow 0.1s",
-                  }}
-                  onMouseDown={(e) => handleMouseDown(e, ficha)}
-                  title={ficha.nombre}
-                >
-                  <span className="ficha-inicial">
-                    {ficha.nombre.charAt(0).toUpperCase()}
-                  </span>
-                  <span className="ficha-nombre-tooltip">{ficha.nombre}</span>
-                </div>
-              ))}
+              {fichas.map((ficha) => {
+                const hpActual = ficha.hpActual ?? ficha.hpMax ?? 50;
+                const hpMax = ficha.hpMax ?? 50;
+                const estado =
+                  ficha.estado || calcularEstadoPorHP(hpActual, hpMax);
+                const tamañoFicha = ficha.tamaño || 55;
+                const porcentajeHP = hpMax > 0 ? (hpActual / hpMax) * 100 : 0;
+                const colorHP = getColorHP(hpActual, hpMax);
+
+                return (
+                  <div
+                    key={ficha.id}
+                    className={`ficha ficha-estado-${estado}`}
+                    style={{
+                      left: `${ficha.x}%`,
+                      top: `${ficha.y}%`,
+                      width: `${tamañoFicha}px`,
+                      height: `${tamañoFicha}px`,
+                      backgroundColor: ficha.color,
+                      cursor:
+                        fichaArrastrada === ficha.id ? "grabbing" : "grab",
+                      transition:
+                        fichaArrastrada === ficha.id
+                          ? "none"
+                          : "transform 0.1s, box-shadow 0.1s",
+                      transform: `translate(-50%, -50%) translate(${pan.x}px, ${
+                        pan.y
+                      }px) scale(${zoom / 100})`,
+                    }}
+                    onMouseDown={(e) => {
+                      if (e.detail === 2) {
+                        // Doble click para editar
+                        e.preventDefault();
+                        e.stopPropagation();
+                        handleEditarFicha(ficha);
+                      } else {
+                        handleMouseDown(e, ficha);
+                      }
+                    }}
+                    title={`${
+                      ficha.nombre
+                    } - ${hpActual}/${hpMax} HP - ${getLabelEstado(estado)}`}
+                  >
+                    {/* Barra de vida circular alrededor de la ficha */}
+                    <svg className="ficha-hp-ring" viewBox="0 0 100 100">
+                      <circle
+                        className="ficha-hp-ring-background"
+                        cx="50"
+                        cy="50"
+                        r="48"
+                        fill="none"
+                        stroke="rgba(0, 0, 0, 0.4)"
+                        strokeWidth="4"
+                      />
+                      <circle
+                        className="ficha-hp-ring-fill"
+                        cx="50"
+                        cy="50"
+                        r="48"
+                        fill="none"
+                        stroke={colorHP}
+                        strokeWidth="4"
+                        strokeDasharray={`${2 * Math.PI * 48}`}
+                        strokeDashoffset={`${
+                          2 * Math.PI * 48 * (1 - porcentajeHP / 100)
+                        }`}
+                        strokeLinecap="round"
+                        transform="rotate(-90 50 50)"
+                        style={{
+                          filter: `drop-shadow(0 0 3px ${colorHP})`,
+                        }}
+                      />
+                    </svg>
+                    {ficha.imagen ? (
+                      <img
+                        src={ficha.imagen}
+                        alt={ficha.nombre}
+                        className="ficha-imagen"
+                      />
+                    ) : (
+                      <span className="ficha-inicial">
+                        {ficha.nombre.charAt(0).toUpperCase()}
+                      </span>
+                    )}
+                    <div className="ficha-hp-indicator">
+                      {hpActual}/{hpMax}
+                    </div>
+                    <span className="ficha-nombre-tooltip">{ficha.nombre}</span>
+                  </div>
+                );
+              })}
             </div>
           ) : (
             <div className="tablero-vacio">

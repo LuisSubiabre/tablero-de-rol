@@ -418,6 +418,225 @@
   transform: translateY(0);
 }
 
+.form-seccion {
+  margin-bottom: 1.25rem;
+}
+
+.form-label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 600;
+  font-family: 'Cinzel', serif;
+  color: #d4af37;
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  text-shadow: 0 0 5px rgba(212, 175, 55, 0.3);
+}
+
+.imagen-input-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.imagen-preview {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 2px solid rgba(184, 134, 11, 0.4);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.btn-cargar-imagen {
+  padding: 0.5rem 1rem;
+  background: rgba(60, 40, 20, 0.6);
+  color: #d4af37;
+  border: 1px solid rgba(184, 134, 11, 0.4);
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  font-family: 'Cinzel', serif;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.btn-cargar-imagen:hover {
+  background: rgba(80, 50, 25, 0.8);
+  border-color: rgba(184, 134, 11, 0.6);
+  color: #ffd700;
+}
+
+.btn-eliminar-imagen {
+  padding: 0.25rem 0.5rem;
+  background: rgba(139, 0, 0, 0.6);
+  color: #ffcccc;
+  border: 1px solid rgba(139, 0, 0, 0.6);
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-eliminar-imagen:hover {
+  background: rgba(139, 0, 0, 0.8);
+}
+
+.hp-inputs {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.5rem;
+}
+
+.hp-input-group {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.hp-label {
+  font-size: 0.75rem;
+  color: #8b7355;
+  font-family: 'Cinzel', serif;
+  font-weight: 500;
+}
+
+.input-hp {
+  width: 100%;
+  padding: 0.625rem;
+  background: rgba(15, 10, 5, 0.8);
+  border: 2px solid rgba(184, 134, 11, 0.4);
+  border-radius: 6px;
+  color: #f5e6d3;
+  font-size: 1rem;
+  font-family: 'Cinzel', serif;
+  text-align: center;
+  transition: all 0.3s;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+.input-hp:focus {
+  outline: none;
+  border-color: rgba(212, 175, 55, 0.8);
+  box-shadow: 
+    inset 0 2px 4px rgba(0, 0, 0, 0.4),
+    0 0 10px rgba(212, 175, 55, 0.3);
+}
+
+.hp-separator {
+  color: #d4af37;
+  font-size: 1.25rem;
+  font-weight: 700;
+  padding-bottom: 0.25rem;
+  text-shadow: 0 0 5px rgba(212, 175, 55, 0.5);
+}
+
+.tamaño-slider {
+  width: 100%;
+  height: 8px;
+  border-radius: 4px;
+  background: rgba(20, 15, 10, 0.8);
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+  cursor: pointer;
+  border: 1px solid rgba(184, 134, 11, 0.2);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.4);
+  margin-bottom: 0.5rem;
+}
+
+.tamaño-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #d4af37 0%, #b8860b 100%);
+  cursor: pointer;
+  box-shadow: 
+    0 2px 6px rgba(0, 0, 0, 0.4),
+    0 0 8px rgba(212, 175, 55, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(184, 134, 11, 0.8);
+  transition: all 0.2s;
+}
+
+.tamaño-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+  box-shadow: 
+    0 3px 8px rgba(0, 0, 0, 0.5),
+    0 0 12px rgba(212, 175, 55, 0.7);
+}
+
+.tamaño-slider::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #d4af37 0%, #b8860b 100%);
+  cursor: pointer;
+  border: 1px solid rgba(184, 134, 11, 0.8);
+  box-shadow: 
+    0 2px 6px rgba(0, 0, 0, 0.4),
+    0 0 8px rgba(212, 175, 55, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  transition: all 0.2s;
+}
+
+.tamaño-slider::-moz-range-thumb:hover {
+  transform: scale(1.2);
+  box-shadow: 
+    0 3px 8px rgba(0, 0, 0, 0.5),
+    0 0 12px rgba(212, 175, 55, 0.7);
+}
+
+.tamaño-value-display {
+  text-align: center;
+  color: #d4af37;
+  font-weight: 600;
+  font-family: 'Cinzel', serif;
+  font-size: 0.875rem;
+  text-shadow: 0 0 5px rgba(212, 175, 55, 0.3);
+}
+
+.form-actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.btn-cancelar {
+  flex: 1;
+  padding: 0.75rem;
+  background: rgba(60, 40, 20, 0.6);
+  color: #d4af37;
+  border: 2px solid rgba(184, 134, 11, 0.4);
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  font-family: 'Cinzel', serif;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.btn-cancelar:hover {
+  background: rgba(80, 50, 25, 0.8);
+  border-color: rgba(184, 134, 11, 0.6);
+  color: #ffd700;
+  box-shadow: 
+    inset 0 2px 4px rgba(0, 0, 0, 0.3),
+    0 0 10px rgba(184, 134, 11, 0.3);
+}
+
+.btn-agregar {
+  flex: 2;
+}
+
 .lista-fichas {
   display: flex;
   flex-direction: column;
@@ -444,13 +663,14 @@
 .ficha-item {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: stretch;
   padding: 0.75rem;
   background: rgba(15, 10, 5, 0.6);
   border-radius: 8px;
   border: 1px solid rgba(184, 134, 11, 0.2);
   transition: all 0.3s;
   box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+  gap: 0.5rem;
 }
 
 .ficha-item:hover {
@@ -462,11 +682,100 @@
   transform: translateX(4px);
 }
 
-.ficha-nombre {
+.ficha-item-content {
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  cursor: pointer;
+  min-width: 0;
+}
+
+.ficha-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.ficha-nombre {
   color: #f5e6d3;
   font-family: 'Cinzel', serif;
+  font-weight: 600;
+  font-size: 0.9375rem;
+}
+
+.ficha-estado-label {
+  font-size: 0.75rem;
+  font-family: 'Cinzel', serif;
   font-weight: 500;
+  color: #d4af37;
+  white-space: nowrap;
+}
+
+.ficha-hp-bar-container {
+  position: relative;
+  width: 100%;
+  height: 20px;
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 4px;
+  overflow: hidden;
+  border: 1px solid rgba(184, 134, 11, 0.2);
+}
+
+.ficha-hp-bar {
+  height: 100%;
+  transition: width 0.3s ease, background-color 0.3s ease;
+  border-radius: 4px;
+}
+
+.ficha-hp-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 0.7rem;
+  font-weight: 700;
+  font-family: 'Cinzel', serif;
+  color: white;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+  white-space: nowrap;
+  z-index: 1;
+}
+
+.ficha-item-actions {
+  display: flex;
+  gap: 0.25rem;
+  align-items: flex-start;
+}
+
+.btn-editar {
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  color: white;
+  border: 1px solid rgba(59, 130, 246, 0.6);
+  border-radius: 50%;
+  width: 26px;
+  height: 26px;
+  cursor: pointer;
+  font-size: 1rem;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  padding: 0;
+  box-shadow: 
+    0 2px 4px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.btn-editar:hover {
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  transform: scale(1.1);
+  box-shadow: 
+    0 3px 6px rgba(0, 0, 0, 0.5),
+    0 0 10px rgba(59, 130, 246, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
 .btn-eliminar {
@@ -618,8 +927,6 @@
 
 .ficha {
   position: absolute;
-  width: 55px;
-  height: 55px;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -632,15 +939,16 @@
     inset 0 2px 4px rgba(255, 255, 255, 0.2),
     inset 0 -2px 4px rgba(0, 0, 0, 0.3);
   user-select: none;
-  transform: translate(-50%, -50%);
+  transform-origin: center center;
   will-change: transform;
   pointer-events: auto;
   border: 2px solid rgba(255, 255, 255, 0.3);
   transition: transform 0.2s, box-shadow 0.2s;
+  overflow: visible;
 }
 
 .ficha:hover {
-  transform: translate(-50%, -50%) scale(1.15);
+  z-index: 100;
   box-shadow: 
     0 6px 16px rgba(0, 0, 0, 0.7),
     0 0 0 3px rgba(0, 0, 0, 0.5),
@@ -649,12 +957,39 @@
     inset 0 2px 4px rgba(255, 255, 255, 0.3),
     inset 0 -2px 4px rgba(0, 0, 0, 0.4);
   border-color: rgba(255, 215, 0, 0.6);
-  z-index: 100;
 }
 
 .ficha:active {
   cursor: grabbing;
-  transform: translate(-50%, -50%) scale(1.1);
+}
+
+.ficha-hp-ring {
+  position: absolute;
+  top: -4px;
+  left: -4px;
+  width: calc(100% + 8px);
+  height: calc(100% + 8px);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.ficha-hp-ring-background {
+  transition: stroke 0.3s ease;
+}
+
+.ficha-hp-ring-fill {
+  transition: stroke-dashoffset 0.3s ease, stroke 0.3s ease;
+}
+
+.ficha-imagen {
+  width: calc(100% - 8px);
+  height: calc(100% - 8px);
+  object-fit: cover;
+  border-radius: 50%;
+  user-select: none;
+  pointer-events: none;
+  position: relative;
+  z-index: 2;
 }
 
 .ficha-inicial {
@@ -666,6 +1001,56 @@
     0 0 8px rgba(0, 0, 0, 0.5);
   font-family: 'Cinzel', serif;
   letter-spacing: 0;
+  position: relative;
+  z-index: 2;
+}
+
+.ficha-hp-indicator {
+  position: absolute;
+  bottom: -18px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.9);
+  color: white;
+  padding: 0.15rem 0.4rem;
+  border-radius: 4px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  font-family: 'Cinzel', serif;
+  white-space: nowrap;
+  border: 1px solid rgba(184, 134, 11, 0.5);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  z-index: 10;
+}
+
+.ficha-estado-herido {
+  border: 3px solid #f59e0b;
+  box-shadow: 
+    0 4px 12px rgba(0, 0, 0, 0.6),
+    0 0 0 3px rgba(0, 0, 0, 0.4),
+    0 0 0 6px rgba(245, 158, 11, 0.3),
+    inset 0 2px 4px rgba(255, 255, 255, 0.2),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.ficha-estado-inconsciente {
+  border: 3px solid #3b82f6;
+  box-shadow: 
+    0 4px 12px rgba(0, 0, 0, 0.6),
+    0 0 0 3px rgba(0, 0, 0, 0.4),
+    0 0 0 6px rgba(59, 130, 246, 0.3),
+    inset 0 2px 4px rgba(255, 255, 255, 0.2),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.ficha-estado-muerto {
+  border: 3px solid #6b7280;
+  box-shadow: 
+    0 4px 12px rgba(0, 0, 0, 0.6),
+    0 0 0 3px rgba(0, 0, 0, 0.4),
+    0 0 0 6px rgba(107, 114, 128, 0.3),
+    inset 0 2px 4px rgba(255, 255, 255, 0.1),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.4);
 }
 
 .ficha-nombre-tooltip {
