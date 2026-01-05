@@ -9,6 +9,9 @@ const Tablero = forwardRef(({
   zoom,
   pan,
   fichaArrastrada,
+  mostrarGrilla,
+  tamañoGrilla,
+  colorGrilla,
   onMouseMove,
   onMouseDown,
   onMouseUp,
@@ -71,6 +74,51 @@ const Tablero = forwardRef(({
             transformOrigin: "center center",
           }}
         />
+
+        {/* Grilla cuadrada */}
+        {mostrarGrilla && (
+          <svg
+            className="tablero-grilla"
+            width={tableroSize.width}
+            height={tableroSize.height}
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              pointerEvents: 'none',
+              zIndex: 1,
+            }}
+          >
+            <defs>
+              <pattern
+                id="grid"
+                width={tamañoGrilla}
+                height={tamañoGrilla}
+                patternUnits="userSpaceOnUse"
+              >
+                <path
+                  d={`M ${tamañoGrilla} 0 L 0 0 0 ${tamañoGrilla}`}
+                  fill="none"
+                  stroke={colorGrilla}
+                  strokeWidth="1"
+                  opacity="0.6"
+                />
+              </pattern>
+            </defs>
+            <rect
+              width="100%"
+              height="100%"
+              fill="url(#grid)"
+              style={{
+                transform: `translate(${pan.x}px, ${pan.y}px) scale(${
+                  zoom / 100
+                })`,
+                transformOrigin: "center center",
+              }}
+            />
+          </svg>
+        )}
+
         {fichas.map((ficha) => (
           <FichaTablero
             key={ficha.id}
@@ -117,6 +165,9 @@ Tablero.propTypes = {
     y: PropTypes.number.isRequired,
   }).isRequired,
   fichaArrastrada: PropTypes.number,
+  mostrarGrilla: PropTypes.bool.isRequired,
+  tamañoGrilla: PropTypes.number.isRequired,
+  colorGrilla: PropTypes.string.isRequired,
   onMouseMove: PropTypes.func.isRequired,
   onMouseDown: PropTypes.func.isRequired,
   onMouseUp: PropTypes.func.isRequired,

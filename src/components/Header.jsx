@@ -10,6 +10,12 @@ const Header = ({
   onZoomReset,
   onCargarImagen,
   onNuevaPartida,
+  mostrarGrilla,
+  tamañoGrilla,
+  colorGrilla,
+  onToggleGrilla,
+  onCambioTamañoGrilla,
+  onCambioColorGrilla,
 }) => {
   const fileInputRef = React.useRef(null);
 
@@ -51,6 +57,53 @@ const Header = ({
             </button>
           </div>
         )}
+
+        {tableroImagen && (
+          <div className="grilla-controls">
+            <button
+              className={`btn-toggle-grilla ${mostrarGrilla ? "active" : ""}`}
+              onClick={onToggleGrilla}
+              title="Mostrar/ocultar grilla"
+            >
+              □ Grilla
+            </button>
+
+            {mostrarGrilla && (
+              <>
+                <div className="grilla-tamaño-control">
+                  <label htmlFor="tamaño-grilla">Tamaño:</label>
+                  <input
+                    id="tamaño-grilla"
+                    type="range"
+                    min="20"
+                    max="200"
+                    step="10"
+                    value={tamañoGrilla}
+                    onChange={(e) =>
+                      onCambioTamañoGrilla(Number(e.target.value))
+                    }
+                    className="grilla-slider"
+                    title={`Tamaño de grilla: ${tamañoGrilla}px`}
+                  />
+                  <span className="grilla-valor">{tamañoGrilla}px</span>
+                </div>
+
+                <div className="grilla-color-control">
+                  <label htmlFor="color-grilla">Color:</label>
+                  <input
+                    id="color-grilla"
+                    type="color"
+                    value={colorGrilla}
+                    onChange={(e) => onCambioColorGrilla(e.target.value)}
+                    className="grilla-color-picker"
+                    title="Color de la grilla"
+                  />
+                </div>
+              </>
+            )}
+          </div>
+        )}
+
         <button
           className="btn-nueva-partida"
           onClick={onNuevaPartida}
@@ -85,6 +138,12 @@ Header.propTypes = {
   onZoomReset: PropTypes.func.isRequired,
   onCargarImagen: PropTypes.func.isRequired,
   onNuevaPartida: PropTypes.func.isRequired,
+  mostrarGrilla: PropTypes.bool.isRequired,
+  tamañoGrilla: PropTypes.number.isRequired,
+  colorGrilla: PropTypes.string.isRequired,
+  onToggleGrilla: PropTypes.func.isRequired,
+  onCambioTamañoGrilla: PropTypes.func.isRequired,
+  onCambioColorGrilla: PropTypes.func.isRequired,
 };
 
 export default Header;

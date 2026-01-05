@@ -19,6 +19,8 @@ Aplicación web para gestionar partidas de Dungeons & Dragons y juegos de rol si
 - **Zoom y pan** fluido con controles intuitivos
 - **Persistencia automática** de posición y zoom
 - **Controles de zoom** con slider y botones
+- **Grilla cuadrada opcional** para medición y posicionamiento
+- **Personalización de grilla**: tamaño y color ajustables
 
 ### 💾 Persistencia de Datos
 
@@ -35,6 +37,12 @@ Aplicación web para gestionar partidas de Dungeons & Dragons y juegos de rol si
 - **Rueda del mouse**: zoom
 - **Espacio + clic izquierdo**: panear (alternativo)
 - **Doble clic en ficha**: editar ficha
+
+### Grilla
+
+- **□ Grilla**: botón para mostrar/ocultar la grilla cuadrada
+- **Tamaño**: slider para ajustar el tamaño de los cuadrados (20-200px)
+- **Color**: selector de color para personalizar la grilla
 
 ## 🚀 Instalación y Uso
 

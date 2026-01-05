@@ -51,6 +51,17 @@ function App() {
   const [fichaSeleccionada, setFichaSeleccionada] = useState(null);
   const [modalAbierto, setModalAbierto] = useState(false);
 
+  // Estados de la grilla
+  const [mostrarGrilla, setMostrarGrilla] = useState(() =>
+    cargarDesdeLocalStorage(`${STORAGE_KEY}-grilla-visible`, false)
+  );
+  const [tamañoGrilla, setTamañoGrilla] = useState(() =>
+    cargarDesdeLocalStorage(`${STORAGE_KEY}-grilla-tamaño`, 50)
+  );
+  const [colorGrilla, setColorGrilla] = useState(() =>
+    cargarDesdeLocalStorage(`${STORAGE_KEY}-grilla-color`, '#ffffff')
+  );
+
   // Estados para el formulario
   const [categoriaSeleccionada, setCategoriaSeleccionada] = useState(
     CATEGORIAS.HEROES
@@ -79,12 +90,28 @@ function App() {
     guardarEnLocalStorage(`${STORAGE_KEY}-pan`, pan);
   }, [pan]);
 
+  // Persistencia de configuración de grilla
+  useEffect(() => {
+    guardarEnLocalStorage(`${STORAGE_KEY}-grilla-visible`, mostrarGrilla);
+  }, [mostrarGrilla]);
+
+  useEffect(() => {
+    guardarEnLocalStorage(`${STORAGE_KEY}-grilla-tamaño`, tamañoGrilla);
+  }, [tamañoGrilla]);
+
+  useEffect(() => {
+    guardarEnLocalStorage(`${STORAGE_KEY}-grilla-color`, colorGrilla);
+  }, [colorGrilla]);
+
   // Función para limpiar todos los datos guardados (opcional para desarrollo)
   const limpiarDatosGuardados = () => {
     localStorage.removeItem(`${STORAGE_KEY}-fichas`);
     localStorage.removeItem(`${STORAGE_KEY}-tablero`);
     localStorage.removeItem(`${STORAGE_KEY}-zoom`);
     localStorage.removeItem(`${STORAGE_KEY}-pan`);
+    localStorage.removeItem(`${STORAGE_KEY}-grilla-visible`);
+    localStorage.removeItem(`${STORAGE_KEY}-grilla-tamaño`);
+    localStorage.removeItem(`${STORAGE_KEY}-grilla-color`);
   };
 
   // Función para crear nueva partida
@@ -104,6 +131,11 @@ function App() {
       setFichas([]);
       setFichaSeleccionada(null);
       setModalAbierto(false);
+
+      // Resetear configuración de grilla
+      setMostrarGrilla(false);
+      setTamañoGrilla(50);
+      setColorGrilla('#ffffff');
 
       // Resetear formulario
       resetFormulario();
@@ -486,6 +518,12 @@ function App() {
         onZoomReset={handleZoomReset}
         onCargarImagen={handleCargarImagen}
         onNuevaPartida={handleNuevaPartida}
+        mostrarGrilla={mostrarGrilla}
+        tamañoGrilla={tamañoGrilla}
+        colorGrilla={colorGrilla}
+        onToggleGrilla={() => setMostrarGrilla(!mostrarGrilla)}
+        onCambioTamañoGrilla={setTamañoGrilla}
+        onCambioColorGrilla={setColorGrilla}
       />
 
       <div className="contenedor-principal">
@@ -521,6 +559,9 @@ function App() {
           zoom={zoom}
           pan={pan}
           fichaArrastrada={fichaArrastrada}
+          mostrarGrilla={mostrarGrilla}
+          tamañoGrilla={tamañoGrilla}
+          colorGrilla={colorGrilla}
           onMouseMove={handleMouseMove}
           onMouseDown={handleTableroMouseDown}
           onMouseUp={handleMouseUp}
