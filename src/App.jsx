@@ -47,6 +47,7 @@ function App() {
   const [tableroSize, setTableroSize] = useState({ width: 0, height: 0 });
   const [fichaArrastrada, setFichaArrastrada] = useState(null);
   const [isPanning, setIsPanning] = useState(false);
+  const [fichaRedimensionando, setFichaRedimensionando] = useState(null);
 
   // Refs
   const fileInputRef = useRef(null);
@@ -57,6 +58,7 @@ function App() {
   const spacePressedRef = useRef(false);
   const clickStartRef = useRef({ x: 0, y: 0 });
   const isDraggingRef = useRef(false);
+  const resizeStartRef = useRef({ x: 0, y: 0, tamaño: 55, modo: "vertical" });
 
   // Funciones de zoom y pan
   const handleCargarImagen = (event) => {
@@ -135,6 +137,7 @@ function App() {
 
     setFichaArrastrada(ficha.id);
     setIsPanning(false);
+    setFichaRedimensionando(null);
 
     const rect = tableroRef.current.getBoundingClientRect();
     const mouseX = e.clientX - rect.left;
@@ -156,6 +159,24 @@ function App() {
     offsetRef.current = {
       x: mouseScaledX - fichaScaledX,
       y: mouseScaledY - fichaScaledY,
+    };
+  };
+
+  const handleResizeRightMouseDown = (e, ficha) => {
+    // Click derecho + arrastre vertical: arriba agranda, abajo achica
+    e.preventDefault();
+    e.stopPropagation();
+
+    setFichaArrastrada(null);
+    setIsPanning(false);
+    setFichaRedimensionando(ficha.id);
+    isDraggingRef.current = false;
+
+    resizeStartRef.current = {
+      x: e.clientX,
+      y: e.clientY,
+      tamaño: ficha.tamaño || 55,
+      modo: "vertical",
     };
   };
 
@@ -227,6 +248,31 @@ function App() {
   // Efecto para manejar el arrastre global y paneo
   useEffect(() => {
     const handleGlobalMouseMove = (e) => {
+      // Manejar redimensionado (prioridad máxima)
+      if (fichaRedimensionando) {
+        const scaleFactor = zoom / 100;
+        const dx = e.clientX - resizeStartRef.current.x;
+        const dy = e.clientY - resizeStartRef.current.y;
+        let delta = 0;
+        if (resizeStartRef.current.modo === "vertical") {
+          // Arriba (dy negativo) => delta positivo
+          delta = -dy / (scaleFactor || 1);
+        } else {
+          const deltaVisual = Math.max(dx, dy);
+          delta = deltaVisual / (scaleFactor || 1);
+        }
+
+        const nuevoTamaño = Math.round(resizeStartRef.current.tamaño + delta);
+        const tamañoLimitado = Math.max(30, Math.min(nuevoTamaño, 140));
+
+        setFichas((prevFichas) =>
+          prevFichas.map((f) =>
+            f.id === fichaRedimensionando ? { ...f, tamaño: tamañoLimitado } : f
+          )
+        );
+        return;
+      }
+
       // Manejar paneo
       if (isPanning) {
         const newPanX = e.clientX - panStartRef.current.x;
@@ -288,12 +334,13 @@ function App() {
 
       setFichaArrastrada(null);
       setIsPanning(false);
+      setFichaRedimensionando(null);
       offsetRef.current = { x: 0, y: 0 };
       clickStartRef.current = { x: 0, y: 0 };
       isDraggingRef.current = false;
     };
 
-    if (fichaArrastrada || isPanning) {
+    if (fichaArrastrada || isPanning || fichaRedimensionando) {
       document.addEventListener("mousemove", handleGlobalMouseMove);
       document.addEventListener("mouseup", handleGlobalMouseUp);
     }
@@ -302,7 +349,15 @@ function App() {
       document.removeEventListener("mousemove", handleGlobalMouseMove);
       document.removeEventListener("mouseup", handleGlobalMouseUp);
     };
-  }, [fichaArrastrada, isPanning, zoom, pan, tableroSize, fichas]);
+  }, [
+    fichaArrastrada,
+    fichaRedimensionando,
+    isPanning,
+    zoom,
+    pan,
+    tableroSize,
+    fichas,
+  ]);
 
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -391,6 +446,7 @@ function App() {
           onWheel={handleWheel}
           onContextMenu={handleContextMenu}
           onFichaMouseDown={handleMouseDown}
+          onFichaResizeRightMouseDown={handleResizeRightMouseDown}
           onFichaDoubleClick={(ficha, abrirModal) =>
             handleEditarFicha(ficha, abrirModal)
           }

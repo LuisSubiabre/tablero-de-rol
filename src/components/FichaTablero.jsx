@@ -9,6 +9,7 @@ const FichaTablero = ({
   pan,
   isDragging,
   onMouseDown,
+  onResizeRightMouseDown,
   onDoubleClick,
   onClick,
 }) => {
@@ -45,6 +46,11 @@ const FichaTablero = ({
         transformOrigin: "center center",
       }}
       onMouseDown={(e) => {
+        if (e.button === 2) {
+          // Click derecho: redimensionado vertical
+          onResizeRightMouseDown(e, ficha);
+          return;
+        }
         if (e.detail === 2) {
           // Doble click para editar en modal
           e.preventDefault();
@@ -65,6 +71,11 @@ const FichaTablero = ({
             if (onClick) onClick(ficha);
           }, 200);
         }
+      }}
+      onContextMenu={(e) => {
+        // Evitar menú contextual al usar click derecho para redimensionar
+        e.preventDefault();
+        e.stopPropagation();
       }}
       onMouseMove={() => {
         // Si hay movimiento, cancelar la selección
@@ -162,6 +173,7 @@ FichaTablero.propTypes = {
   }).isRequired,
   isDragging: PropTypes.bool.isRequired,
   onMouseDown: PropTypes.func.isRequired,
+  onResizeRightMouseDown: PropTypes.func.isRequired,
   onDoubleClick: PropTypes.func.isRequired,
   onClick: PropTypes.func,
 };

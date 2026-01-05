@@ -15,6 +15,7 @@ const Tablero = forwardRef(({
   onWheel,
   onContextMenu,
   onFichaMouseDown,
+  onFichaResizeRightMouseDown,
   onFichaDoubleClick,
   onFichaClick,
   onCargarImagen
@@ -79,6 +80,7 @@ const Tablero = forwardRef(({
             pan={pan}
             isDragging={fichaArrastrada === ficha.id}
             onMouseDown={onFichaMouseDown}
+            onResizeRightMouseDown={onFichaResizeRightMouseDown}
             onDoubleClick={onFichaDoubleClick}
             onClick={onFichaClick}
           />
@@ -121,6 +123,7 @@ Tablero.propTypes = {
   onWheel: PropTypes.func.isRequired,
   onContextMenu: PropTypes.func.isRequired,
   onFichaMouseDown: PropTypes.func.isRequired,
+  onFichaResizeRightMouseDown: PropTypes.func.isRequired,
   onFichaDoubleClick: PropTypes.func.isRequired,
   onFichaClick: PropTypes.func,
   onCargarImagen: PropTypes.func.isRequired,
