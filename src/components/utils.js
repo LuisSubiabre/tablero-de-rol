@@ -3,7 +3,7 @@ export const getColorPorCategoria = (categoria) => {
     case "Heroes":
       return "#3b82f6"; // azul
     case "Bestias":
-      return "#BD70B9"; // rojo
+      return "#CE3D03"; // rojo
     case "Otros":
       return "#6b72cc"; // Purpura
     default:

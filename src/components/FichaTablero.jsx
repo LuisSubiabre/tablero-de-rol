@@ -89,31 +89,6 @@ const FichaTablero = ({
       {/* Nombre arriba (fuera del contenedor para evitar overflow/recortes) */}
       <div className="ficha-nombre-arriba">{ficha.nombre}</div>
 
-      {/* Barra de vida circular rodeando la ficha (por fuera) */}
-      <svg className="ficha-hp-ring" viewBox="0 0 100 100">
-        <circle
-          className="ficha-hp-ring-background"
-          cx="50"
-          cy="50"
-          r="45"
-          fill="none"
-          stroke={ficha.color}
-          strokeWidth="6"
-          strokeOpacity="0.85"
-        />
-        <circle
-          className="ficha-hp-ring-fill"
-          cx="50"
-          cy="50"
-          r="45"
-          fill="none"
-          stroke={colorHP}
-          strokeWidth="4"
-          strokeDasharray={`${2 * Math.PI * 45}`}
-          strokeDashoffset={`${2 * Math.PI * 45 * (1 - porcentajeHP / 100)}`}
-        />
-      </svg>
-
       {/* Círculo de la ficha (mantiene overflow hidden para recortar imagen) */}
       <div
         className={`ficha ficha-estado-${estado}`}
@@ -143,6 +118,20 @@ const FichaTablero = ({
 
         {/* Ícono de calavera si HP = 0 */}
         {hpActual <= 0 && <div className="ficha-calavera">💀</div>}
+      </div>
+
+      {/* Barra de HP lineal debajo de la ficha */}
+      <div className="ficha-hp-bar" aria-label={`HP ${hpActual}/${hpMax}`}>
+        <div
+          className="ficha-hp-bar-fill"
+          style={{
+            width: `${Math.max(0, Math.min(100, porcentajeHP))}%`,
+            backgroundColor: colorHP,
+          }}
+        />
+        <div className="ficha-hp-bar-text">
+          {hpActual}/{hpMax}
+        </div>
       </div>
     </div>
   );
