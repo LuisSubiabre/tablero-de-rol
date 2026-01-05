@@ -41,7 +41,7 @@ Aplicación web para gestionar partidas de Dungeons & Dragons y juegos de rol si
 ### Grilla
 
 - **□ Grilla**: botón para mostrar/ocultar la grilla cuadrada
-- **Tamaño**: slider para ajustar el tamaño de los cuadrados (20-200px)
+- **Tamaño**: slider para ajustar el tamaño de los cuadrados (20-200px, paso de 1px)
 - **Color**: selector de color para personalizar la grilla
 - **Posición**: controles direccionales (↑↓←→) para mover la grilla manualmente
 - **⊙ Reset**: botón para centrar la grilla en su posición original

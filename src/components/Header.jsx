@@ -71,7 +71,7 @@ const Header = ({
               onClick={onToggleGrilla}
               title="Mostrar/ocultar grilla"
             >
-              □ Grilla
+              Grilla
             </button>
 
             {mostrarGrilla && (
@@ -83,7 +83,7 @@ const Header = ({
                     type="range"
                     min="20"
                     max="200"
-                    step="10"
+                    step="1"
                     value={tamañoGrilla}
                     onChange={(e) =>
                       onCambioTamañoGrilla(Number(e.target.value))
