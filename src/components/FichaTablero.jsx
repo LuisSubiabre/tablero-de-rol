@@ -39,11 +39,7 @@ const FichaTablero = ({
         top: "50%",
         width: `${tamañoFicha}px`,
         height: `${tamañoFicha}px`,
-        backgroundColor: ficha.imagen
-          ? "transparent"
-          : hpActual <= 0
-          ? "#6b7280"
-          : ficha.color,
+        backgroundColor: hpActual <= 0 ? "#6b7280" : ficha.color,
         cursor: isDragging ? "grabbing" : "grab",
         transition: isDragging ? "none" : "transform 0.1s, box-shadow 0.1s",
         transform: `translate(-50%, -50%) translate(${offsetX}px, ${offsetY}px) translate(${pan.x}px, ${pan.y}px) scale(${scaleFactor})`,
