@@ -113,6 +113,9 @@ const FichaTablero = ({
         )}
       </div>
 
+      {/* Ícono de calavera si HP = 0 */}
+      {hpActual <= 0 && <div className="ficha-calavera">💀</div>}
+
       {/* Nombre debajo de la ficha */}
       <div className="ficha-nombre-abajo">{ficha.nombre}</div>
     </div>
