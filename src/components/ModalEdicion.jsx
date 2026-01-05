@@ -1,14 +1,13 @@
 import React, { useState, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { CATEGORIAS } from './constants';
-import { getColorPorCategoria, calcularEstadoPorHP, getColorHP, getLabelEstado } from './utils';
+import { getColorPorCategoria, calcularEstadoPorHP, getColorHP } from './utils';
 
 const ModalEdicion = ({
   ficha,
   isOpen,
   onClose,
-  onSave,
-  onImageChange
+  onSave
 }) => {
   const [nombreFicha, setNombreFicha] = useState("");
   const [categoriaSeleccionada, setCategoriaSeleccionada] = useState(CATEGORIAS.HEROES);
@@ -69,15 +68,15 @@ const ModalEdicion = ({
 
   return (
     <div className="modal-overlay" onClick={onClose}>
-      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-        <button className="modal-cerrar" onClick={onClose}>
-          ✕
-        </button>
-
-        <div className="panel-agregar">
+      <div className="modal-edicion" onClick={(e) => e.stopPropagation()}>
+        <div className="modal-header">
           <h2>Editar Ficha</h2>
+          <button className="modal-cerrar" onClick={onClose}>
+            ✕
+          </button>
+        </div>
 
-          <form onSubmit={handleSubmit} className="form-ficha">
+        <form onSubmit={handleSubmit} className="modal-form-content">
             <div className="form-seccion">
               <label className="form-label">
                 Tipo <span className="label-required">*</span>
@@ -256,16 +255,15 @@ const ModalEdicion = ({
               </button>
             </div>
 
-            <div className="form-actions">
-              <button type="button" onClick={onClose} className="btn-cancelar">
-                Cancelar
-              </button>
-              <button type="submit" className="btn-agregar">
-                Guardar Cambios
-              </button>
-            </div>
-          </form>
-        </div>
+          <div className="form-actions">
+            <button type="button" onClick={onClose} className="btn-cancelar">
+              Cancelar
+            </button>
+            <button type="submit" className="btn-agregar">
+              Guardar Cambios
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   );
@@ -286,7 +284,6 @@ ModalEdicion.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   onSave: PropTypes.func.isRequired,
-  onImageChange: PropTypes.func.isRequired,
 };
 
 export default ModalEdicion;

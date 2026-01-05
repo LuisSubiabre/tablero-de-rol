@@ -630,7 +630,6 @@ function App() {
           setFichaEditando(null);
         }}
         onSave={handleGuardarEdicion}
-        onImageChange={() => {}}
       />
 
       {modalAcercaDeAbierto && (

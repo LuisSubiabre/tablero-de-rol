@@ -570,9 +570,157 @@
   border: 2px solid rgba(184, 134, 11, 0.3);
   border-radius: 12px;
   padding: 1.5rem;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4),
-    inset 0 1px 0 rgba(255, 215, 0, 0.1), 0 0 20px rgba(0, 0, 0, 0.3);
-  position: relative;
+}
+
+/* Contenido del formulario en modal */
+.modal-form-content {
+  padding: 1.5rem;
+  width: 100%;
+}
+
+/* Secciones del formulario */
+.modal-form-content .form-seccion {
+  margin-bottom: 1.5rem;
+  width: 100%;
+}
+
+.modal-form-content .form-seccion:last-child {
+  margin-bottom: 0;
+}
+
+/* Etiquetas */
+.modal-form-content .form-label {
+  display: block;
+  color: #daa520;
+  font-weight: 600;
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Inputs y controles */
+.modal-form-content .input-nombre,
+.modal-form-content .input-hp {
+  width: 100%;
+  padding: 0.75rem;
+  border: 2px solid rgba(184, 134, 11, 0.3);
+  border-radius: 6px;
+  background: rgba(20, 15, 10, 0.8);
+  color: #ffd700;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+}
+
+.modal-form-content .input-nombre:focus,
+.modal-form-content .input-hp:focus {
+  outline: none;
+  border-color: #daa520;
+  box-shadow: 0 0 8px rgba(218, 165, 32, 0.5);
+}
+
+/* Categorías */
+.modal-form-content .categorias {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Inputs de HP */
+.modal-form-content .hp-inputs {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.modal-form-content .hp-input-group {
+  flex: 1;
+}
+
+.modal-form-content .hp-input-group .hp-label {
+  display: block;
+  font-size: 0.8rem;
+  color: #daa520;
+  margin-bottom: 0.25rem;
+  text-align: center;
+}
+
+.modal-form-content .hp-separator {
+  color: #daa520;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+/* Barra de estado HP */
+.modal-form-content .hp-status-indicator {
+  margin-top: 0.5rem;
+}
+
+.modal-form-content .hp-status-bar {
+  height: 8px;
+  border-radius: 4px;
+  background: rgba(20, 15, 10, 0.8);
+  overflow: hidden;
+  margin-bottom: 0.25rem;
+}
+
+.modal-form-content .hp-status-text {
+  font-size: 0.8rem;
+  text-align: center;
+  color: #daa520;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Controles de tamaño */
+.modal-form-content .tamaño-controls {
+  margin-bottom: 0.5rem;
+}
+
+.modal-form-content .tamaño-slider {
+  width: 100%;
+  margin-bottom: 0.5rem;
+}
+
+.modal-form-content .tamaño-value-display {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.modal-form-content .tamaño-value-display span {
+  color: #ffd700;
+  font-weight: bold;
+}
+
+.modal-form-content .tamaño-visual-indicator {
+  flex: 1;
+  height: 6px;
+  background: rgba(20, 15, 10, 0.8);
+  border-radius: 3px;
+  margin: 0 1rem;
+  overflow: hidden;
+}
+
+.modal-form-content .tamaño-preview-dot {
+  height: 100%;
+  background: linear-gradient(135deg, #d4af37 0%, #b8860b 100%);
+  border-radius: 3px;
+  transition: width 0.3s ease;
+}
+
+/* Botones de acción */
+.modal-form-content .form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(139, 69, 19, 0.3);
 }
 
 .panel-agregar::before,
@@ -1976,7 +2124,112 @@
   margin-bottom: 0;
 }
 
+/* Modal Edición */
+.modal-edicion {
+  background: linear-gradient(135deg, #2c1810 0%, #1a0f08 100%);
+  border: 2px solid #8b4513;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 700px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
 
+.modal-edicion .modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  border-bottom: 1px solid rgba(139, 69, 19, 0.5);
+  background: linear-gradient(135deg, #3a2518 0%, #2c1810 100%);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.modal-edicion .modal-header h2 {
+  color: #ffd700;
+  margin: 0;
+  font-size: 1.5rem;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+  font-weight: 700;
+  font-family: "Cinzel Decorative", "Cinzel", serif;
+}
+
+.modal-edicion .modal-cerrar {
+  background: rgba(139, 0, 0, 0.8);
+  color: #ffcccc;
+  border: 1px solid #8b0000;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.modal-edicion .modal-cerrar:hover {
+  background: rgba(139, 0, 0, 1);
+  border-color: #ff0000;
+  color: white;
+  transform: scale(1.1);
+}
+
+/* Responsive para modales */
+@media (max-width: 480px) {
+  .modal-acerca-de,
+  .modal-edicion {
+    width: 95%;
+    max-width: none;
+    margin: 1rem;
+    max-height: 85vh;
+  }
+
+  .modal-acerca-de .modal-header,
+  .modal-edicion .modal-header {
+    padding: 1rem;
+  }
+
+  .modal-acerca-de .modal-header h2,
+  .modal-edicion .modal-header h2 {
+    font-size: 1.3rem;
+  }
+
+  .modal-acerca-de .modal-cerrar,
+  .modal-edicion .modal-cerrar {
+    width: 32px;
+    height: 32px;
+    font-size: 14px;
+  }
+
+  .modal-acerca-de .modal-contenido {
+    padding: 1rem;
+  }
+
+  .modal-form-content {
+    padding: 1rem;
+  }
+
+  .modal-form-content .hp-inputs {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .modal-form-content .form-actions {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .modal-form-content .form-actions button {
+    width: 100%;
+  }
+}
 
 /* Scrollbar del modal */
 .modal-contenido::-webkit-scrollbar {
