@@ -1,34 +1,93 @@
-# React + Vite
+# 🗡️ Tablero Virtual de Rol
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Aplicación web para apoyar partidas de rol mediante un tablero visual simple e intuitivo.  
+Ideal para **rol en solitario**, simulación de encuentros o preparación de escenarios,
+sin sistemas complejos ni reglas automatizadas.
 
-Currently, two official plugins are available:
+Carga tu mapa, añade tus fichas y deja que la narrativa fluya.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## React Compiler
+## ✨ Características
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### 🎯 Gestión de Fichas
 
-## Expanding the ESLint configuration
+- Crear fichas de Héroes, Bestias y NPCs
+- Fichas con o sin imagen
+- Edición rápida mediante doble clic
+- Arrastrar y soltar sobre el tablero
+- Redimensionar fichas con clic derecho + arrastre vertical
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### 🗺️ Tablero Interactivo
 
-Funcionalidad de pan implementada:
-Estado de pan: Se guarda la posición X e Y del pan.
-Métodos para panear:
-Clic derecho: Clic derecho + arrastrar para mover la imagen
-Clic central (rueda): Clic en la rueda + arrastrar
-Espacio + Clic izquierdo: Mantén presionada la tecla Espacio y arrastra con el botón izquierdo
-Distinción entre acciones:
-El pan no interfiere con el movimiento de fichas
-Las fichas se mueven con clic izquierdo normal
-El pan se activa solo con los métodos indicados
-Integración con zoom:
-El pan funciona junto con el zoom
-Al hacer reset del zoom, también se resetea el pan
-La imagen se mueve usando translate junto con scale
-Feedback visual:
-El cursor cambia a "grab" cuando puedes panear
-Cambia a "grabbing" mientras paneas
+- Cargar mapas como imagen de fondo (JPG, PNG, WebP)
+- **Grilla opcional sobre el mapa** para facilitar el posicionamiento
+- Zoom y paneo fluido
+- Navegación cómoda para mapas grandes
+
+### 💾 Persistencia de Datos
+
+- Guardado automático en el navegador (LocalStorage)
+- La partida permanece aunque cierres la pestaña o el navegador
+- Opción de reiniciar la partida manualmente
+
+---
+
+## 🎮 Controles
+
+- **Clic izquierdo + arrastrar**: mover fichas
+- **Clic derecho + arrastrar**: panear tablero
+- **Rueda del mouse**: zoom
+- **Doble clic en ficha**: editar ficha
+
+---
+
+## 🛠️ Tecnologías
+
+- **React 19**
+- **Vite**
+- **CSS puro** (sin frameworks visuales)
+- **LocalStorage** para persistencia
+
+---
+
+🎲 Menos reglas, más imaginación.  
+⚔️ Simula encuentros a tu ritmo.  
+🧙‍♂️ Rol visual, rápido y sin distracciones.
+
+## 🚀 Instalación y Uso
+
+```bash
+# Instalar dependencias
+npm install
+
+# Ejecutar en desarrollo
+npm run dev
+
+# Compilar para producción
+npm run build
+```
+
+## 🛠️ Tecnologías
+
+- **React** - Framework UI
+- **Vite** - Build tool y dev server
+- **CSS** - Estilos con tema medieval/fantástico
+- **LocalStorage** - Persistencia de datos
+
+## 🎨 Tema Visual
+
+- **Colores medievales**: marrón, dorado, rojo sangre
+- **Fuentes elegantes** con sombras y efectos
+- **Animaciones suaves** y feedback visual
+- **Responsive design completo**: desktop, tablets, móviles
+
+### 📱 Responsive Design
+
+- **1024px+**: Layout completo de escritorio
+- **768px-1024px**: Optimizado para tablets
+- **480px-768px**: Layout móvil con sidebar colapsable
+- **320px-480px**: Optimizado para móviles grandes
+- **<320px**: Diseño ultra-compacto para móviles pequeños
+- **Touch-friendly**: Botones de 44px mínimo para mejor usabilidad móvil
+- **Gestos optimizados**: Touch actions y manipulación táctil
