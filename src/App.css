@@ -677,8 +677,8 @@
   color: rgba(255, 255, 255, 0.9);
   font-weight: 600;
   cursor: pointer;
-  transition: transform 0.15s ease, background 0.15s ease, border-color 0.15s ease,
-    color 0.15s ease;
+  transition: transform 0.15s ease, background 0.15s ease,
+    border-color 0.15s ease, color 0.15s ease;
 }
 
 .btn-reset-tamaño:hover {

@@ -12,12 +12,42 @@ import {
   calcularEstadoPorHP,
 } from "./components";
 
+const STORAGE_KEY = "tablero-rol-data";
+
+// Función para guardar datos en localStorage
+const guardarEnLocalStorage = (clave, datos) => {
+  try {
+    localStorage.setItem(clave, JSON.stringify(datos));
+  } catch (error) {
+    console.warn("Error guardando en localStorage:", error);
+  }
+};
+
+// Función para cargar datos desde localStorage
+const cargarDesdeLocalStorage = (clave, valorPorDefecto) => {
+  try {
+    const datos = localStorage.getItem(clave);
+    return datos ? JSON.parse(datos) : valorPorDefecto;
+  } catch (error) {
+    console.warn("Error cargando desde localStorage:", error);
+    return valorPorDefecto;
+  }
+};
+
 function App() {
-  // Estados principales
-  const [tableroImagen, setTableroImagen] = useState(null);
-  const [zoom, setZoom] = useState(100);
-  const [pan, setPan] = useState({ x: 0, y: 0 });
-  const [fichas, setFichas] = useState([]);
+  // Estados principales con carga desde localStorage
+  const [tableroImagen, setTableroImagen] = useState(() =>
+    cargarDesdeLocalStorage(`${STORAGE_KEY}-tablero`, null)
+  );
+  const [zoom, setZoom] = useState(() =>
+    cargarDesdeLocalStorage(`${STORAGE_KEY}-zoom`, 100)
+  );
+  const [pan, setPan] = useState(() =>
+    cargarDesdeLocalStorage(`${STORAGE_KEY}-pan`, { x: 0, y: 0 })
+  );
+  const [fichas, setFichas] = useState(() =>
+    cargarDesdeLocalStorage(`${STORAGE_KEY}-fichas`, [])
+  );
   const [fichaSeleccionada, setFichaSeleccionada] = useState(null);
   const [modalAbierto, setModalAbierto] = useState(false);
 
@@ -31,6 +61,31 @@ function App() {
   const [hpActualFicha, setHpActualFicha] = useState(50);
   const [tamañoFicha, setTamañoFicha] = useState(55);
   const [fichaEditando, setFichaEditando] = useState(null);
+
+  // Persistencia con localStorage
+  useEffect(() => {
+    guardarEnLocalStorage(`${STORAGE_KEY}-fichas`, fichas);
+  }, [fichas]);
+
+  useEffect(() => {
+    guardarEnLocalStorage(`${STORAGE_KEY}-tablero`, tableroImagen);
+  }, [tableroImagen]);
+
+  useEffect(() => {
+    guardarEnLocalStorage(`${STORAGE_KEY}-zoom`, zoom);
+  }, [zoom]);
+
+  useEffect(() => {
+    guardarEnLocalStorage(`${STORAGE_KEY}-pan`, pan);
+  }, [pan]);
+
+  // Función para limpiar todos los datos guardados (opcional para desarrollo)
+  const limpiarDatosGuardados = () => {
+    localStorage.removeItem(`${STORAGE_KEY}-fichas`);
+    localStorage.removeItem(`${STORAGE_KEY}-tablero`);
+    localStorage.removeItem(`${STORAGE_KEY}-zoom`);
+    localStorage.removeItem(`${STORAGE_KEY}-pan`);
+  };
 
   // Resetear formulario
   const resetFormulario = () => {
