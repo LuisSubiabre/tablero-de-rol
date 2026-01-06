@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.3.0](https://github.com/LuisSubiabre/tablero-de-rol/compare/v1.2.1...v1.3.0) (2026-01-06)
+
+
+### Features
+
+* Añadir controles para mostrar/ocultar barras de HP en fichas ([21c901e](https://github.com/LuisSubiabre/tablero-de-rol/commit/21c901ee1270295556f8feb3c7b497b645556dcd))
+
 ### [1.2.1](https://github.com/LuisSubiabre/tablero-de-rol/compare/v1.2.0...v1.2.1) (2026-01-06)
 
 ## [1.2.0](https://github.com/LuisSubiabre/tablero-de-rol/compare/v1.1.1...v1.2.0) (2026-01-06)
