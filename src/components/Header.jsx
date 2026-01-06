@@ -74,7 +74,7 @@ const Header = ({
               onClick={onToggleGrilla}
               title="Mostrar/ocultar grilla"
             >
-              □ Grilla
+              Grilla
             </button>
             {mostrarGrilla && (
               <button
