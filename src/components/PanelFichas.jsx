@@ -88,7 +88,7 @@ const PanelFichas = ({
                     style={ficha.imagen && mostrarImagenesFichas ? {
                       backgroundImage: `linear-gradient(rgba(15, 10, 5, 0.85), rgba(15, 10, 5, 0.85)), url(${ficha.imagen})`,
                       backgroundSize: 'cover',
-                      backgroundPosition: 'center',
+                      backgroundPosition: 'top',
                       backgroundRepeat: 'no-repeat'
                     } : {}}
                   >
