@@ -349,6 +349,27 @@
   transform: scale(0.95);
 }
 
+.icono-ojo {
+  display: inline-block;
+  transition: all 0.3s ease;
+}
+
+.icono-ojo.tachado {
+  position: relative;
+}
+
+.icono-ojo.tachado::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 16px;
+  height: 2px;
+  background-color: currentColor;
+  transform: translate(-50%, -50%) rotate(45deg);
+  opacity: 0.8;
+}
+
 .grilla-tamaño-control,
 .grilla-color-control {
   display: flex;
