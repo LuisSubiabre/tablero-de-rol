@@ -11,7 +11,6 @@ const ModalEdicion = ({ ficha, isOpen, onClose, onSave }) => {
   const [imagenFicha, setImagenFicha] = useState("");
   const [hpMaxFicha, setHpMaxFicha] = useState(50);
   const [hpActualFicha, setHpActualFicha] = useState(50);
-  const [tamañoFicha, setTamañoFicha] = useState(55);
 
   const imagenFichaInputRef = useRef(null);
 
@@ -23,7 +22,6 @@ const ModalEdicion = ({ ficha, isOpen, onClose, onSave }) => {
       setImagenFicha(ficha.imagen || "");
       setHpMaxFicha(ficha.hpMax || 50);
       setHpActualFicha(ficha.hpActual || ficha.hpMax || 50);
-      setTamañoFicha(ficha.tamaño || 55);
     }
   }, [isOpen, ficha]);
 
@@ -43,7 +41,6 @@ const ModalEdicion = ({ ficha, isOpen, onClose, onSave }) => {
       hpMax: hpMaxFicha,
       hpActual: hpActualFicha,
       estado: estadoCalculado,
-      tamaño: tamañoFicha,
       color: getColorPorCategoria(categoriaSeleccionada),
     };
 
@@ -213,38 +210,6 @@ const ModalEdicion = ({ ficha, isOpen, onClose, onSave }) => {
             </div>
           </div>
 
-          <div className="form-seccion">
-            <label className="form-label">Tamaño</label>
-            <div className="tamaño-controls">
-              <input
-                type="range"
-                min="30"
-                max="140"
-                value={tamañoFicha}
-                onChange={(e) => setTamañoFicha(parseInt(e.target.value))}
-                className="tamaño-slider"
-              />
-              <div className="tamaño-value-display">
-                <span>{tamañoFicha}px</span>
-                <div className="tamaño-visual-indicator">
-                  <div
-                    className="tamaño-preview-dot"
-                    style={{
-                      width: `${(tamañoFicha / 140) * 100}%`,
-                      height: `${(tamañoFicha / 140) * 100}%`,
-                    }}
-                  />
-                </div>
-              </div>
-            </div>
-            <button
-              type="button"
-              className="btn-reset-tamaño"
-              onClick={() => setTamañoFicha(55)}
-            >
-              Reestablecer tamaño
-            </button>
-          </div>
 
           <div className="form-actions">
             <button type="button" onClick={onClose} className="btn-cancelar">

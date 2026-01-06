@@ -81,7 +81,6 @@ function App() {
   const [imagenFicha, setImagenFicha] = useState("");
   const [hpMaxFicha, setHpMaxFicha] = useState(50);
   const [hpActualFicha, setHpActualFicha] = useState(50);
-  const [tamañoFicha, setTamañoFicha] = useState(55);
   const [fichaEditando, setFichaEditando] = useState(null);
 
   // Inicializar contador de IDs basado en fichas existentes
@@ -660,13 +659,11 @@ function App() {
             imagenFicha={imagenFicha}
             hpMaxFicha={hpMaxFicha}
             hpActualFicha={hpActualFicha}
-            tamañoFicha={tamañoFicha}
             onNombreChange={setNombreFicha}
             onCategoriaChange={setCategoriaSeleccionada}
             onImagenChange={setImagenFicha}
             onHpMaxChange={setHpMaxFicha}
             onHpActualChange={setHpActualFicha}
-            onTamañoChange={setTamañoFicha}
             onAgregarFicha={handleAgregarFicha}
           />
 

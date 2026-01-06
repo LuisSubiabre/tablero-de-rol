@@ -9,13 +9,11 @@ const PanelAgregar = ({
   imagenFicha,
   hpMaxFicha,
   hpActualFicha,
-  tamañoFicha,
   onNombreChange,
   onCategoriaChange,
   onImagenChange,
   onHpMaxChange,
   onHpActualChange,
-  onTamañoChange,
   onAgregarFicha
 }) => {
   const imagenFichaInputRef = useRef(null);
@@ -35,7 +33,6 @@ const PanelAgregar = ({
       hpMax: hpMaxFicha,
       hpActual: hpActualFicha,
       estado: estadoCalculado,
-      tamaño: tamañoFicha,
       color: getColorPorCategoria(categoriaSeleccionada),
     };
 
@@ -146,86 +143,56 @@ const PanelAgregar = ({
           <label className="form-label">
             Puntos de Vida
           </label>
-          <div className="hp-inputs">
-            <div className="hp-input-group">
-              <label className="hp-label">Actual</label>
-              <input
-                type="number"
-                min="0"
-                max="999"
-                value={hpActualFicha}
-                      onChange={(e) =>
-                        onHpActualChange(
-                          Math.max(0, parseInt(e.target.value) || 0)
-                        )
-                      }
-                className="input-hp"
-              />
-            </div>
-            <span className="hp-separator">/</span>
-            <div className="hp-input-group">
-              <label className="hp-label">Máximo</label>
-              <input
-                type="number"
-                min="1"
-                max="999"
-                value={hpMaxFicha}
-                      onChange={(e) => {
-                        const nuevoMax = Math.max(
-                          1,
-                          parseInt(e.target.value) || 1
-                        );
-                        onHpMaxChange(nuevoMax);
-                        if (hpActualFicha > nuevoMax) onHpActualChange(nuevoMax);
-                      }}
-                className="input-hp"
-              />
-            </div>
-          </div>
-          <div className="hp-status-indicator">
-            <div
-              className="hp-status-bar"
-              style={{
-                width: `${Math.min((hpActualFicha / hpMaxFicha) * 100, 100)}%`,
-                backgroundColor: getColorHP(hpActualFicha, hpMaxFicha),
-              }}
-            />
-            <span className="hp-status-text">
-              {calcularEstadoPorHP(hpActualFicha, hpMaxFicha) === "muerto" && "💀 Muerto"}
-              {calcularEstadoPorHP(hpActualFicha, hpMaxFicha) === "inconsciente" && "😴 Inconsciente"}
-              {calcularEstadoPorHP(hpActualFicha, hpMaxFicha) === "herido" && "🩹 Herido"}
-              {calcularEstadoPorHP(hpActualFicha, hpMaxFicha) === "saludable" && "✅ Saludable"}
-            </span>
-          </div>
-        </div>
-
-        <div className="form-seccion">
-          <label className="form-label">
-            Tamaño
-          </label>
-          <div className="tamaño-controls">
+          <div className="hp-inputs-compact">
             <input
-              type="range"
-              min="30"
-              max="120"
-              value={tamañoFicha}
-                    onChange={(e) => onTamañoChange(parseInt(e.target.value))}
-              className="tamaño-slider"
+              type="number"
+              min="0"
+              max="999"
+              placeholder="Actual"
+              value={hpActualFicha}
+              onChange={(e) =>
+                onHpActualChange(
+                  Math.max(0, parseInt(e.target.value) || 0)
+                )
+              }
+              className="input-hp-compact"
             />
-            <div className="tamaño-value-display">
-              <span>{tamañoFicha}px</span>
-              <div className="tamaño-visual-indicator">
+            <span className="hp-separator">/</span>
+            <input
+              type="number"
+              min="1"
+              max="999"
+              placeholder="Máximo"
+              value={hpMaxFicha}
+              onChange={(e) => {
+                const nuevoMax = Math.max(
+                  1,
+                  parseInt(e.target.value) || 1
+                );
+                onHpMaxChange(nuevoMax);
+                if (hpActualFicha > nuevoMax) onHpActualChange(nuevoMax);
+              }}
+              className="input-hp-compact"
+            />
+          </div>
+          {hpMaxFicha > 0 && (
+            <>
+              <div className="hp-preview-bar">
                 <div
-                  className="tamaño-preview-dot"
+                  className="hp-preview-fill"
                   style={{
-                    width: `${(tamañoFicha / 120) * 100}%`,
-                    height: `${(tamañoFicha / 120) * 100}%`,
+                    width: `${Math.max(0, Math.min(100, (hpActualFicha / hpMaxFicha) * 100))}%`,
+                    backgroundColor: getColorHP(hpActualFicha, hpMaxFicha),
                   }}
                 />
               </div>
-            </div>
-          </div>
+              <div className="hp-info-text">
+                {hpActualFicha}/{hpMaxFicha} {getLabelEstado(calcularEstadoPorHP(hpActualFicha, hpMaxFicha)).split(' ')[1]}
+              </div>
+            </>
+          )}
         </div>
+
 
         <div className="form-actions">
           <button type="submit" className="btn-agregar">
@@ -243,13 +210,11 @@ PanelAgregar.propTypes = {
   imagenFicha: PropTypes.string.isRequired,
   hpMaxFicha: PropTypes.number.isRequired,
   hpActualFicha: PropTypes.number.isRequired,
-  tamañoFicha: PropTypes.number.isRequired,
   onNombreChange: PropTypes.func.isRequired,
   onCategoriaChange: PropTypes.func.isRequired,
   onImagenChange: PropTypes.func.isRequired,
   onHpMaxChange: PropTypes.func.isRequired,
   onHpActualChange: PropTypes.func.isRequired,
-  onTamañoChange: PropTypes.func.isRequired,
   onAgregarFicha: PropTypes.func.isRequired,
 };
 
