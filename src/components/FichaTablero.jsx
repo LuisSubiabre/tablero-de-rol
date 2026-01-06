@@ -9,6 +9,7 @@ const FichaTablero = ({
   pan,
   isDragging,
   mostrarNombres,
+  modoDibujo,
   onMouseDown,
   onResizeRightMouseDown,
   onDoubleClick,
@@ -41,12 +42,15 @@ const FichaTablero = ({
         top: "50%",
         width: `${tamañoFicha}px`,
         height: `${tamañoFicha}px`,
-        cursor: isDragging ? "grabbing" : "grab",
+        cursor: modoDibujo ? "crosshair" : (isDragging ? "grabbing" : "grab"),
         transition: isDragging ? "none" : "transform 0.1s",
         transform: `translate(-50%, -50%) translate(${offsetX}px, ${offsetY}px) translate(${pan.x}px, ${pan.y}px) scale(${scaleFactor})`,
         transformOrigin: "center center",
       }}
       onMouseDown={(e) => {
+        // Si estamos en modo dibujo, no manejar eventos de ficha
+        if (modoDibujo) return;
+
         if (e.button === 2) {
           // Click derecho: redimensionado vertical
           onResizeRightMouseDown(e, ficha);
@@ -165,6 +169,7 @@ FichaTablero.propTypes = {
   }).isRequired,
   isDragging: PropTypes.bool.isRequired,
   mostrarNombres: PropTypes.bool.isRequired,
+  modoDibujo: PropTypes.bool.isRequired,
   onMouseDown: PropTypes.func.isRequired,
   onResizeRightMouseDown: PropTypes.func.isRequired,
   onDoubleClick: PropTypes.func.isRequired,

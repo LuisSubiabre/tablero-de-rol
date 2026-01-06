@@ -46,9 +46,31 @@ const Tablero = forwardRef(({
     const rect = tableroRef.current.getBoundingClientRect();
     const scaleFactor = zoom / 100;
 
-    // Coordenadas relativas al tablero (considerando pan y zoom)
-    const x = (clientX - rect.left - pan.x) / (rect.width * scaleFactor);
-    const y = (clientY - rect.top - pan.y) / (rect.height * scaleFactor);
+    // Coordenadas del mouse relativas al rectángulo transformado
+    const mouseX = clientX - rect.left;
+    const mouseY = clientY - rect.top;
+
+    // El rectángulo que obtenemos ya refleja la transformación
+    // Para obtener coordenadas en el sistema original, necesitamos deshacer la transformación
+
+    // Centro del rectángulo transformado
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+
+    // Deshacer la transformación: translate primero, luego scale
+    // Como transform-origin es center, necesitamos ajustar por el centro
+    const unTranslatedX = mouseX - centerX;
+    const unTranslatedY = mouseY - centerY;
+
+    const unScaledX = unTranslatedX / scaleFactor;
+    const unScaledY = unTranslatedY / scaleFactor;
+
+    const originalX = unScaledX + centerX - pan.x;
+    const originalY = unScaledY + centerY - pan.y;
+
+    // Convertir a coordenadas normalizadas (0-1)
+    const x = originalX / tableroSize.width;
+    const y = originalY / tableroSize.height;
 
     return { x: Math.max(0, Math.min(1, x)), y: Math.max(0, Math.min(1, y)) };
   };
@@ -122,7 +144,7 @@ const Tablero = forwardRef(({
         className={`tablero ${modoDibujo ? 'modo-dibujo' : ''} ${modoBorrador ? 'modo-borrador' : ''}`}
         onMouseMove={(e) => {
           onMouseMove(e);
-          handleMouseMoveDibujo(e);
+          if (modoDibujo) handleMouseMoveDibujo(e);
         }}
         onMouseDown={(e) => {
           if (modoDibujo) {
@@ -133,14 +155,17 @@ const Tablero = forwardRef(({
         }}
         onMouseUp={(e) => {
           onMouseUp(e);
-          handleMouseUpDibujo();
+          if (modoDibujo) handleMouseUpDibujo();
         }}
         onMouseLeave={(e) => {
           onMouseUp(e);
-          handleMouseUpDibujo();
+          if (modoDibujo) handleMouseUpDibujo();
         }}
         onWheel={onWheel}
         onContextMenu={onContextMenu}
+        style={{
+          cursor: modoDibujo ? (modoBorrador ? 'not-allowed' : 'crosshair') : 'default'
+        }}
       >
         <img
           src={tableroImagen}
@@ -212,6 +237,8 @@ const Tablero = forwardRef(({
               left: 0,
               pointerEvents: 'none',
               zIndex: 2,
+              transform: `translate(${pan.x}px, ${pan.y}px) scale(${zoom / 100})`,
+              transformOrigin: "center center",
             }}
           >
             {/* Dibujos completados */}
@@ -258,6 +285,7 @@ const Tablero = forwardRef(({
             pan={pan}
             isDragging={fichaArrastrada === ficha.id}
             mostrarNombres={mostrarNombresFichas}
+            modoDibujo={modoDibujo}
             onMouseDown={onFichaMouseDown}
             onResizeRightMouseDown={onFichaResizeRightMouseDown}
             onDoubleClick={onFichaDoubleClick}

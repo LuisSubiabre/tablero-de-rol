@@ -102,7 +102,7 @@ const Header = ({
               onClick={onToggleModoDibujo}
               title={`${modoDibujo ? "Desactivar" : "Activar"} modo dibujo`}
             >
-              ✏️ Dibujo
+              {modoDibujo ? '✏️' : '✏️'} Dibujo
             </button>
 
             {modoDibujo && (
