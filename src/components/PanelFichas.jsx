@@ -1,12 +1,19 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { CATEGORIAS } from './constants';
-import { calcularEstadoPorHP, getColorHP, getLabelEstado, getColorPorCategoria } from './utils';
+import React from "react";
+import PropTypes from "prop-types";
+import { CATEGORIAS } from "./constants";
+import {
+  calcularEstadoPorHP,
+  getColorHP,
+  getLabelEstado,
+  getColorPorCategoria,
+} from "./utils";
 
 const PanelFichas = ({
   fichas,
   onEditarFicha,
-  onEliminarFicha
+  onEliminarFicha,
+  mostrarNombresFichas,
+  onToggleMostrarNombresFichas,
 }) => {
   const fichasPorCategoria = (categoria) => {
     return fichas.filter((f) => f.categoria === categoria);
@@ -15,6 +22,27 @@ const PanelFichas = ({
   return (
     <div className="panel-fichas">
       <h2>Fichas ({fichas.length})</h2>
+
+      {/* Control para mostrar/ocultar nombres */}
+      <div className="control-nombres-fichas">
+        <button
+          className={`btn-toggle-nombres-panel ${
+            mostrarNombresFichas ? "active" : ""
+          }`}
+          onClick={onToggleMostrarNombresFichas}
+          title={`${
+            mostrarNombresFichas ? "Ocultar" : "Mostrar"
+          } nombres de fichas`}
+        >
+          <span
+            className={`icono-ojo ${mostrarNombresFichas ? "" : "tachado"}`}
+          >
+            👁️
+          </span>
+          {mostrarNombresFichas ? "Ocultar nombres" : "Mostrar nombres"}
+        </button>
+      </div>
+
       <div className="lista-fichas">
         {Object.values(CATEGORIAS).map((categoria) => {
           const fichasCat = fichasPorCategoria(categoria);
@@ -32,7 +60,8 @@ const PanelFichas = ({
                 const hpActual = ficha.hpActual ?? ficha.hpMax ?? 50;
                 const hpMax = ficha.hpMax ?? 50;
                 const porcentajeHP = hpMax > 0 ? (hpActual / hpMax) * 100 : 0;
-                const estado = ficha.estado || calcularEstadoPorHP(hpActual, hpMax);
+                const estado =
+                  ficha.estado || calcularEstadoPorHP(hpActual, hpMax);
 
                 return (
                   <div key={ficha.id} className="ficha-item">
@@ -41,9 +70,7 @@ const PanelFichas = ({
                       onClick={() => onEditarFicha(ficha, true)}
                     >
                       <div className="ficha-item-header">
-                        <span className="ficha-nombre">
-                          {ficha.nombre}
-                        </span>
+                        <span className="ficha-nombre">{ficha.nombre}</span>
                         <span className="ficha-estado-label">
                           {getLabelEstado(estado)}
                         </span>
@@ -110,6 +137,8 @@ PanelFichas.propTypes = {
   ).isRequired,
   onEditarFicha: PropTypes.func.isRequired,
   onEliminarFicha: PropTypes.func.isRequired,
+  mostrarNombresFichas: PropTypes.bool.isRequired,
+  onToggleMostrarNombresFichas: PropTypes.func.isRequired,
 };
 
 export default PanelFichas;

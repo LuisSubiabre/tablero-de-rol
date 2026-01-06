@@ -23,8 +23,6 @@ const Header = ({
   onMoverGrillaDerecha,
   onResetearOffsetGrilla,
   onAbrirAcercaDe,
-  mostrarNombresFichas,
-  onToggleMostrarNombresFichas,
 }) => {
   const fileInputRef = React.useRef(null);
 
@@ -68,110 +66,102 @@ const Header = ({
         )}
 
         {tableroImagen && (
-          <div className="grilla-controls">
-            <button
-              className={`btn-toggle-grilla ${mostrarGrilla ? "active" : ""}`}
-              onClick={onToggleGrilla}
-              title="Mostrar/ocultar grilla"
-            >
-              Grilla
-            </button>
+          <div className="seccion-control grilla-seccion">
+            <div className="seccion-titulo">Grilla</div>
+            <div className="control-grupo">
+              <button
+                className={`btn-toggle-grilla ${mostrarGrilla ? "active" : ""}`}
+                onClick={onToggleGrilla}
+                title="Mostrar/ocultar grilla"
+              >
+                □ Grilla
+              </button>
+            </div>
+          </div>
+        )}
 
-            <button
-              className={`btn-toggle-nombres ${mostrarNombresFichas ? "active" : ""}`}
-              onClick={onToggleMostrarNombresFichas}
-              title={`${mostrarNombresFichas ? "Ocultar" : "Mostrar"} nombres de fichas`}
-            >
-              <span className={`icono-ojo ${mostrarNombresFichas ? "" : "tachado"}`}>
-                👁️
-              </span>
-              Nombres
-            </button>
+        {/* Controles detallados de grilla (solo cuando está activada) */}
+        {tableroImagen && mostrarGrilla && (
+          <div className="grilla-detalles">
+            <div className="grilla-tamaño-control">
+              <label htmlFor="tamaño-grilla">Tamaño:</label>
+              <input
+                id="tamaño-grilla"
+                type="range"
+                min="20"
+                max="200"
+                step="1"
+                value={tamañoGrilla}
+                onChange={(e) =>
+                  onCambioTamañoGrilla(Number(e.target.value))
+                }
+                className="grilla-slider"
+                title={`Tamaño de grilla: ${tamañoGrilla}px`}
+              />
+              <span className="grilla-valor">{tamañoGrilla}px</span>
+            </div>
 
+            <div className="grilla-color-control">
+              <label htmlFor="color-grilla">Color:</label>
+              <input
+                id="color-grilla"
+                type="color"
+                value={colorGrilla}
+                onChange={(e) => onCambioColorGrilla(e.target.value)}
+                className="grilla-color-picker"
+                title="Color de la grilla"
+              />
+            </div>
 
-            {mostrarGrilla && (
-              <>
-                <div className="grilla-tamaño-control">
-                  <label htmlFor="tamaño-grilla">Tamaño:</label>
-                  <input
-                    id="tamaño-grilla"
-                    type="range"
-                    min="20"
-                    max="200"
-                    step="1"
-                    value={tamañoGrilla}
-                    onChange={(e) =>
-                      onCambioTamañoGrilla(Number(e.target.value))
-                    }
-                    className="grilla-slider"
-                    title={`Tamaño de grilla: ${tamañoGrilla}px`}
-                  />
-                  <span className="grilla-valor">{tamañoGrilla}px</span>
+            <div className="grilla-movimiento-control">
+              <label>Posición:</label>
+              <div className="grilla-direcciones">
+                <button
+                  className="btn-direccion arriba"
+                  onClick={onMoverGrillaArriba}
+                  title="Mover grilla arriba"
+                >
+                  ↑
+                </button>
+                <div className="direcciones-medio">
+                  <button
+                    className="btn-direccion izquierda"
+                    onClick={onMoverGrillaIzquierda}
+                    title="Mover grilla izquierda"
+                  >
+                    ←
+                  </button>
+                  <button
+                    className="btn-reset-posicion"
+                    onClick={onResetearOffsetGrilla}
+                    title="Resetear posición grilla"
+                  >
+                    ⊙
+                  </button>
+                  <button
+                    className="btn-direccion derecha"
+                    onClick={onMoverGrillaDerecha}
+                    title="Mover grilla derecha"
+                  >
+                    →
+                  </button>
                 </div>
-
-                <div className="grilla-color-control">
-                  <label htmlFor="color-grilla">Color:</label>
-                  <input
-                    id="color-grilla"
-                    type="color"
-                    value={colorGrilla}
-                    onChange={(e) => onCambioColorGrilla(e.target.value)}
-                    className="grilla-color-picker"
-                    title="Color de la grilla"
-                  />
+                <button
+                  className="btn-direccion abajo"
+                  onClick={onMoverGrillaAbajo}
+                  title="Mover grilla abajo"
+                >
+                  ↓
+                </button>
+              </div>
+              {(offsetGrilla.x !== 0 || offsetGrilla.y !== 0) && (
+                <div className="grilla-offset-display">
+                  {offsetGrilla.x !== 0 && `X: ${offsetGrilla.x}`}
+                  {offsetGrilla.x !== 0 && offsetGrilla.y !== 0 && ", "}
+                  {offsetGrilla.y !== 0 && `Y: ${offsetGrilla.y}`}
                 </div>
-
-                <div className="grilla-movimiento-control">
-                  <label>Posición:</label>
-                  <div className="grilla-direcciones">
-                    <button
-                      className="btn-direccion arriba"
-                      onClick={onMoverGrillaArriba}
-                      title="Mover grilla arriba"
-                    >
-                      ↑
-                    </button>
-                    <div className="direcciones-medio">
-                      <button
-                        className="btn-direccion izquierda"
-                        onClick={onMoverGrillaIzquierda}
-                        title="Mover grilla izquierda"
-                      >
-                        ←
-                      </button>
-                      <button
-                        className="btn-reset-posicion"
-                        onClick={onResetearOffsetGrilla}
-                        title="Resetear posición grilla"
-                      >
-                        ⊙
-                      </button>
-                      <button
-                        className="btn-direccion derecha"
-                        onClick={onMoverGrillaDerecha}
-                        title="Mover grilla derecha"
-                      >
-                        →
-                      </button>
-                    </div>
-                    <button
-                      className="btn-direccion abajo"
-                      onClick={onMoverGrillaAbajo}
-                      title="Mover grilla abajo"
-                    >
-                      ↓
-                    </button>
-                  </div>
-                  {(offsetGrilla.x !== 0 || offsetGrilla.y !== 0) && (
-                    <div className="grilla-offset-display">
-                      {offsetGrilla.x !== 0 && `X: ${offsetGrilla.x}`}
-                      {offsetGrilla.x !== 0 && offsetGrilla.y !== 0 && ", "}
-                      {offsetGrilla.y !== 0 && `Y: ${offsetGrilla.y}`}
-                    </div>
-                  )}
-                </div>
-              </>
-            )}
+              )}
+            </div>
           </div>
         )}
 
@@ -243,8 +233,6 @@ Header.propTypes = {
   onMoverGrillaDerecha: PropTypes.func.isRequired,
   onResetearOffsetGrilla: PropTypes.func.isRequired,
   onAbrirAcercaDe: PropTypes.func.isRequired,
-  mostrarNombresFichas: PropTypes.bool.isRequired,
-  onToggleMostrarNombresFichas: PropTypes.func.isRequired,
 };
 
 export default Header;

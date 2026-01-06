@@ -576,10 +576,6 @@ function App() {
         onMoverGrillaDerecha={moverGrillaDerecha}
         onResetearOffsetGrilla={resetearOffsetGrilla}
         onAbrirAcercaDe={() => setModalAcercaDeAbierto(true)}
-        mostrarNombresFichas={mostrarNombresFichas}
-        onToggleMostrarNombresFichas={() =>
-          setMostrarNombresFichas(!mostrarNombresFichas)
-        }
       />
 
       <div className="contenedor-principal">
@@ -604,6 +600,10 @@ function App() {
             fichas={fichas}
             onEditarFicha={handleEditarFicha}
             onEliminarFicha={handleEliminarFicha}
+            mostrarNombresFichas={mostrarNombresFichas}
+            onToggleMostrarNombresFichas={() =>
+              setMostrarNombresFichas(!mostrarNombresFichas)
+            }
           />
         </aside>
 
