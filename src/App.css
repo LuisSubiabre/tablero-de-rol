@@ -1502,7 +1502,7 @@
   border: 1px solid rgba(184, 134, 11, 0.2);
 }
 
-.ficha-hp-bar {
+.ficha-hp-bar-container .ficha-hp-bar {
   height: 100%;
   transition: width 0.3s ease, background-color 0.3s ease;
   border-radius: 4px;

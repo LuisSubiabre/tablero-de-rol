@@ -60,7 +60,7 @@ const PanelFichas = ({
               {fichasCat.map((ficha) => {
                 const hpActual = ficha.hpActual ?? ficha.hpMax ?? 50;
                 const hpMax = ficha.hpMax ?? 50;
-                const porcentajeHP = hpMax > 0 ? (hpActual / hpMax) * 100 : 0;
+                const porcentajeHP = hpMax > 0 ? Math.max(0, Math.min(100, (hpActual / hpMax) * 100)) : 0;
                 const estado =
                   ficha.estado || calcularEstadoPorHP(hpActual, hpMax);
 
