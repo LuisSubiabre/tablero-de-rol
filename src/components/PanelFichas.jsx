@@ -38,12 +38,9 @@ const PanelFichas = ({
               mostrarNombresFichas ? "Ocultar" : "Mostrar"
             } nombres de fichas`}
           >
-            <span
-              className={`icono-ojo ${mostrarNombresFichas ? "" : "tachado"}`}
-            >
-              👁️
+            <span className="icono-control">
+              {mostrarNombresFichas ? "👁" : "🙈"}
             </span>
-            {mostrarNombresFichas ? "Ocultar nombres" : "Mostrar nombres"}
           </button>
         </div>
 
@@ -57,10 +54,9 @@ const PanelFichas = ({
               mostrarImagenesFichas ? "Ocultar" : "Mostrar"
             } imágenes de fichas`}
           >
-            <span className="icono-imagen">
-              🖼️
+            <span className="icono-control">
+              {mostrarImagenesFichas ? "📷" : "🚫"}
             </span>
-            {mostrarImagenesFichas ? "Ocultar imágenes" : "Mostrar imágenes"}
           </button>
         </div>
       </div>
