@@ -66,6 +66,38 @@ const PanelFichas = ({
 
                 return (
                   <div key={ficha.id} className="ficha-item">
+                    <div className="ficha-item-actions-top">
+                      <button
+                        className="btn-editar"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onEditarFicha(ficha, true);
+                        }}
+                        title="Editar ficha"
+                      >
+                        ✏️
+                      </button>
+                      <button
+                        className="btn-duplicar"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onDuplicarFicha(ficha);
+                        }}
+                        title="Duplicar ficha"
+                      >
+                        📋
+                      </button>
+                      <button
+                        className="btn-eliminar"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onEliminarFicha(ficha.id);
+                        }}
+                        title="Eliminar ficha"
+                      >
+                        🗑️
+                      </button>
+                    </div>
                     <div
                       className="ficha-item-content"
                       onClick={() => onEditarFicha(ficha, true)}
@@ -88,38 +120,6 @@ const PanelFichas = ({
                           {hpActual}/{hpMax} HP
                         </span>
                       </div>
-                    </div>
-                    <div className="ficha-item-actions">
-                      <button
-                        className="btn-editar"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          onEditarFicha(ficha, true);
-                        }}
-                        title="Editar"
-                      >
-                        ✎
-                      </button>
-                      <button
-                        className="btn-duplicar"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          onDuplicarFicha(ficha);
-                        }}
-                        title="Duplicar"
-                      >
-                        ⧉
-                      </button>
-                      <button
-                        className="btn-eliminar"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          onEliminarFicha(ficha.id);
-                        }}
-                        title="Eliminar"
-                      >
-                        ×
-                      </button>
                     </div>
                   </div>
                 );
