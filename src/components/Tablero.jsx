@@ -144,28 +144,31 @@ const Tablero = forwardRef(({
         className={`tablero ${modoDibujo ? 'modo-dibujo' : ''} ${modoBorrador ? 'modo-borrador' : ''}`}
         onMouseMove={(e) => {
           onMouseMove(e);
-          if (modoDibujo) handleMouseMoveDibujo(e);
+          if (modoDibujo && estaDibujando) handleMouseMoveDibujo(e);
         }}
         onMouseDown={(e) => {
-          if (modoDibujo) {
+          if (modoDibujo && e.button === 0) {
+            // Click izquierdo en modo dibujo: dibujar
             handleMouseDownDibujo(e);
-          } else {
+          } else if (e.button === 2 || (!modoDibujo && e.button === 0)) {
+            // Click derecho siempre, o click izquierdo cuando no está en modo dibujo: panear
             onMouseDown(e);
           }
         }}
         onMouseUp={(e) => {
           onMouseUp(e);
-          if (modoDibujo) handleMouseUpDibujo();
+          if (modoDibujo && e.button === 0) handleMouseUpDibujo();
         }}
         onMouseLeave={(e) => {
           onMouseUp(e);
-          if (modoDibujo) handleMouseUpDibujo();
+          if (modoDibujo && estaDibujando) handleMouseUpDibujo();
         }}
         onWheel={onWheel}
         onContextMenu={onContextMenu}
         style={{
           cursor: modoDibujo ? (modoBorrador ? 'not-allowed' : 'crosshair') : 'default'
         }}
+        title={modoDibujo ? 'Click izquierdo: dibujar | Click derecho: panear' : 'Click y arrastra para mover el tablero'}
       >
         <img
           src={tableroImagen}

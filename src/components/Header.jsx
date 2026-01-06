@@ -100,9 +100,9 @@ const Header = ({
             <button
               className={`btn-toggle-dibujo ${modoDibujo ? "active" : ""}`}
               onClick={onToggleModoDibujo}
-              title={`${modoDibujo ? "Desactivar" : "Activar"} modo dibujo`}
+              title={modoDibujo ? "Desactivar modo dibujo" : "Activar modo dibujo (click izquierdo dibuja, click derecho panea)"}
             >
-              {modoDibujo ? '✏️' : '✏️'} Dibujo
+              ✏️ Dibujo
             </button>
 
             {modoDibujo && (
