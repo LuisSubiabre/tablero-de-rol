@@ -8,8 +8,6 @@ import {
   PanelInfoFicha,
   ModalEdicion,
   CATEGORIAS,
-  getColorPorCategoria,
-  calcularEstadoPorHP,
 } from "./components";
 
 const STORAGE_KEY = "tablero-rol-data";
@@ -56,6 +54,7 @@ function App() {
   const [mostrarGrilla, setMostrarGrilla] = useState(() =>
     cargarDesdeLocalStorage(`${STORAGE_KEY}-grilla-visible`, false)
   );
+  const [mostrarConfigGrilla, setMostrarConfigGrilla] = useState(false);
   const [tamañoGrilla, setTamañoGrilla] = useState(() =>
     cargarDesdeLocalStorage(`${STORAGE_KEY}-grilla-tamaño`, 50)
   );
@@ -207,7 +206,6 @@ function App() {
   const [fichaRedimensionando, setFichaRedimensionando] = useState(null);
 
   // Refs
-  const fileInputRef = useRef(null);
   const idCounterRef = useRef(0);
   const tableroRef = useRef(null);
   const offsetRef = useRef({ x: 0, y: 0 });
@@ -353,7 +351,7 @@ function App() {
     }
   };
 
-  const handleMouseMove = (e) => {
+  const handleMouseMove = () => {
     // El paneo y arrastre se manejan globalmente, aquí no se necesita lógica
     return;
   };
@@ -552,6 +550,31 @@ function App() {
     };
   }, [modalAbierto]);
 
+  // Cerrar panel de configuración de grilla al hacer clic fuera
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (mostrarConfigGrilla) {
+        const configPanel = document.querySelector(".config-panel-grilla");
+        const configButton = document.querySelector(".btn-config-grilla");
+
+        if (
+          configPanel &&
+          !configPanel.contains(event.target) &&
+          configButton &&
+          !configButton.contains(event.target)
+        ) {
+          setMostrarConfigGrilla(false);
+        }
+      }
+    };
+
+    if (mostrarConfigGrilla) {
+      document.addEventListener("mousedown", handleClickOutside);
+      return () =>
+        document.removeEventListener("mousedown", handleClickOutside);
+    }
+  }, [mostrarConfigGrilla]);
+
   return (
     <div className="app">
       <Header
@@ -575,6 +598,8 @@ function App() {
         onMoverGrillaIzquierda={moverGrillaIzquierda}
         onMoverGrillaDerecha={moverGrillaDerecha}
         onResetearOffsetGrilla={resetearOffsetGrilla}
+        mostrarConfigGrilla={mostrarConfigGrilla}
+        setMostrarConfigGrilla={setMostrarConfigGrilla}
         onAbrirAcercaDe={() => setModalAcercaDeAbierto(true)}
       />
 

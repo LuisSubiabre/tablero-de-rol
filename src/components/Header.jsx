@@ -22,6 +22,8 @@ const Header = ({
   onMoverGrillaIzquierda,
   onMoverGrillaDerecha,
   onResetearOffsetGrilla,
+  mostrarConfigGrilla,
+  setMostrarConfigGrilla,
   onAbrirAcercaDe,
 }) => {
   const fileInputRef = React.useRef(null);
@@ -66,24 +68,30 @@ const Header = ({
         )}
 
         {tableroImagen && (
-          <div className="seccion-control grilla-seccion">
-            <div className="seccion-titulo">Grilla</div>
-            <div className="control-grupo">
+          <div className="grilla-controls">
+            <button
+              className={`btn-simple ${mostrarGrilla ? "active" : ""}`}
+              onClick={onToggleGrilla}
+              title="Mostrar/ocultar grilla"
+            >
+              □ Grilla
+            </button>
+            {mostrarGrilla && (
               <button
-                className={`btn-toggle-grilla ${mostrarGrilla ? "active" : ""}`}
-                onClick={onToggleGrilla}
-                title="Mostrar/ocultar grilla"
+                className="btn-config-grilla"
+                onClick={() => setMostrarConfigGrilla(!mostrarConfigGrilla)}
+                title="Configurar grilla"
               >
-                □ Grilla
+                ⚙️
               </button>
-            </div>
+            )}
           </div>
         )}
 
-        {/* Controles detallados de grilla (solo cuando está activada) */}
-        {tableroImagen && mostrarGrilla && (
-          <div className="grilla-detalles">
-            <div className="grilla-tamaño-control">
+        {/* Panel de configuración de grilla */}
+        {mostrarConfigGrilla && (
+          <div className="config-panel-grilla">
+            <div className="config-grilla-tamaño">
               <label htmlFor="tamaño-grilla">Tamaño:</label>
               <input
                 id="tamaño-grilla"
@@ -92,16 +100,14 @@ const Header = ({
                 max="200"
                 step="1"
                 value={tamañoGrilla}
-                onChange={(e) =>
-                  onCambioTamañoGrilla(Number(e.target.value))
-                }
+                onChange={(e) => onCambioTamañoGrilla(Number(e.target.value))}
                 className="grilla-slider"
                 title={`Tamaño de grilla: ${tamañoGrilla}px`}
               />
               <span className="grilla-valor">{tamañoGrilla}px</span>
             </div>
 
-            <div className="grilla-color-control">
+            <div className="config-grilla-color">
               <label htmlFor="color-grilla">Color:</label>
               <input
                 id="color-grilla"
@@ -113,9 +119,9 @@ const Header = ({
               />
             </div>
 
-            <div className="grilla-movimiento-control">
+            <div className="config-grilla-posicion">
               <label>Posición:</label>
-              <div className="grilla-direcciones">
+              <div className="posicion-direcciones">
                 <button
                   className="btn-direccion arriba"
                   onClick={onMoverGrillaArriba}
@@ -155,7 +161,7 @@ const Header = ({
                 </button>
               </div>
               {(offsetGrilla.x !== 0 || offsetGrilla.y !== 0) && (
-                <div className="grilla-offset-display">
+                <div className="offset-display">
                   {offsetGrilla.x !== 0 && `X: ${offsetGrilla.x}`}
                   {offsetGrilla.x !== 0 && offsetGrilla.y !== 0 && ", "}
                   {offsetGrilla.y !== 0 && `Y: ${offsetGrilla.y}`}
@@ -232,6 +238,8 @@ Header.propTypes = {
   onMoverGrillaIzquierda: PropTypes.func.isRequired,
   onMoverGrillaDerecha: PropTypes.func.isRequired,
   onResetearOffsetGrilla: PropTypes.func.isRequired,
+  mostrarConfigGrilla: PropTypes.bool.isRequired,
+  setMostrarConfigGrilla: PropTypes.func.isRequired,
   onAbrirAcercaDe: PropTypes.func.isRequired,
 };
 
