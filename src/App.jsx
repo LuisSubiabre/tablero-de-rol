@@ -15,7 +15,9 @@ const STORAGE_KEY = "tablero-rol-data";
 // Función para guardar datos en localStorage
 const guardarEnLocalStorage = (clave, datos) => {
   try {
-    localStorage.setItem(clave, JSON.stringify(datos));
+    if (typeof Storage !== "undefined") {
+      localStorage.setItem(clave, JSON.stringify(datos));
+    }
   } catch (error) {
     console.warn("Error guardando en localStorage:", error);
   }
@@ -24,8 +26,11 @@ const guardarEnLocalStorage = (clave, datos) => {
 // Función para cargar datos desde localStorage
 const cargarDesdeLocalStorage = (clave, valorPorDefecto) => {
   try {
-    const datos = localStorage.getItem(clave);
-    return datos ? JSON.parse(datos) : valorPorDefecto;
+    if (typeof Storage !== "undefined") {
+      const datos = localStorage.getItem(clave);
+      return datos ? JSON.parse(datos) : valorPorDefecto;
+    }
+    return valorPorDefecto;
   } catch (error) {
     console.warn("Error cargando desde localStorage:", error);
     return valorPorDefecto;
@@ -78,6 +83,14 @@ function App() {
   const [hpActualFicha, setHpActualFicha] = useState(50);
   const [tamañoFicha, setTamañoFicha] = useState(55);
   const [fichaEditando, setFichaEditando] = useState(null);
+
+  // Inicializar contador de IDs basado en fichas existentes
+  useEffect(() => {
+    if (fichas.length > 0) {
+      const maxId = Math.max(...fichas.map(f => f.id));
+      idCounterRef.current = maxId;
+    }
+  }, []); // Solo se ejecuta una vez al montar el componente
 
   // Persistencia con localStorage
   useEffect(() => {
@@ -255,7 +268,7 @@ function App() {
       x: 50,
       y: 50,
     };
-    setFichas([...fichas, nuevaFicha]);
+    setFichas(prevFichas => [...prevFichas, nuevaFicha]);
     resetFormulario();
   };
 
@@ -271,15 +284,51 @@ function App() {
   };
 
   const handleEliminarFicha = (id) => {
-    setFichas(fichas.filter((f) => f.id !== id));
+    setFichas(prevFichas => prevFichas.filter((f) => f.id !== id));
   };
 
   const handleGuardarEdicion = (fichaActualizada) => {
-    setFichas(
-      fichas.map((f) => (f.id === fichaActualizada.id ? fichaActualizada : f))
+    setFichas(prevFichas =>
+      prevFichas.map((f) => (f.id === fichaActualizada.id ? fichaActualizada : f))
     );
     setModalAbierto(false);
     setFichaEditando(null);
+  };
+
+  const handleDuplicarFicha = (fichaOriginal) => {
+    // Generar nuevo nombre correlativo
+    const nombreBase = fichaOriginal.nombre.replace(/\s+\d+$/, ''); // Remover números al final
+    const fichasConMismoNombre = fichas.filter(f =>
+      f.nombre === nombreBase || f.nombre.startsWith(nombreBase + ' ')
+    );
+
+    // Encontrar el número más alto
+    let maxNumero = 1;
+    fichasConMismoNombre.forEach(f => {
+      const match = f.nombre.match(new RegExp(`^${nombreBase}\\s+(\\d+)$`));
+      if (match) {
+        const numero = parseInt(match[1]);
+        if (numero > maxNumero) maxNumero = numero;
+      }
+    });
+
+    // Si el nombre base existe sin número, empezar desde 2
+    const nombreBaseExiste = fichasConMismoNombre.some(f => f.nombre === nombreBase);
+    const nuevoNumero = nombreBaseExiste ? maxNumero + 1 : 2;
+
+    const nuevoNombre = `${nombreBase} ${nuevoNumero}`;
+
+    // Crear nueva ficha con posición ligeramente desplazada
+    idCounterRef.current += 1;
+    const nuevaFicha = {
+      ...fichaOriginal,
+      id: idCounterRef.current,
+      nombre: nuevoNombre,
+      x: fichaOriginal.x + 60, // Desplazar 60px a la derecha
+      y: fichaOriginal.y + 30, // Desplazar 30px abajo
+    };
+
+    setFichas(prevFichas => [...prevFichas, nuevaFicha]);
   };
 
   // Funciones del tablero
@@ -625,6 +674,7 @@ function App() {
             fichas={fichas}
             onEditarFicha={handleEditarFicha}
             onEliminarFicha={handleEliminarFicha}
+            onDuplicarFicha={handleDuplicarFicha}
             mostrarNombresFichas={mostrarNombresFichas}
             onToggleMostrarNombresFichas={() =>
               setMostrarNombresFichas(!mostrarNombresFichas)

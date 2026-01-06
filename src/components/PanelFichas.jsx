@@ -12,6 +12,7 @@ const PanelFichas = ({
   fichas,
   onEditarFicha,
   onEliminarFicha,
+  onDuplicarFicha,
   mostrarNombresFichas,
   onToggleMostrarNombresFichas,
 }) => {
@@ -100,6 +101,16 @@ const PanelFichas = ({
                         ✎
                       </button>
                       <button
+                        className="btn-duplicar"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onDuplicarFicha(ficha);
+                        }}
+                        title="Duplicar"
+                      >
+                        ⧉
+                      </button>
+                      <button
                         className="btn-eliminar"
                         onClick={(e) => {
                           e.stopPropagation();
@@ -137,6 +148,7 @@ PanelFichas.propTypes = {
   ).isRequired,
   onEditarFicha: PropTypes.func.isRequired,
   onEliminarFicha: PropTypes.func.isRequired,
+  onDuplicarFicha: PropTypes.func.isRequired,
   mostrarNombresFichas: PropTypes.bool.isRequired,
   onToggleMostrarNombresFichas: PropTypes.func.isRequired,
 };
