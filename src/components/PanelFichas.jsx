@@ -15,6 +15,8 @@ const PanelFichas = ({
   onDuplicarFicha,
   mostrarNombresFichas,
   onToggleMostrarNombresFichas,
+  mostrarImagenesFichas,
+  onToggleMostrarImagenesFichas,
 }) => {
   const fichasPorCategoria = (categoria) => {
     return fichas.filter((f) => f.categoria === categoria);
@@ -24,24 +26,43 @@ const PanelFichas = ({
     <div className="panel-fichas">
       <h2>Fichas ({fichas.length})</h2>
 
-      {/* Control para mostrar/ocultar nombres */}
-      <div className="control-nombres-fichas">
-        <button
-          className={`btn-toggle-nombres-panel ${
-            mostrarNombresFichas ? "active" : ""
-          }`}
-          onClick={onToggleMostrarNombresFichas}
-          title={`${
-            mostrarNombresFichas ? "Ocultar" : "Mostrar"
-          } nombres de fichas`}
-        >
-          <span
-            className={`icono-ojo ${mostrarNombresFichas ? "" : "tachado"}`}
+      {/* Controles de visualización */}
+      <div className="controles-visualizacion">
+        <div className="control-nombres-fichas">
+          <button
+            className={`btn-toggle-nombres-panel ${
+              mostrarNombresFichas ? "active" : ""
+            }`}
+            onClick={onToggleMostrarNombresFichas}
+            title={`${
+              mostrarNombresFichas ? "Ocultar" : "Mostrar"
+            } nombres de fichas`}
           >
-            👁️
-          </span>
-          {mostrarNombresFichas ? "Ocultar nombres" : "Mostrar nombres"}
-        </button>
+            <span
+              className={`icono-ojo ${mostrarNombresFichas ? "" : "tachado"}`}
+            >
+              👁️
+            </span>
+            {mostrarNombresFichas ? "Ocultar nombres" : "Mostrar nombres"}
+          </button>
+        </div>
+
+        <div className="control-imagenes-fichas">
+          <button
+            className={`btn-toggle-imagenes-panel ${
+              mostrarImagenesFichas ? "active" : ""
+            }`}
+            onClick={onToggleMostrarImagenesFichas}
+            title={`${
+              mostrarImagenesFichas ? "Ocultar" : "Mostrar"
+            } imágenes de fichas`}
+          >
+            <span className="icono-imagen">
+              🖼️
+            </span>
+            {mostrarImagenesFichas ? "Ocultar imágenes" : "Mostrar imágenes"}
+          </button>
+        </div>
       </div>
 
       <div className="lista-fichas">
@@ -65,7 +86,16 @@ const PanelFichas = ({
                   ficha.estado || calcularEstadoPorHP(hpActual, hpMax);
 
                 return (
-                  <div key={ficha.id} className="ficha-item">
+                  <div
+                    key={ficha.id}
+                    className="ficha-item"
+                    style={ficha.imagen && mostrarImagenesFichas ? {
+                      backgroundImage: `linear-gradient(rgba(15, 10, 5, 0.85), rgba(15, 10, 5, 0.85)), url(${ficha.imagen})`,
+                      backgroundSize: 'cover',
+                      backgroundPosition: 'center',
+                      backgroundRepeat: 'no-repeat'
+                    } : {}}
+                  >
                     <div className="ficha-item-actions-top">
                       <button
                         className="btn-editar"
@@ -151,6 +181,8 @@ PanelFichas.propTypes = {
   onDuplicarFicha: PropTypes.func.isRequired,
   mostrarNombresFichas: PropTypes.bool.isRequired,
   onToggleMostrarNombresFichas: PropTypes.func.isRequired,
+  mostrarImagenesFichas: PropTypes.bool.isRequired,
+  onToggleMostrarImagenesFichas: PropTypes.func.isRequired,
 };
 
 export default PanelFichas;

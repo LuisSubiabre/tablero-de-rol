@@ -9,6 +9,7 @@ const FichaTablero = ({
   pan,
   isDragging,
   mostrarNombres,
+  mostrarImagenes,
   onMouseDown,
   onResizeRightMouseDown,
   onDoubleClick,
@@ -106,7 +107,7 @@ const FichaTablero = ({
         }}
       >
         <div className="ficha-contenido">
-          {ficha.imagen ? (
+          {mostrarImagenes && ficha.imagen ? (
             <img
               src={ficha.imagen}
               alt={ficha.nombre}
@@ -165,6 +166,7 @@ FichaTablero.propTypes = {
   }).isRequired,
   isDragging: PropTypes.bool.isRequired,
   mostrarNombres: PropTypes.bool.isRequired,
+  mostrarImagenes: PropTypes.bool.isRequired,
   onMouseDown: PropTypes.func.isRequired,
   onResizeRightMouseDown: PropTypes.func.isRequired,
   onDoubleClick: PropTypes.func.isRequired,

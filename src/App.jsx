@@ -72,6 +72,9 @@ function App() {
   const [mostrarNombresFichas, setMostrarNombresFichas] = useState(() =>
     cargarDesdeLocalStorage(`${STORAGE_KEY}-nombres-fichas-visible`, true)
   );
+  const [mostrarImagenesFichas, setMostrarImagenesFichas] = useState(() =>
+    cargarDesdeLocalStorage(`${STORAGE_KEY}-imagenes-fichas-visible`, true)
+  );
 
   // Estados para el formulario
   const [categoriaSeleccionada, setCategoriaSeleccionada] = useState(
@@ -131,6 +134,13 @@ function App() {
       mostrarNombresFichas
     );
   }, [mostrarNombresFichas]);
+
+  useEffect(() => {
+    guardarEnLocalStorage(
+      `${STORAGE_KEY}-imagenes-fichas-visible`,
+      mostrarImagenesFichas
+    );
+  }, [mostrarImagenesFichas]);
 
   // Función para limpiar todos los datos guardados (opcional para desarrollo)
   const limpiarDatosGuardados = () => {
@@ -676,6 +686,10 @@ function App() {
             onToggleMostrarNombresFichas={() =>
               setMostrarNombresFichas(!mostrarNombresFichas)
             }
+            mostrarImagenesFichas={mostrarImagenesFichas}
+            onToggleMostrarImagenesFichas={() =>
+              setMostrarImagenesFichas(!mostrarImagenesFichas)
+            }
           />
         </aside>
 
@@ -692,6 +706,7 @@ function App() {
           colorGrilla={colorGrilla}
           offsetGrilla={offsetGrilla}
           mostrarNombresFichas={mostrarNombresFichas}
+          mostrarImagenesFichas={mostrarImagenesFichas}
           onMouseMove={handleMouseMove}
           onMouseDown={handleTableroMouseDown}
           onMouseUp={handleMouseUp}
