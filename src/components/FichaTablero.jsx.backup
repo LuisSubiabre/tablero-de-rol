@@ -126,7 +126,7 @@ const FichaTablero = ({
       </div>
 
       {/* Barra de HP lineal debajo de la ficha */}
-      {mostrarBarrasHP && (
+      {mostrarBarrasHP && (}
         <div className="ficha-hp-bar" aria-label={`HP ${hpActual}/${hpMax}`}>
           <div
             className="ficha-hp-bar-fill"

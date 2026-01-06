@@ -17,6 +17,8 @@ const PanelFichas = ({
   onToggleMostrarNombresFichas,
   mostrarImagenesFichas,
   onToggleMostrarImagenesFichas,
+  mostrarBarrasHPFichas,
+  onToggleMostrarBarrasHPFichas,
 }) => {
   const fichasPorCategoria = (categoria) => {
     return fichas.filter((f) => f.categoria === categoria);
@@ -56,6 +58,22 @@ const PanelFichas = ({
           >
             <span className="icono-control">
               {mostrarImagenesFichas ? "📷" : "🚫"}
+            </span>
+          </button>
+        </div>
+
+        <div className="control-barras-hp-fichas">
+          <button
+            className={`btn-toggle-barras-hp-panel ${
+              mostrarBarrasHPFichas ? "active" : ""
+            }`}
+            onClick={onToggleMostrarBarrasHPFichas}
+            title={`${
+              mostrarBarrasHPFichas ? "Ocultar" : "Mostrar"
+            } barras de HP de fichas`}
+          >
+            <span className="icono-control">
+              {mostrarBarrasHPFichas ? "❤️" : "🖤"}
             </span>
           </button>
         </div>
@@ -179,6 +197,8 @@ PanelFichas.propTypes = {
   onToggleMostrarNombresFichas: PropTypes.func.isRequired,
   mostrarImagenesFichas: PropTypes.bool.isRequired,
   onToggleMostrarImagenesFichas: PropTypes.func.isRequired,
+  mostrarBarrasHPFichas: PropTypes.bool.isRequired,
+  onToggleMostrarBarrasHPFichas: PropTypes.func.isRequired,
 };
 
 export default PanelFichas;

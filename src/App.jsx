@@ -75,6 +75,9 @@ function App() {
   const [mostrarImagenesFichas, setMostrarImagenesFichas] = useState(() =>
     cargarDesdeLocalStorage(`${STORAGE_KEY}-imagenes-fichas-visible`, true)
   );
+  const [mostrarBarrasHPFichas, setMostrarBarrasHPFichas] = useState(() =>
+    cargarDesdeLocalStorage(`${STORAGE_KEY}-barras-hp-fichas-visible`, true)
+  );
 
   // Estados para el formulario
   const [categoriaSeleccionada, setCategoriaSeleccionada] = useState(
@@ -141,6 +144,13 @@ function App() {
       mostrarImagenesFichas
     );
   }, [mostrarImagenesFichas]);
+
+  useEffect(() => {
+    guardarEnLocalStorage(
+      `${STORAGE_KEY}-barras-hp-fichas-visible`,
+      mostrarBarrasHPFichas
+    );
+  }, [mostrarBarrasHPFichas]);
 
   // Función para limpiar todos los datos guardados (opcional para desarrollo)
   const limpiarDatosGuardados = () => {
@@ -690,6 +700,10 @@ function App() {
             onToggleMostrarImagenesFichas={() =>
               setMostrarImagenesFichas(!mostrarImagenesFichas)
             }
+            mostrarBarrasHPFichas={mostrarBarrasHPFichas}
+            onToggleMostrarBarrasHPFichas={() =>
+              setMostrarBarrasHPFichas(!mostrarBarrasHPFichas)
+            }
           />
         </aside>
 
@@ -707,6 +721,7 @@ function App() {
           offsetGrilla={offsetGrilla}
           mostrarNombresFichas={mostrarNombresFichas}
           mostrarImagenesFichas={mostrarImagenesFichas}
+          mostrarBarrasHPFichas={mostrarBarrasHPFichas}
           onMouseMove={handleMouseMove}
           onMouseDown={handleTableroMouseDown}
           onMouseUp={handleMouseUp}
