@@ -370,6 +370,182 @@
   opacity: 0.8;
 }
 
+/* Estilos para el sistema de dibujo */
+.btn-toggle-dibujo {
+  padding: 0.4rem 0.8rem;
+  background: rgba(139, 69, 19, 0.4);
+  color: #daa520;
+  border: 1px solid rgba(184, 134, 11, 0.5);
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.btn-toggle-dibujo:hover {
+  background: rgba(139, 69, 19, 0.6);
+  border-color: #daa520;
+  color: #ffd700;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+}
+
+.btn-toggle-dibujo.active {
+  background: rgba(184, 134, 11, 0.8);
+  color: #2c1810;
+  border-color: #daa520;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.btn-toggle-dibujo:active {
+  transform: scale(0.95);
+}
+
+.dibujo-opciones {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  margin-left: 0.5rem;
+  padding: 0.5rem;
+  background: rgba(30, 20, 15, 0.8);
+  border-radius: 8px;
+  border: 1px solid rgba(184, 134, 11, 0.3);
+}
+
+.dibujo-control-inline {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.dibujo-control-inline label {
+  color: #daa520;
+  font-weight: 600;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  min-width: 45px;
+}
+
+.dibujo-color-picker {
+  width: 40px;
+  height: 30px;
+  border: 1px solid rgba(184, 134, 11, 0.5);
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.dibujo-grosor-slider {
+  width: 80px;
+  height: 4px;
+  background: rgba(184, 134, 11, 0.3);
+  border-radius: 2px;
+  outline: none;
+  cursor: pointer;
+}
+
+.dibujo-grosor-slider::-webkit-slider-thumb {
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  background: #daa520;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 2px solid rgba(30, 20, 15, 0.8);
+}
+
+.dibujo-grosor-slider::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  background: #daa520;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 2px solid rgba(30, 20, 15, 0.8);
+}
+
+.dibujo-grosor-valor {
+  color: #daa520;
+  font-weight: 600;
+  font-size: 0.8rem;
+  min-width: 35px;
+  text-align: center;
+}
+
+.btn-modo-borrador {
+  padding: 0.4rem 0.8rem;
+  background: rgba(139, 69, 19, 0.4);
+  color: #daa520;
+  border: 1px solid rgba(184, 134, 11, 0.5);
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.btn-modo-borrador:hover {
+  background: rgba(139, 69, 19, 0.6);
+  border-color: #daa520;
+  color: #ffd700;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+}
+
+.btn-modo-borrador.active {
+  background: rgba(220, 20, 60, 0.8);
+  color: #ffffff;
+  border-color: #daa520;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.btn-modo-borrador:active {
+  transform: scale(0.95);
+}
+
+.btn-limpiar-dibujos {
+  padding: 0.4rem 0.8rem;
+  background: rgba(220, 20, 60, 0.6);
+  color: #ffffff;
+  border: 1px solid rgba(220, 20, 60, 0.8);
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.btn-limpiar-dibujos:hover {
+  background: rgba(220, 20, 60, 0.8);
+  border-color: #ff6b6b;
+  color: #ffffff;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+}
+
+.btn-limpiar-dibujos:active {
+  transform: scale(0.95);
+}
+
+/* Estilos del tablero en modo dibujo */
+.tablero.modo-dibujo {
+  cursor: crosshair;
+}
+
+.tablero.modo-dibujo.modo-borrador {
+  cursor: not-allowed;
+}
+
+.tablero-dibujos {
+  pointer-events: none;
+}
+
 .grilla-tamaño-control,
 .grilla-color-control {
   display: flex;

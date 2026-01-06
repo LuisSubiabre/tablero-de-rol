@@ -25,6 +25,15 @@ const Header = ({
   onAbrirAcercaDe,
   mostrarNombresFichas,
   onToggleMostrarNombresFichas,
+  modoDibujo,
+  onToggleModoDibujo,
+  colorLapiz,
+  onCambioColorLapiz,
+  grosorLapiz,
+  onCambioGrosorLapiz,
+  modoBorrador,
+  onToggleModoBorrador,
+  onLimpiarDibujos,
 }) => {
   const fileInputRef = React.useRef(null);
 
@@ -87,6 +96,62 @@ const Header = ({
               </span>
               Nombres
             </button>
+
+            <button
+              className={`btn-toggle-dibujo ${modoDibujo ? "active" : ""}`}
+              onClick={onToggleModoDibujo}
+              title={`${modoDibujo ? "Desactivar" : "Activar"} modo dibujo`}
+            >
+              ✏️ Dibujo
+            </button>
+
+            {modoDibujo && (
+              <div className="dibujo-opciones">
+                <div className="dibujo-control-inline">
+                  <label htmlFor="color-lapiz">Color:</label>
+                  <input
+                    id="color-lapiz"
+                    type="color"
+                    value={colorLapiz}
+                    onChange={(e) => onCambioColorLapiz(e.target.value)}
+                    className="dibujo-color-picker"
+                    title="Color del lápiz"
+                  />
+                </div>
+
+                <div className="dibujo-control-inline">
+                  <label htmlFor="grosor-lapiz">Grosor:</label>
+                  <input
+                    id="grosor-lapiz"
+                    type="range"
+                    min="1"
+                    max="20"
+                    step="1"
+                    value={grosorLapiz}
+                    onChange={(e) => onCambioGrosorLapiz(Number(e.target.value))}
+                    className="dibujo-grosor-slider"
+                    title={`Grosor del lápiz: ${grosorLapiz}px`}
+                  />
+                  <span className="dibujo-grosor-valor">{grosorLapiz}px</span>
+                </div>
+
+                <button
+                  className={`btn-modo-borrador ${modoBorrador ? "active" : ""}`}
+                  onClick={onToggleModoBorrador}
+                  title={`${modoBorrador ? "Desactivar" : "Activar"} borrador`}
+                >
+                  🧽 Borrador
+                </button>
+
+                <button
+                  className="btn-limpiar-dibujos"
+                  onClick={onLimpiarDibujos}
+                  title="Limpiar todos los dibujos"
+                >
+                  🗑️ Limpiar
+                </button>
+              </div>
+            )}
 
             {mostrarGrilla && (
               <>
@@ -244,6 +309,15 @@ Header.propTypes = {
   onAbrirAcercaDe: PropTypes.func.isRequired,
   mostrarNombresFichas: PropTypes.bool.isRequired,
   onToggleMostrarNombresFichas: PropTypes.func.isRequired,
+  modoDibujo: PropTypes.bool.isRequired,
+  onToggleModoDibujo: PropTypes.func.isRequired,
+  colorLapiz: PropTypes.string.isRequired,
+  onCambioColorLapiz: PropTypes.func.isRequired,
+  grosorLapiz: PropTypes.number.isRequired,
+  onCambioGrosorLapiz: PropTypes.func.isRequired,
+  modoBorrador: PropTypes.bool.isRequired,
+  onToggleModoBorrador: PropTypes.func.isRequired,
+  onLimpiarDibujos: PropTypes.func.isRequired,
 };
 
 export default Header;

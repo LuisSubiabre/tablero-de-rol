@@ -68,6 +68,20 @@ function App() {
   const [mostrarNombresFichas, setMostrarNombresFichas] = useState(() =>
     cargarDesdeLocalStorage(`${STORAGE_KEY}-nombres-fichas-visible`, true)
   );
+  const [modoDibujo, setModoDibujo] = useState(() =>
+    cargarDesdeLocalStorage(`${STORAGE_KEY}-modo-dibujo`, false)
+  );
+  const [colorLapiz, setColorLapiz] = useState(() =>
+    cargarDesdeLocalStorage(`${STORAGE_KEY}-color-lapiz`, "#ff0000")
+  );
+  const [grosorLapiz, setGrosorLapiz] = useState(() =>
+    cargarDesdeLocalStorage(`${STORAGE_KEY}-grosor-lapiz`, 3)
+  );
+  const [modoBorrador, setModoBorrador] = useState(false);
+  const [dibujos, setDibujos] = useState(() =>
+    cargarDesdeLocalStorage(`${STORAGE_KEY}-dibujos`, [])
+  );
+  const [dibujoActual, setDibujoActual] = useState(null);
 
   // Estados para el formulario
   const [categoriaSeleccionada, setCategoriaSeleccionada] = useState(
@@ -120,6 +134,65 @@ function App() {
       mostrarNombresFichas
     );
   }, [mostrarNombresFichas]);
+
+  useEffect(() => {
+    guardarEnLocalStorage(`${STORAGE_KEY}-modo-dibujo`, modoDibujo);
+  }, [modoDibujo]);
+
+  useEffect(() => {
+    guardarEnLocalStorage(`${STORAGE_KEY}-color-lapiz`, colorLapiz);
+  }, [colorLapiz]);
+
+  useEffect(() => {
+    guardarEnLocalStorage(`${STORAGE_KEY}-grosor-lapiz`, grosorLapiz);
+  }, [grosorLapiz]);
+
+  useEffect(() => {
+    guardarEnLocalStorage(`${STORAGE_KEY}-dibujos`, dibujos);
+  }, [dibujos]);
+
+  // Funciones para manejar el dibujo
+  const iniciarDibujo = (x, y) => {
+    if (!modoDibujo || modoBorrador) return;
+
+    const punto = { x, y };
+    setDibujoActual({
+      puntos: [punto],
+      color: colorLapiz,
+      grosor: grosorLapiz,
+    });
+  };
+
+  const continuarDibujo = (x, y) => {
+    if (!dibujoActual) return;
+
+    const punto = { x, y };
+    setDibujoActual((prev) => ({
+      ...prev,
+      puntos: [...prev.puntos, punto],
+    }));
+  };
+
+  const terminarDibujo = () => {
+    if (dibujoActual && dibujoActual.puntos.length > 1) {
+      setDibujos((prev) => [...prev, dibujoActual]);
+    }
+    setDibujoActual(null);
+  };
+
+  const borrarDibujoEnPunto = (x, y) => {
+    if (!modoDibujo || !modoBorrador) return;
+
+    // Encontrar y remover dibujos cercanos al punto
+    setDibujos((prev) =>
+      prev.filter((dibujo) => {
+        return !dibujo.puntos.some(
+          (punto) =>
+            Math.abs(punto.x - x) < 0.01 && Math.abs(punto.y - y) < 0.01
+        );
+      })
+    );
+  };
 
   // Función para limpiar todos los datos guardados (opcional para desarrollo)
   const limpiarDatosGuardados = () => {
@@ -180,6 +253,14 @@ function App() {
 
       // Resetear configuración de nombres de fichas
       setMostrarNombresFichas(true);
+
+      // Resetear configuración de dibujo
+      setModoDibujo(false);
+      setColorLapiz("#ff0000");
+      setGrosorLapiz(3);
+      setModoBorrador(false);
+      setDibujos([]);
+      setDibujoActual(null);
 
       // Resetear formulario
       resetFormulario();
@@ -579,6 +660,15 @@ function App() {
         onToggleMostrarNombresFichas={() =>
           setMostrarNombresFichas(!mostrarNombresFichas)
         }
+        modoDibujo={modoDibujo}
+        onToggleModoDibujo={() => setModoDibujo(!modoDibujo)}
+        colorLapiz={colorLapiz}
+        onCambioColorLapiz={setColorLapiz}
+        grosorLapiz={grosorLapiz}
+        onCambioGrosorLapiz={setGrosorLapiz}
+        modoBorrador={modoBorrador}
+        onToggleModoBorrador={() => setModoBorrador(!modoBorrador)}
+        onLimpiarDibujos={() => setDibujos([])}
       />
 
       <div className="contenedor-principal">
@@ -619,6 +709,16 @@ function App() {
           colorGrilla={colorGrilla}
           offsetGrilla={offsetGrilla}
           mostrarNombresFichas={mostrarNombresFichas}
+          modoDibujo={modoDibujo}
+          colorLapiz={colorLapiz}
+          grosorLapiz={grosorLapiz}
+          modoBorrador={modoBorrador}
+          dibujos={dibujos}
+          dibujoActual={dibujoActual}
+          onIniciarDibujo={iniciarDibujo}
+          onContinuarDibujo={continuarDibujo}
+          onTerminarDibujo={terminarDibujo}
+          onBorrarDibujoEnPunto={borrarDibujoEnPunto}
           onMouseMove={handleMouseMove}
           onMouseDown={handleTableroMouseDown}
           onMouseUp={handleMouseUp}
