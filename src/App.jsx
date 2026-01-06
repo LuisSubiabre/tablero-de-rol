@@ -327,14 +327,14 @@ function App() {
 
     const nuevoNombre = `${nombreBase} ${nuevoNumero}`;
 
-    // Crear nueva ficha con posición ligeramente desplazada
+    // Crear nueva ficha en el centro del tablero
     idCounterRef.current += 1;
     const nuevaFicha = {
       ...fichaOriginal,
       id: idCounterRef.current,
       nombre: nuevoNombre,
-      x: fichaOriginal.x + 60, // Desplazar 60px a la derecha
-      y: fichaOriginal.y + 30, // Desplazar 30px abajo
+      x: 50, // Centro horizontal
+      y: 50, // Centro vertical
     };
 
     setFichas(prevFichas => [...prevFichas, nuevaFicha]);
