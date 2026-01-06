@@ -13,6 +13,7 @@ const Tablero = forwardRef(({
   tamañoGrilla,
   colorGrilla,
   offsetGrilla,
+  mostrarNombresFichas,
   onMouseMove,
   onMouseDown,
   onMouseUp,
@@ -129,6 +130,7 @@ const Tablero = forwardRef(({
             zoom={zoom}
             pan={pan}
             isDragging={fichaArrastrada === ficha.id}
+            mostrarNombres={mostrarNombresFichas}
             onMouseDown={onFichaMouseDown}
             onResizeRightMouseDown={onFichaResizeRightMouseDown}
             onDoubleClick={onFichaDoubleClick}
@@ -174,6 +176,7 @@ Tablero.propTypes = {
     x: PropTypes.number.isRequired,
     y: PropTypes.number.isRequired,
   }).isRequired,
+  mostrarNombresFichas: PropTypes.bool.isRequired,
   onMouseMove: PropTypes.func.isRequired,
   onMouseDown: PropTypes.func.isRequired,
   onMouseUp: PropTypes.func.isRequired,

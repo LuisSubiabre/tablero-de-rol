@@ -8,6 +8,7 @@ const FichaTablero = ({
   zoom,
   pan,
   isDragging,
+  mostrarNombres,
   onMouseDown,
   onResizeRightMouseDown,
   onDoubleClick,
@@ -87,7 +88,9 @@ const FichaTablero = ({
       title={`${ficha.nombre} - ${hpActual}/${hpMax} HP - ${estado}`}
     >
       {/* Nombre arriba (fuera del contenedor para evitar overflow/recortes) */}
-      <div className="ficha-nombre-arriba">{ficha.nombre}</div>
+      {mostrarNombres && (
+        <div className="ficha-nombre-arriba">{ficha.nombre}</div>
+      )}
 
       {/* Círculo de la ficha (mantiene overflow hidden para recortar imagen) */}
       <div
@@ -161,6 +164,7 @@ FichaTablero.propTypes = {
     y: PropTypes.number.isRequired,
   }).isRequired,
   isDragging: PropTypes.bool.isRequired,
+  mostrarNombres: PropTypes.bool.isRequired,
   onMouseDown: PropTypes.func.isRequired,
   onResizeRightMouseDown: PropTypes.func.isRequired,
   onDoubleClick: PropTypes.func.isRequired,

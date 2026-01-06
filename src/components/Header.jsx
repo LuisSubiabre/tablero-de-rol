@@ -23,6 +23,8 @@ const Header = ({
   onMoverGrillaDerecha,
   onResetearOffsetGrilla,
   onAbrirAcercaDe,
+  mostrarNombresFichas,
+  onToggleMostrarNombresFichas,
 }) => {
   const fileInputRef = React.useRef(null);
 
@@ -73,6 +75,17 @@ const Header = ({
               title="Mostrar/ocultar grilla"
             >
               Grilla
+            </button>
+
+            <button
+              className={`btn-toggle-nombres ${mostrarNombresFichas ? "active" : ""}`}
+              onClick={onToggleMostrarNombresFichas}
+              title={`${mostrarNombresFichas ? "Ocultar" : "Mostrar"} nombres de fichas`}
+            >
+              <span className={`icono-ojo ${mostrarNombresFichas ? "" : "tachado"}`}>
+                👁️
+              </span>
+              Nombres
             </button>
 
             {mostrarGrilla && (
@@ -229,6 +242,8 @@ Header.propTypes = {
   onMoverGrillaDerecha: PropTypes.func.isRequired,
   onResetearOffsetGrilla: PropTypes.func.isRequired,
   onAbrirAcercaDe: PropTypes.func.isRequired,
+  mostrarNombresFichas: PropTypes.bool.isRequired,
+  onToggleMostrarNombresFichas: PropTypes.func.isRequired,
 };
 
 export default Header;

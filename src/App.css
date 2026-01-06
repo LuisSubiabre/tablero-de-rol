@@ -316,6 +316,39 @@
   transform: scale(0.95);
 }
 
+.btn-toggle-nombres {
+  padding: 0.4rem 0.8rem;
+  background: rgba(139, 69, 19, 0.4);
+  color: #daa520;
+  border: 1px solid rgba(184, 134, 11, 0.5);
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.btn-toggle-nombres:hover {
+  background: rgba(139, 69, 19, 0.6);
+  border-color: #daa520;
+  color: #ffd700;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+}
+
+.btn-toggle-nombres.active {
+  background: rgba(184, 134, 11, 0.8);
+  color: #2c1810;
+  border-color: #daa520;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.btn-toggle-nombres:active {
+  transform: scale(0.95);
+}
+
 .grilla-tamaño-control,
 .grilla-color-control {
   display: flex;

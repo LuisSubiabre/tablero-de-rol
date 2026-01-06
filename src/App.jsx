@@ -60,10 +60,13 @@ function App() {
     cargarDesdeLocalStorage(`${STORAGE_KEY}-grilla-tamaño`, 50)
   );
   const [colorGrilla, setColorGrilla] = useState(() =>
-    cargarDesdeLocalStorage(`${STORAGE_KEY}-grilla-color`, '#ffffff')
+    cargarDesdeLocalStorage(`${STORAGE_KEY}-grilla-color`, "#ffffff")
   );
   const [offsetGrilla, setOffsetGrilla] = useState(() =>
     cargarDesdeLocalStorage(`${STORAGE_KEY}-grilla-offset`, { x: 0, y: 0 })
+  );
+  const [mostrarNombresFichas, setMostrarNombresFichas] = useState(() =>
+    cargarDesdeLocalStorage(`${STORAGE_KEY}-nombres-fichas-visible`, true)
   );
 
   // Estados para el formulario
@@ -111,6 +114,13 @@ function App() {
     guardarEnLocalStorage(`${STORAGE_KEY}-grilla-offset`, offsetGrilla);
   }, [offsetGrilla]);
 
+  useEffect(() => {
+    guardarEnLocalStorage(
+      `${STORAGE_KEY}-nombres-fichas-visible`,
+      mostrarNombresFichas
+    );
+  }, [mostrarNombresFichas]);
+
   // Función para limpiar todos los datos guardados (opcional para desarrollo)
   const limpiarDatosGuardados = () => {
     localStorage.removeItem(`${STORAGE_KEY}-fichas`);
@@ -125,19 +135,19 @@ function App() {
 
   // Funciones para mover la grilla
   const moverGrillaArriba = () => {
-    setOffsetGrilla(prev => ({ ...prev, y: prev.y - 5 }));
+    setOffsetGrilla((prev) => ({ ...prev, y: prev.y - 5 }));
   };
 
   const moverGrillaAbajo = () => {
-    setOffsetGrilla(prev => ({ ...prev, y: prev.y + 5 }));
+    setOffsetGrilla((prev) => ({ ...prev, y: prev.y + 5 }));
   };
 
   const moverGrillaIzquierda = () => {
-    setOffsetGrilla(prev => ({ ...prev, x: prev.x - 5 }));
+    setOffsetGrilla((prev) => ({ ...prev, x: prev.x - 5 }));
   };
 
   const moverGrillaDerecha = () => {
-    setOffsetGrilla(prev => ({ ...prev, x: prev.x + 5 }));
+    setOffsetGrilla((prev) => ({ ...prev, x: prev.x + 5 }));
   };
 
   const resetearOffsetGrilla = () => {
@@ -165,8 +175,11 @@ function App() {
       // Resetear configuración de grilla
       setMostrarGrilla(false);
       setTamañoGrilla(50);
-      setColorGrilla('#ffffff');
+      setColorGrilla("#ffffff");
       setOffsetGrilla({ x: 0, y: 0 });
+
+      // Resetear configuración de nombres de fichas
+      setMostrarNombresFichas(true);
 
       // Resetear formulario
       resetFormulario();
@@ -562,6 +575,10 @@ function App() {
         onMoverGrillaDerecha={moverGrillaDerecha}
         onResetearOffsetGrilla={resetearOffsetGrilla}
         onAbrirAcercaDe={() => setModalAcercaDeAbierto(true)}
+        mostrarNombresFichas={mostrarNombresFichas}
+        onToggleMostrarNombresFichas={() =>
+          setMostrarNombresFichas(!mostrarNombresFichas)
+        }
       />
 
       <div className="contenedor-principal">
@@ -601,6 +618,7 @@ function App() {
           tamañoGrilla={tamañoGrilla}
           colorGrilla={colorGrilla}
           offsetGrilla={offsetGrilla}
+          mostrarNombresFichas={mostrarNombresFichas}
           onMouseMove={handleMouseMove}
           onMouseDown={handleTableroMouseDown}
           onMouseUp={handleMouseUp}
@@ -649,23 +667,25 @@ function App() {
             </div>
             <div className="modal-contenido">
               <p>
-                Tablero Virtual de Rol es una aplicación web pensada como un apoyo visual para partidas de rol,
-                especialmente orientada al juego en solitario y a la simulación de encuentros.
+                Tablero Virtual de Rol es una aplicación web pensada como un
+                apoyo visual para partidas de rol, especialmente orientada al
+                juego en solitario y a la simulación de encuentros.
               </p>
               <p>
-                No busca reemplazar las reglas ni los sistemas tradicionales, sino ofrecer un espacio simple donde
-                cargar mapas, mover fichas y dejar que la imaginación haga el resto.
+                No busca reemplazar las reglas ni los sistemas tradicionales,
+                sino ofrecer un espacio simple donde cargar mapas, mover fichas
+                y dejar que la imaginación haga el resto.
               </p>
               <p>
-                El proyecto fue desarrollado por Luis Subiabre, desarrollador web y docente, como una herramienta
-                ligera, intuitiva y libre de complejidad innecesaria, enfocada en disfrutar el rol de forma rápida
-                y sin distracciones.
+                El proyecto fue desarrollado por Luis Subiabre, desarrollador
+                web y docente, como una herramienta ligera, intuitiva y libre de
+                complejidad innecesaria, enfocada en disfrutar el rol de forma
+                rápida y sin distracciones.
               </p>
             </div>
           </div>
         </div>
       )}
-
     </div>
   );
 }
