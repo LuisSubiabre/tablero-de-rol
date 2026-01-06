@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.2.0](https://github.com/LuisSubiabre/tablero-de-rol/compare/v1.1.1...v1.2.0) (2026-01-06)
+
+
+### Features
+
+* Añadir controles para mostrar/ocultar imágenes de fichas y mejorar estilos ([ea7cabe](https://github.com/LuisSubiabre/tablero-de-rol/commit/ea7cabe2daf9344990141579faca17e8703111f4))
+* Añadir funcionalidad de duplicación de fichas y mejorar manejo de localStorage ([0aa3765](https://github.com/LuisSubiabre/tablero-de-rol/commit/0aa3765312518465f82de830196f409555ef83c1))
+
+
+### Bug Fixes
+
+* Ajustar cálculo de porcentaje de HP y mejorar estilos CSS ([d68cc9b](https://github.com/LuisSubiabre/tablero-de-rol/commit/d68cc9bb141ed41ed85cae21fda84cfedb1eb0c0))
+
 ### [1.1.1](https://github.com/LuisSubiabre/tablero-de-rol/compare/v1.1.0...v1.1.1) (2026-01-06)
 
 ## [1.1.0](https://github.com/LuisSubiabre/tablero-de-rol/compare/v1.0.1...v1.1.0) (2026-01-06)
