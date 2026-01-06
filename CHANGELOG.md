@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.1.0](https://github.com/LuisSubiabre/tablero-de-rol/compare/v1.0.1...v1.1.0) (2026-01-06)
+
+
+### Features
+
+* Actualizar título y mejorar estilos en el header y CSS ([b0228d1](https://github.com/LuisSubiabre/tablero-de-rol/commit/b0228d1776ecc7fcd87498c7c3b99666b27cb862))
+* Añadir controles y estilos para mostrar/ocultar nombres de fichas ([2ed03df](https://github.com/LuisSubiabre/tablero-de-rol/commit/2ed03df65727b260c4b01cee2391faf3e4c6548d))
+* Añadir estilos para el icono de ojo con efecto tachado ([530e234](https://github.com/LuisSubiabre/tablero-de-rol/commit/530e234f4af5757cdc145e58fec7bab61207795c))
+* Añadir funcionalidad para mostrar/ocultar nombres de fichas ([82a194a](https://github.com/LuisSubiabre/tablero-de-rol/commit/82a194a63384ebb610f9a2c2b5bce9478c15a9e4))
+* Implementar sistema de dibujo con opciones de personalización ([740667a](https://github.com/LuisSubiabre/tablero-de-rol/commit/740667a578bc2c0c76992ae5f509ff669b696ae4))
+* Mejorar la experiencia del usuario en el modo de dibujo ([3e42dfe](https://github.com/LuisSubiabre/tablero-de-rol/commit/3e42dfe9beaf54682625e9ac6aa130df4677e97e))
+* Mejorar la funcionalidad del modo de dibujo en el tablero ([41563f3](https://github.com/LuisSubiabre/tablero-de-rol/commit/41563f3a0e9341cad54edfaa94c161a252e8ce21))
+
+
+### Bug Fixes
+
+* Corregir el texto del botón en el header para mayor claridad ([00a58cf](https://github.com/LuisSubiabre/tablero-de-rol/commit/00a58cfeb8e47c524980acbf9daf88a94d9df778))
+
 ### [1.0.1](https://github.com/LuisSubiabre/tablero-de-rol/compare/v0.0.0...v1.0.1) (2026-01-05)
 
 ## 0.0.0 (2026-01-05)
