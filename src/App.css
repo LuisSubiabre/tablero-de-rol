@@ -383,41 +383,35 @@
   display: flex;
 }
 
-.btn-toggle-nombres-panel,
-.btn-toggle-imagenes-panel {
+/* Botones toggle simples con checks */
+.btn-toggle-simple {
   display: flex;
   align-items: center;
-  justify-content: center;
-  width: 48px;
-  height: 32px;
-  padding: 0;
+  justify-content: flex-start;
+  gap: 6px;
+  padding: 6px 10px;
   background: rgba(255, 255, 255, 0.1);
   border: 1px solid rgba(184, 134, 11, 0.3);
   border-radius: 6px;
   color: #e6d7c3;
   cursor: pointer;
   transition: all 0.2s ease;
+  font-size: 0.85rem;
+  font-weight: 500;
+  white-space: nowrap;
 }
 
-.btn-toggle-nombres-panel:hover,
-.btn-toggle-imagenes-panel:hover,
-.btn-toggle-barras-hp-panel:hover {
+.btn-toggle-simple:hover {
   background: rgba(255, 255, 255, 0.15);
   border-color: rgba(184, 134, 11, 0.5);
-  transform: scale(1.05);
+  transform: translateY(-1px);
 }
 
-.btn-toggle-nombres-panel.active,
-.btn-toggle-imagenes-panel.active,
-.btn-toggle-barras-hp-panel.active {
+.btn-toggle-simple.active {
   background: rgba(59, 130, 246, 0.2);
   border-color: rgba(59, 130, 246, 0.6);
   color: #3b82f6;
-}
-
-.icono-control {
-  font-size: 1rem;
-  line-height: 1;
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
 }
 
 .btn-toggle-nombres-panel {

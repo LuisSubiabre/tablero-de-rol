@@ -20,6 +20,7 @@ const PanelFichas = ({
   mostrarBarrasHPFichas,
   onToggleMostrarBarrasHPFichas,
 }) => {
+
   const fichasPorCategoria = (categoria) => {
     return fichas.filter((f) => f.categoria === categoria);
   };
@@ -32,49 +33,37 @@ const PanelFichas = ({
       <div className="controles-visualizacion">
         <div className="control-nombres-fichas">
           <button
-            className={`btn-toggle-nombres-panel ${
-              mostrarNombresFichas ? "active" : ""
-            }`}
+            className={`btn-toggle-simple ${mostrarNombresFichas ? "active" : ""}`}
             onClick={onToggleMostrarNombresFichas}
             title={`${
               mostrarNombresFichas ? "Ocultar" : "Mostrar"
             } nombres de fichas`}
           >
-            <span className="icono-control">
-              {mostrarNombresFichas ? "👁" : "🙈"}
-            </span>
+            {mostrarNombresFichas ? "✓" : "○"} Nombres
           </button>
         </div>
 
         <div className="control-imagenes-fichas">
           <button
-            className={`btn-toggle-imagenes-panel ${
-              mostrarImagenesFichas ? "active" : ""
-            }`}
+            className={`btn-toggle-simple ${mostrarImagenesFichas ? "active" : ""}`}
             onClick={onToggleMostrarImagenesFichas}
             title={`${
               mostrarImagenesFichas ? "Ocultar" : "Mostrar"
             } imágenes de fichas`}
           >
-            <span className="icono-control">
-              {mostrarImagenesFichas ? "📷" : "🚫"}
-            </span>
+            {mostrarImagenesFichas ? "✓" : "○"} Imágenes
           </button>
         </div>
 
         <div className="control-barras-hp-fichas">
           <button
-            className={`btn-toggle-barras-hp-panel ${
-              mostrarBarrasHPFichas ? "active" : ""
-            }`}
+            className={`btn-toggle-simple ${mostrarBarrasHPFichas ? "active" : ""}`}
             onClick={onToggleMostrarBarrasHPFichas}
             title={`${
               mostrarBarrasHPFichas ? "Ocultar" : "Mostrar"
             } barras de HP de fichas`}
           >
-            <span className="icono-control">
-              {mostrarBarrasHPFichas ? "❤️" : "🖤"}
-            </span>
+            {mostrarBarrasHPFichas ? "✓" : "○"} HP
           </button>
         </div>
       </div>
